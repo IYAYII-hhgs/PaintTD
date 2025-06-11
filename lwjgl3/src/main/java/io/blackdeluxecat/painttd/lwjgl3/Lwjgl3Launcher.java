@@ -1,21 +1,22 @@
 package io.blackdeluxecat.painttd.lwjgl3;
 
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import io.blackdeluxecat.painttd.PaintTowerDefence;
+import com.badlogic.gdx.backends.lwjgl3.*;
+import io.blackdeluxecat.painttd.*;
 
-/** Launches the desktop (LWJGL3) application. */
-public class Lwjgl3Launcher {
-    public static void main(String[] args) {
-        if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
+/**
+ * Launches the desktop (LWJGL3) application.
+ */
+public class Lwjgl3Launcher{
+    public static void main(String[] args){
+        if(StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
         createApplication();
     }
 
-    private static Lwjgl3Application createApplication() {
+    private static Lwjgl3Application createApplication(){
         return new Lwjgl3Application(new PaintTowerDefence(), getDefaultConfiguration());
     }
 
-    private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
+    private static Lwjgl3ApplicationConfiguration getDefaultConfiguration(){
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("PaintTD");
         //// Vsync limits the frames per second to what your hardware can display, and helps eliminate

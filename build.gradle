@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:8.7.3"
-
+        classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -36,7 +36,7 @@ configure(subprojects - project(':android')) {
     tasks.register('generateAssetList') {
         inputs.dir("${project.rootDir}/assets/")
         // projectFolder/assets
-        File assetsFolder = new File("${project.rootDir}/assets/")
+        File assetsFolder = new File("${project.rootDir}/assets-raw/")
         // projectFolder/assets/assets.txt
         File assetsFile = new File(assetsFolder, "assets.txt")
         // delete that file in case we've already created it
@@ -67,6 +67,22 @@ subprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://jitpack.io' }
+    }
+}
+
+// Store the parameters you want to pass the texturePacker here...
+project.ext.texturePacker = [ "assets-raw/", "assets/", "PaintTDAssets" ]
+
+// Import the texture packer
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
+// Add a new task that packs the textures for you
+tasks.register("texturePacker"){
+    doLast {
+        if (project.ext.has('texturePacker')) {
+            logger.info "Calling TexturePacker: "+project.ext.texturePacker
+            TexturePacker.process(texturePacker[0], texturePacker[1], texturePacker[2])
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd;
+package lib;
 
 public class Math{
     public static float mod(float a, float b){

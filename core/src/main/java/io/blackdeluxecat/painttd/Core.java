@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.core;
+package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.*;

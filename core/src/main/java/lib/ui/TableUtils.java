@@ -18,8 +18,13 @@ public class TableUtils{
     public static <T extends Actor> void clicked(T actor, Cons<T> clicker){
         actor.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 clicker.get(actor);
+                return super.touchDown(event, x, y, pointer, button);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y){
             }
         });
     }

@@ -12,6 +12,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void create(){
+        Gdx.input.setInputProcessor(stage);
         hud.create();
         stage.addActor(hud.group);
     }
@@ -19,6 +20,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
     @Override
     public void render(){
         world.act();
+        stage.act();
         renderer.draw();
         stage.draw();
     }
@@ -32,6 +34,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
     @Override
     public void resize(int width, int height){
         super.resize(width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override

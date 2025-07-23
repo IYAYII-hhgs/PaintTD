@@ -38,12 +38,14 @@ public class Hud{
 
         buttons.defaults().height(buttonSize).pad(2).minWidth(buttonSize);
 
-        TextButton b = new TextButton("EXIT", sTextB);
-        TableUtils.clicked(b, bb -> Gdx.app.exit());
+
         Label label = new Label("fafa", sLabel);
-        TableUtils.clicked(label, bb -> label.setText(debug++));
-        buttons.add(b);
+        TableUtils.clicked(label, bb -> label.setText("法法绝叫" + debug++));
         buttons.add(label);
+
+        TextButton exit = new TextButton("EXIT", sTextB);
+        TableUtils.clicked(exit, bb -> Gdx.app.exit());
+        buttons.add(exit);
 
         fill(t -> t.add(buttons).growX().height(buttonSize)).bottom().left();
     }

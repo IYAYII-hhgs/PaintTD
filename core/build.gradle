@@ -10,6 +10,7 @@ dependencies {
     api "games.rednblack.miniaudio:miniaudio:$miniaudioVersion"
     api "org.apache.fury:fury-core:$furyVersion"
     api "space.earlygrey:shapedrawer:$shapeDrawerVersion"
+    api "net.onedaybeard.artemis:artemis-odb:2.3.0"
 
     if (enableGraalNative == 'true') {
         implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"

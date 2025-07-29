@@ -1,7 +1,9 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
+import io.blackdeluxecat.painttd.ui.*;
 
+import static io.blackdeluxecat.painttd.Core.assets;
 import static io.blackdeluxecat.painttd.Core.stage;
 import static io.blackdeluxecat.painttd.Vars.*;
 
@@ -13,6 +15,11 @@ public class PaintTowerDefence extends ApplicationAdapter{
     @Override
     public void create(){
         Gdx.input.setInputProcessor(stage);
+
+        Fonts.load();
+        assets.finishLoading();
+        Styles.load();
+
         hud.create();
         stage.addActor(hud.group);
     }
@@ -27,8 +34,8 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void dispose(){
-        hud.dispose();
         Core.atlas.dispose();
+        Core.assets.dispose();
     }
 
     @Override

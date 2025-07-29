@@ -2,6 +2,8 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url 'https://s01.oss.sonatype.org' }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://repo1.maven.org' }
         gradlePluginPortal()
         mavenLocal()
         google()

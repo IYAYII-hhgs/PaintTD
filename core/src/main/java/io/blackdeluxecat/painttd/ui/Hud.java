@@ -4,18 +4,15 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.*;
-import lib.ui.*;
 
 import java.util.function.*;
 
-import static io.blackdeluxecat.painttd.Core.log;
 import static io.blackdeluxecat.painttd.Core.stage;
-import static io.blackdeluxecat.painttd.Styles.*;
 
 public class Hud{
-    public static int debug;
     public WidgetGroup group;
+
+    public PlacementMenu placement = new PlacementMenu();
 
     public Table buttons = new Table();
 
@@ -36,18 +33,10 @@ public class Hud{
             });
         });
 
-        buttons.defaults().height(buttonSize).pad(2).minWidth(buttonSize);
-
-
-        Label label = new Label("fafa", sLabel);
-        TableUtils.clicked(label, bb -> label.setText("法法绝叫" + debug++));
-        buttons.add(label);
-
-        TextButton exit = new TextButton("EXIT", sTextB);
-        TableUtils.clicked(exit, bb -> Gdx.app.exit());
-        buttons.add(exit);
-
-        fill(t -> t.add(buttons).growX().height(buttonSize)).bottom().left();
+        fill(t -> {
+            placement.build(buttons);
+            t.add(buttons).growX();
+        }).bottom().left();
     }
 
     public Table fill(Consumer<Table> cons){
@@ -56,9 +45,5 @@ public class Hud{
         cons.accept(table);
         group.addActor(table);
         return table;
-    }
-
-    public void dispose(){
-        group.clear();
     }
 }

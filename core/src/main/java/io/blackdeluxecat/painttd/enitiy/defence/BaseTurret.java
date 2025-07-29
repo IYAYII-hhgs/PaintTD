@@ -7,7 +7,6 @@ import io.blackdeluxecat.painttd.enitiy.*;
 public class BaseTurret extends Entity{
     public float range = 100;
     public void act(){
-
     }
 
     public void move(Vector2 vec){}

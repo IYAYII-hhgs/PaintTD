@@ -1,8 +1,6 @@
 package io.blackdeluxecat.painttd.game.content.components;
 
-import com.artemis.*;
-
-public class RangeComp extends CloneableComponent{
+public class RangeComp extends CopyableComponent{
     public int range;
 
     public RangeComp(){}
@@ -17,7 +15,7 @@ public class RangeComp extends CloneableComponent{
     }
 
     @Override
-    public CloneableComponent copy(){
+    public RangeComp copy(){
         return new RangeComp(range);
     }
 }

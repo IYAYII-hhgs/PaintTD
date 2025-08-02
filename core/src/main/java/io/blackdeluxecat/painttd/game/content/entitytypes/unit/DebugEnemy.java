@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.game.content.entitytypes.enemy;
+package io.blackdeluxecat.painttd.game.content.entitytypes.unit;
 
 import com.artemis.*;
 import io.blackdeluxecat.painttd.game.*;

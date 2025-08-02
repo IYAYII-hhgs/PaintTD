@@ -24,8 +24,10 @@ public class Game{
         });
         builder.with(groups);
 
+        if(world != null) world.dispose();  //以防有人替换world
         world = new World(builder.build());
 
+        //为单位创建默认组件。尽管组件并不指向world，所以是否有必要在world每次重建时创建一遍？是有必要的，这里的一切组件都在world.cm中进行池化，不能让任何组件脱离池化管理。
         EntityTypes.create();
     }
 

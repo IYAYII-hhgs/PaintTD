@@ -1,6 +1,6 @@
 package io.blackdeluxecat.painttd.game.content.components;
 
-public class VelocityComp extends CloneableComponent{
+public class VelocityComp extends CopyableComponent{
     public float x, y;
     public VelocityComp(){}
 

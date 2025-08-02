@@ -1,6 +1,6 @@
 package io.blackdeluxecat.painttd.game.content.components;
 
-public class RotationComp extends CloneableComponent{
+public class RotationComp extends CopyableComponent{
     public float rotation;
 
     public RotationComp(){}

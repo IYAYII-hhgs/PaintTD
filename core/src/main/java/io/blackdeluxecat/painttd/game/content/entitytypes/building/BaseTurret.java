@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.game.content.entitytypes.turret;
+package io.blackdeluxecat.painttd.game.content.entitytypes.building;
 
 import com.artemis.*;
 import io.blackdeluxecat.painttd.game.*;

@@ -1,6 +1,6 @@
 package io.blackdeluxecat.painttd.game.content.components;
 
-public class PositionComp extends CloneableComponent{
+public class PositionComp extends CopyableComponent{
     public float x, y;
 
     public PositionComp(){}

@@ -3,6 +3,7 @@ package io.blackdeluxecat.painttd.game.content.entitytypes;
 import com.artemis.*;
 import com.artemis.utils.*;
 import io.blackdeluxecat.painttd.game.*;
+import io.blackdeluxecat.painttd.game.content.components.*;
 
 public class BaseEntityType{
     public String name;
@@ -16,7 +17,9 @@ public class BaseEntityType{
     public Entity create(){
         Entity e = Game.world.createEntity();
         for(Component component : def){
-            e.edit().create(component.getClass());
+            if(component instanceof CopyableComponent cm){
+                ((CopyableComponent)e.edit().create(component.getClass())).copy(cm);
+            }
         }
         return e;
     }

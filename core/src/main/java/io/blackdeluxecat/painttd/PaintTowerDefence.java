@@ -1,11 +1,13 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
+import io.blackdeluxecat.painttd.game.*;
+import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.*;
 
-import static io.blackdeluxecat.painttd.Core.assets;
-import static io.blackdeluxecat.painttd.Core.stage;
+import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.Vars.*;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
@@ -14,6 +16,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void create(){
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.input.setInputProcessor(stage);
 
         Fonts.load();
@@ -22,18 +25,20 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
         hud.create();
         stage.addActor(hud.group);
+
+        Game.create();
     }
 
     @Override
     public void render(){
-        world.act();
         stage.act();
-        renderer.draw();
+        world.process();
         stage.draw();
     }
 
     @Override
     public void dispose(){
+        world.dispose();
         Core.atlas.dispose();
         Core.assets.dispose();
     }

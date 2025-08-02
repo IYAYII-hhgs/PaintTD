@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import java.util.function.*;
 
-import static io.blackdeluxecat.painttd.Core.stage;
+import static io.blackdeluxecat.painttd.Core.*;
 
 public class Hud{
     public WidgetGroup group;

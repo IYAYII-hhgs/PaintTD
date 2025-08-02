@@ -1,10 +1,9 @@
 package io.blackdeluxecat.painttd.ui;
 
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
-import static io.blackdeluxecat.painttd.ui.Fonts.standard;
+import static io.blackdeluxecat.painttd.ui.Fonts.*;
 
 public class Styles{
     public static float buttonSize = 32f;

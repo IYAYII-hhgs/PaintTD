@@ -5,25 +5,34 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import lib.func.*;
 
-public class ActorUtils{
-    public static ActorUtils wrapper = new ActorUtils();
+public class ActorUtils<T extends Actor>{
+    public static ActorUtils<Actor> wrapper = new ActorUtils<>();
 
-    public Actor actor;
+    public T actor;
 
-    public ActorUtils(){}
+    protected ActorUtils(){}
 
-    public ActorUtils set(Actor actor){
+    public ActorUtils(T actor){
+        this.actor = actor;
+    }
+
+    public ActorUtils<T> set(T actor){
         this.actor = actor;
         return this;
     }
 
-    public ActorUtils update(Cons<Actor> updater){
+    public ActorUtils<T> update(Cons<T> updater){
         ActorUtils.updater(actor, updater);
         return this;
     }
 
-    public ActorUtils click(Cons<Actor> clicked){
+    public ActorUtils<T> click(Cons<T> clicked){
         ActorUtils.clicked(actor, clicked);
+        return this;
+    }
+
+    public ActorUtils<T> with(Cons<T> cons){
+        cons.get(actor);
         return this;
     }
 

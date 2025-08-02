@@ -2,6 +2,7 @@ package io.blackdeluxecat.painttd.ui;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import io.blackdeluxecat.painttd.game.content.*;
 import lib.ui.*;
 
 import static io.blackdeluxecat.painttd.ui.Styles.*;
@@ -12,10 +13,18 @@ public class PlacementMenu{
 
         Label label = new Label("调试栏", sLabel);
         table.add(label);
+        table.add(new ActorUtils<>(new Table()).with(t -> {
+            t.add(ActorUtils.wrapper
+                          .set(new TextButton("EXIT", sTextB))
+                          .click(b -> Gdx.app.exit())
+                          .actor);
 
-        table.add(ActorUtils.wrapper.
-                      set(new TextButton("EXIT", sTextB))
-                      .click(bb -> Gdx.app.exit())
-                      .actor).row();
+            t.add(ActorUtils.wrapper
+                          .set(new TextButton("测试添加敌人", sTextB))
+                          .click(b -> {
+                              EntityTypes.debug.create();
+                          })
+                          .actor);
+        }).actor).growX();
     }
 }

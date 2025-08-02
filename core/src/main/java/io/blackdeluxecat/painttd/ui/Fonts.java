@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.*;
 
-import static io.blackdeluxecat.painttd.Core.assets;
+import static io.blackdeluxecat.painttd.Core.*;
 
 public class Fonts{
     public static FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

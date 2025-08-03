@@ -20,6 +20,7 @@ public class BaseTurret extends BaseEntityType{
     @Override
     public Entity create(){
         Entity e = super.create();
+        Game.groups.add(e, "Building");
         Game.groups.add(e, "Turret");
         return e;
     }

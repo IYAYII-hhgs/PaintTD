@@ -1,7 +1,6 @@
 package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
-import com.artemis.utils.*;
 import com.artemis.utils.Sort;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.utils.*;
@@ -49,7 +48,7 @@ public class LayerInvocationStrategy extends InvocationStrategy{
     }
 
     public @Null Layer getLayer(BaseSystem system){
-        return IterateUtils.first(layers, l -> l.systems.contains(system));
+        return IterateUtils.first(layers, l -> l.systems.contains(system, true));
     }
 
     public float getZ(BaseSystem system){
@@ -70,7 +69,7 @@ public class LayerInvocationStrategy extends InvocationStrategy{
         public final String name;
         /**一旦修改, 必须排序LayerManager.*/
         protected float z;
-        public ObjectSet<BaseSystem> systems = new ObjectSet<>();
+        public Array<BaseSystem> systems = new Array<>();
 
         public Layer(String name, float z){
             this.name = name;
@@ -78,7 +77,9 @@ public class LayerInvocationStrategy extends InvocationStrategy{
         }
 
         public boolean add(BaseSystem system){
-            return systems.add(system);
+            if(systems.contains(system, true)) return false;
+            systems.add(system);
+            return true;
         }
 
         public void with(Cons<Layer> cons){

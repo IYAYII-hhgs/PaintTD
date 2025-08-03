@@ -1,7 +1,6 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
-import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.*;
 
@@ -17,7 +16,8 @@ public class PaintTowerDefence extends ApplicationAdapter{
     @Override
     public void create(){
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        Gdx.input.setInputProcessor(stage);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         Fonts.load();
         assets.finishLoading();

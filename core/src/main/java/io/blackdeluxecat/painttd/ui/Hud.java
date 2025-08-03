@@ -4,10 +4,14 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import io.blackdeluxecat.painttd.game.Game;
+import io.blackdeluxecat.painttd.lib.ui.*;
 
 import java.util.function.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
+import static io.blackdeluxecat.painttd.game.Game.world;
+import static io.blackdeluxecat.painttd.ui.Styles.sLabel;
 
 public class Hud{
     public WidgetGroup group;
@@ -23,14 +27,15 @@ public class Hud{
         stage.setDebugAll(true);
         fill(t -> {
             t.right().top();
-            t.add(new Label("Paint Tower Defence", new Label.LabelStyle(new BitmapFont(), Color.WHITE))).row();
-            t.add(new Label("1", new Label.LabelStyle(new BitmapFont(), Color.WHITE)){
+            t.add(new Label("Paint Tower Defence", sLabel)).row();
+            t.add(new Label("1", sLabel){
                 @Override
                 public void draw(Batch batch, float parentAlpha){
                     this.setText("FPS: " + Gdx.graphics.getFramesPerSecond() + ", RAM: " + (int)(Gdx.app.getJavaHeap() / 1000000f) + "MB");
                     super.draw(batch, parentAlpha);
                 }
-            });
+            }).row();
+            t.add(new ActorUtils<>(new Label("", sLabel)).update(l -> l.setText("G|Unit: " + Game.groups.getEntities("Unit").size())).actor);
         });
 
         fill(t -> {

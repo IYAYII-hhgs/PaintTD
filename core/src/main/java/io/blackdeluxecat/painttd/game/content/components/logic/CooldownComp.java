@@ -1,0 +1,24 @@
+package io.blackdeluxecat.painttd.game.content.components.logic;
+
+public class CooldownComp extends CopyableComponent{
+    public float cooldown;
+    public float currentCooldown;
+
+    public CooldownComp(float cooldown){
+        this.cooldown = cooldown;
+
+    }
+
+    @Override
+    public CooldownComp copy(CopyableComponent other){
+        CooldownComp c = (CooldownComp)other;
+        c.cooldown = cooldown;
+        c.currentCooldown = currentCooldown;
+        return c;
+    }
+
+    @Override
+    protected void reset(){
+        currentCooldown = 0;
+    }
+}

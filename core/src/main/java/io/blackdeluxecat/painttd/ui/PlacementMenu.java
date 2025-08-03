@@ -3,7 +3,7 @@ package io.blackdeluxecat.painttd.ui;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.blackdeluxecat.painttd.game.content.*;
-import lib.ui.*;
+import io.blackdeluxecat.painttd.lib.ui.*;
 
 import static io.blackdeluxecat.painttd.ui.Styles.*;
 

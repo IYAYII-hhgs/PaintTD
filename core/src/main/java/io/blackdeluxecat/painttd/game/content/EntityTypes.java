@@ -1,9 +1,9 @@
 package io.blackdeluxecat.painttd.game.content;
 
-import io.blackdeluxecat.painttd.game.content.components.*;
+import io.blackdeluxecat.painttd.game.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.content.entitytypes.*;
-import io.blackdeluxecat.painttd.game.content.entitytypes.unit.*;
 import io.blackdeluxecat.painttd.game.content.entitytypes.building.*;
+import io.blackdeluxecat.painttd.game.content.entitytypes.unit.*;
 
 public class EntityTypes{
     public static BaseEntityType
@@ -13,7 +13,7 @@ public class EntityTypes{
         debugTurret;
 
     public static void create(){
-        debug = new DebugEnemy();
+        debug = new Enemy();
         debugTurret = new BaseTurret("debug"){
             {
                 def.add(new DamageComp(1));

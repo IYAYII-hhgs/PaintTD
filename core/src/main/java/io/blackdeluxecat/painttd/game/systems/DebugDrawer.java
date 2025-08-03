@@ -4,7 +4,7 @@ import com.artemis.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
-import io.blackdeluxecat.painttd.game.content.components.*;
+import io.blackdeluxecat.painttd.game.content.components.logic.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 

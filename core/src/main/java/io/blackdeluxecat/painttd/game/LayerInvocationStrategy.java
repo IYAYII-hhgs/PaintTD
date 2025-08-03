@@ -5,8 +5,8 @@ import com.artemis.utils.*;
 import com.artemis.utils.Sort;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.utils.*;
-import lib.func.*;
-import lib.struct.*;
+import io.blackdeluxecat.painttd.lib.func.*;
+import io.blackdeluxecat.painttd.lib.struct.*;
 
 /**
  * 使用层管理系统优先级的系统执行策略.

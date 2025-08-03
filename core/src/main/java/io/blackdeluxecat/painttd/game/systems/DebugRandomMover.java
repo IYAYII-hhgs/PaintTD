@@ -4,7 +4,7 @@ import com.artemis.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.*;
-import io.blackdeluxecat.painttd.game.content.components.*;
+import io.blackdeluxecat.painttd.game.content.components.logic.*;
 
 public class DebugRandomMover extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;

@@ -3,10 +3,11 @@ package io.blackdeluxecat.painttd.game.content.entitytypes;
 import com.artemis.*;
 import com.artemis.utils.*;
 import io.blackdeluxecat.painttd.game.*;
-import io.blackdeluxecat.painttd.game.content.components.*;
+import io.blackdeluxecat.painttd.game.content.components.logic.*;
 
 public class BaseEntityType{
     public String name;
+    /**默认组件包。默认组件使用构造函数创建，不需要池化管理。由{@link #create()}创建的实体将拷贝一份受到池化管理的组件包。*/
     public Bag<Component> def = new Bag<>();
 
     /**使用匿名构造函数以编辑默认组件包*/

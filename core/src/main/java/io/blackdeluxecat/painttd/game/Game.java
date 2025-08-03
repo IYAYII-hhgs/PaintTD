@@ -2,11 +2,10 @@ package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
 import com.artemis.managers.*;
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.game.content.*;
 import io.blackdeluxecat.painttd.game.systems.*;
+import io.blackdeluxecat.painttd.lib.struct.*;
 
 public class Game{
     public static World world;
@@ -36,10 +35,7 @@ public class Game{
         createSystems();
 
         //systems
-        lm.layers.sort((l1, l2) -> Float.compare(l1.z, l2.z));
-        lm.layers.forEach(layer -> {
-            layer.systems.forEach(builder::with);
-        });
+        lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
         builder.with(groups);
 
         if(world != null) world.dispose();  //以防有人替换world
@@ -51,7 +47,7 @@ public class Game{
 
     public static final float LOGIC_LAYER = 0, RENDER_LAYER = 10000;
 
-    public static LayerInvocationStrategy.Layer
-        render = lm.registerLayer("render", RENDER_LAYER),
-        logic = lm.registerLayer("logic", LOGIC_LAYER);
+    public static LayerManager.Layer<BaseSystem>
+        render = lm.lm.registerLayer("render", RENDER_LAYER),
+        logic = lm.lm.registerLayer("logic", LOGIC_LAYER);
 }

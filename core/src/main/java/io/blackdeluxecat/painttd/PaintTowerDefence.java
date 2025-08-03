@@ -1,11 +1,11 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
+import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
-import static io.blackdeluxecat.painttd.Vars.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 /**
@@ -26,6 +26,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
         hud.create();
         stage.addActor(hud.group);
 
+        Input.create();
         Game.create();
     }
 

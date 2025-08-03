@@ -1,17 +1,16 @@
 package io.blackdeluxecat.painttd.ui;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.lib.ui.*;
 
 import java.util.function.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
-import static io.blackdeluxecat.painttd.game.Game.world;
-import static io.blackdeluxecat.painttd.ui.Styles.sLabel;
+import static io.blackdeluxecat.painttd.ui.Styles.*;
 
 public class Hud{
     public WidgetGroup group;

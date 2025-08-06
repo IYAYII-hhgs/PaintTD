@@ -43,10 +43,16 @@ public class PlacementMenu{
             t.add(ActorUtils.wrapper
                           .set(new TextButton("敌人", sTextB))
                           .click(b -> {
-                              select = EntityTypes.debug;
-                              //EntityTypes.debug.create();
+                              select = EntityTypes.eraser;
                           })
                           .actor);
+
+            t.add(ActorUtils.wrapper
+                      .set(new TextButton("基础塔", sTextB))
+                      .click(b -> {
+                          select = EntityTypes.pencil;
+                      })
+                      .actor);
         }).actor).growX();
     }
 }

@@ -1,19 +1,18 @@
-package io.blackdeluxecat.painttd.game.content.entitytypes.building;
+package io.blackdeluxecat.painttd.game.content.entitytypes.unit;
 
 import com.artemis.*;
 import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.content.entitytypes.*;
 
-public class BaseTurret extends BaseEntityType{
-    public BaseTurret(String name){
+public class BaseUnit extends BaseEntityType{
+    public BaseUnit(String name){
         super(name);
     }
 
     @Override
     public Entity create(){
         Entity e = super.create();
-        Game.groups.add(e, "Building");
-        Game.groups.add(e, "BaseTurret");
+        Game.groups.add(e, "BaseUnit");
         return e;
     }
 }

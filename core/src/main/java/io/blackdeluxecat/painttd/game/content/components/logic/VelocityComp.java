@@ -1,5 +1,7 @@
 package io.blackdeluxecat.painttd.game.content.components.logic;
 
+import com.badlogic.gdx.math.*;
+
 public class VelocityComp extends CopyableComponent{
     public float x, y;
     public VelocityComp(){}
@@ -7,6 +9,15 @@ public class VelocityComp extends CopyableComponent{
     public VelocityComp(float x, float y){
         this.x = x;
         this.y = y;
+    }
+
+    public Vector2 get(Vector2 out){
+        return out.set(x, y);
+    }
+
+    public void set(Vector2 in){
+        x = in.x;
+        y = in.y;
     }
 
     @Override

@@ -8,16 +8,33 @@ import io.blackdeluxecat.painttd.game.content.entitytypes.unit.*;
 public class EntityTypes{
     public static BaseEntityType
         //enemies
-        debug,
+        eraser,
         //turrets
-        debugTurret;
+        pencil;
 
     public static void create(){
-        debug = new Enemy();
-        debugTurret = new BaseTurret("debug"){
+        eraser = new BaseUnit("eraser"){
             {
+                def.add(new PositionComp());
+                def.add(new HealthComp(1));
+                def.add(new ArmorComp(0));
+                def.add(new SizeComp(1));
+                def.add(new MoveSpeedComp(1));
+                def.add(new VelocityComp());
+            }
+        };
+
+        pencil = new BaseTurret("pencil"){
+            {
+                def.add(new PositionComp());
+                def.add(new HealthComp(1));
+                def.add(new SizeComp(1));
+                def.add(new EnergyComp(2));
+                def.add(new EnergyRegenComp(2));
+                def.add(new RangeComp(8));
+                def.add(new CooldownComp(1));
                 def.add(new DamageComp(1));
-                def.add(new RangeComp(5));
+                def.add(new TargetPriorityComp(TargetPriorityComp.CLOSEST, TargetPriorityComp.SORT_DESCENDING));
             }
         };
     }

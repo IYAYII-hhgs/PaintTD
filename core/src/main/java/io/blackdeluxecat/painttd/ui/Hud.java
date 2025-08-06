@@ -34,7 +34,7 @@ public class Hud{
                     super.draw(batch, parentAlpha);
                 }
             }).row();
-            t.add(new ActorUtils<>(new Label("", sLabel)).update(l -> l.setText("G|Unit: " + Game.groups.getEntities("Unit").size())).actor);
+            t.add(new ActorUtils<>(new Label("", sLabel)).update(l -> l.setText("G|BaseUnit: " + Game.groups.getEntities("BaseUnit").size())).actor);
         });
 
         fill(t -> {

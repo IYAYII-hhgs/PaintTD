@@ -1,10 +1,9 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
-import io.blackdeluxecat.painttd.lib.struct.*;
+import io.blackdeluxecat.painttd.struct.*;
 
-import static io.blackdeluxecat.painttd.Core.hud;
-import static io.blackdeluxecat.painttd.Core.inputMultiplexer;
+import static io.blackdeluxecat.painttd.Core.*;
 
 public class Input{
     public static LayerManager<InputProcessor> inputProcessors = new LayerManager<>();

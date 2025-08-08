@@ -1,0 +1,30 @@
+package io.blackdeluxecat.painttd.systems;
+
+import com.artemis.*;
+import com.artemis.systems.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.logic.movement.*;
+
+public class MovementVelocity extends IteratingSystem{
+    public ComponentMapper<PositionComp> pm;
+    public ComponentMapper<VelocityComp> vm;
+
+    public MovementVelocity(){
+        super(Aspect.all(PositionComp.class, VelocityComp.class));
+    }
+
+    @Override
+    protected void setWorld(World world){
+        super.setWorld(world);
+        pm = world.getMapper(PositionComp.class);
+        vm = world.getMapper(VelocityComp.class);
+    }
+
+    @Override
+    protected void process(int entityId){
+        PositionComp p = pm.get(entityId);
+        VelocityComp v = vm.get(entityId);
+        p.x += v.x;
+        p.y += v.y;
+    }
+}

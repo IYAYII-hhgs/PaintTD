@@ -2,7 +2,7 @@ package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
 import com.artemis.utils.*;
-import io.blackdeluxecat.painttd.lib.struct.*;
+import io.blackdeluxecat.painttd.struct.*;
 
 /**
  * 使用层管理系统优先级的系统执行策略.

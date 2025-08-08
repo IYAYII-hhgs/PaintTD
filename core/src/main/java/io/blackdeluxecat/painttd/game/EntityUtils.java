@@ -1,9 +1,9 @@
 package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
-import io.blackdeluxecat.painttd.game.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
 
-import static io.blackdeluxecat.painttd.game.Game.world;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
 /**仅用于新建实体时便捷地设置各种属性，非性能最优，避免在System中使用！*/
 public class EntityUtils{

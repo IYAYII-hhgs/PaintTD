@@ -3,18 +3,20 @@ package io.blackdeluxecat.painttd.game;
 import com.artemis.*;
 import com.artemis.managers.*;
 import com.badlogic.gdx.utils.*;
-import io.blackdeluxecat.painttd.game.content.*;
-import io.blackdeluxecat.painttd.game.systems.*;
-import io.blackdeluxecat.painttd.lib.struct.*;
+import io.blackdeluxecat.painttd.content.*;
+import io.blackdeluxecat.painttd.struct.*;
+import io.blackdeluxecat.painttd.systems.*;
 
 public class Game{
+    public static float lfps = 60;
     public static World world;
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups = new GroupManager();
 
     public static void createSystems(){
         logic.with(l -> {
-            l.add(new DebugRandomMover());
+            l.add(new EnergyRegenerator());
+            l.add(new MovementVelocity());
         });
 
         render.with(l -> {

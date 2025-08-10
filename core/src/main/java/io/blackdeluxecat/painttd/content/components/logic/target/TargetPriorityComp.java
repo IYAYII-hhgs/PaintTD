@@ -1,6 +1,6 @@
 package io.blackdeluxecat.painttd.content.components.logic.target;
 
-import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.*;
 
 public class TargetPriorityComp extends CopyableComponent{
     public static int CLOSEST = 0, HEALTH = 1, HEALTH_REGEN = 2, ARMOR = 3;

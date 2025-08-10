@@ -13,6 +13,8 @@ public class Game{
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups = new GroupManager();
 
+    public static QuadTree entities = new QuadTree();
+
     public static void createSystems(){
         logic.with(l -> {
             l.add(new EnergyRegenerator());
@@ -42,9 +44,10 @@ public class Game{
 
         if(world != null) world.dispose();  //以防有人替换world
         world = new World(builder.build());
+        entities.create(world, 0, 0, 200, 150);
 
         //为单位创建默认组件。尽管组件并不指向world，所以是否有必要在world每次重建时创建一遍？是有必要的，这里的一切组件都在world.cm中进行池化，不能让任何组件脱离池化管理。等下，因为def中的组件来自new构造，因此没有进入池化管理，copy到world中的过程也只是重载的自定义属性拷贝，不涉及池化管理。
-        EntityTypes.create();
+        Entities.create();
     }
 
     public static final float LOGIC_LAYER = 0, RENDER_LAYER = 10000;

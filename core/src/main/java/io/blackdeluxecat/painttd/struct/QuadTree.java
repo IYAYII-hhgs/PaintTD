@@ -30,7 +30,7 @@ public class QuadTree{
     }
 
     public QuadTree(){
-        this(60, 8);
+        this(16, 16);
     }
 
     public void create(World world, float x, float y, float width, float height){

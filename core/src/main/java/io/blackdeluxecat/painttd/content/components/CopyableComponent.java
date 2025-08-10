@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.content.components.logic;
+package io.blackdeluxecat.painttd.content.components;
 
 import com.artemis.*;
 

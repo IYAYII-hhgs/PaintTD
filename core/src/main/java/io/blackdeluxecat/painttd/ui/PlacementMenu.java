@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
-import io.blackdeluxecat.painttd.content.entitytypes.*;
 
 import static io.blackdeluxecat.painttd.ui.Styles.*;
 
@@ -43,14 +42,14 @@ public class PlacementMenu{
             t.add(ActorUtils.wrapper
                           .set(new TextButton("敌人", sTextB))
                           .click(b -> {
-                              select = EntityTypes.eraser;
+                              select = Entities.eraser;
                           })
                           .actor);
 
             t.add(ActorUtils.wrapper
                       .set(new TextButton("基础塔", sTextB))
                       .click(b -> {
-                          select = EntityTypes.pencil;
+                          select = Entities.pencil;
                       })
                       .actor);
         }).actor).growX();

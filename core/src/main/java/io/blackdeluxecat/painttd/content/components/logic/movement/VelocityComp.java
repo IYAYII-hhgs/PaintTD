@@ -1,7 +1,7 @@
 package io.blackdeluxecat.painttd.content.components.logic.movement;
 
 import com.badlogic.gdx.math.*;
-import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.*;
 
 public class VelocityComp extends CopyableComponent{
     public float x, y;

@@ -1,6 +1,8 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
 
+import io.blackdeluxecat.painttd.content.components.*;
+
 /**能量系统的储量组件。*/
 public class EnergyComp extends CopyableComponent{
     public float energy, maxEnergy;

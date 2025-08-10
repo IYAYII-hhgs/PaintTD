@@ -1,6 +1,6 @@
 package io.blackdeluxecat.painttd.content.components.logic.movement;
 
-import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.*;
 
 public class MoveSpeedComp extends CopyableComponent{
     public float baseSpeed, speed;

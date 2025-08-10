@@ -3,11 +3,8 @@ package io.blackdeluxecat.painttd.content;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.movement.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
-import io.blackdeluxecat.painttd.content.entitytypes.*;
-import io.blackdeluxecat.painttd.content.entitytypes.building.*;
-import io.blackdeluxecat.painttd.content.entitytypes.unit.*;
 
-public class EntityTypes{
+public class Entities{
     public static BaseEntityType
         //enemies
         eraser,
@@ -15,7 +12,7 @@ public class EntityTypes{
         pencil;
 
     public static void create(){
-        eraser = new BaseUnit("eraser"){
+        eraser = new BaseEntityType("eraser"){
             {
                 def.add(new PositionComp());
                 def.add(new HealthComp(1));
@@ -26,7 +23,7 @@ public class EntityTypes{
             }
         };
 
-        pencil = new BaseTurret("pencil"){
+        pencil = new BaseEntityType("pencil"){
             {
                 def.add(new PositionComp());
                 def.add(new HealthComp(1));

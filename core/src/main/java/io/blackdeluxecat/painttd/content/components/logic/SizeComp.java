@@ -1,5 +1,7 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
+import io.blackdeluxecat.painttd.content.components.*;
+
 public class SizeComp extends CopyableComponent{
     public float width = 1;
     public float height = 1;

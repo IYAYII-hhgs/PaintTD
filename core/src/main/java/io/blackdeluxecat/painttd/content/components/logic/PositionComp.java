@@ -1,5 +1,7 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
+import io.blackdeluxecat.painttd.content.components.*;
+
 public class PositionComp extends CopyableComponent{
     public float x, y;
 

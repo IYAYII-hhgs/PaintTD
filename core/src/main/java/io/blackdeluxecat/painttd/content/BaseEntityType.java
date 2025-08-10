@@ -1,8 +1,8 @@
-package io.blackdeluxecat.painttd.content.entitytypes;
+package io.blackdeluxecat.painttd.content;
 
 import com.artemis.*;
 import com.artemis.utils.*;
-import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.*;
 import io.blackdeluxecat.painttd.game.*;
 
 public class BaseEntityType{

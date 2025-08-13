@@ -11,18 +11,18 @@ import io.blackdeluxecat.painttd.struct.func.*;
  * 点坐标为实体id映射的{@link io.blackdeluxecat.painttd.content.components.logic.PositionComp}
  *
  * @author BlackDeluxeCat
- * */
+ */
 public class QuadTree{
+    protected static Rectangle re = new Rectangle(), r1 = new Rectangle();
+    protected static Vector2 v1 = new Vector2();
     public ComponentMapper<PositionComp> pm;
+    public ComponentMapper<HitboxComp> hm;
     public final int maxValues;
     public final int maxDepth;
 
     public QuadTreeNode root;
 
-    //public IntMap<QuadTreeNode> nodeMap = new IntMap<>();
-
     protected IntArray innerResults = new IntArray();
-    protected Vector2 v1 = new Vector2();
 
     public QuadTree(int maxValue, int maxDepth){
         this.maxValues = maxValue;
@@ -34,12 +34,21 @@ public class QuadTree{
     }
 
     public void create(World world, float x, float y, float width, float height){
+        clear();
         this.pm = world.getMapper(PositionComp.class);
-        root = QuadTreeNode.pool.obtain();
+        this.hm = world.getMapper(HitboxComp.class);
         root.set(this, x, y, width, height, 0);
     }
 
-    /**查询矩形*/
+    public void add(int entityId){
+        hitbox(entityId);
+        re.getCenter(v1);
+        root.add(entityId, v1.x, v1.y);
+    }
+
+    /**
+     * 查询矩形
+     */
     //TODO 邻居节点查询优化
     public void queryRect(float x, float y, float width, float height, IntArray result, @Null IntBoolf filter){
         root.query(x, y, width, height, result);
@@ -61,8 +70,15 @@ public class QuadTree{
     public void eachCircle(float x, float y, float radius, @Null IntBoolf filter, Intc cons){
         eachRect(x - radius, y - radius, radius * 2, radius * 2, i -> {
             PositionComp pos = pm.get(i);
-            return (pos != null && v1.set(pos.x , pos.y).sub(x, y).len2() < radius * radius) && (filter == null || filter.get(i));
+            return (pos != null && v1.set(pos.x, pos.y).sub(x, y).len2() < radius * radius) && (filter == null || filter.get(i));
         }, cons);
+    }
+
+    public void clear(){
+        if(root != null){
+            QuadTreeNode.pool.free(root);
+        }
+        root = QuadTreeNode.pool.obtain();
     }
 
     public static class QuadTreeNode implements Pool.Poolable{
@@ -72,13 +88,14 @@ public class QuadTree{
             }
         };
 
-        protected static QuadTreeNode obtainChild(QuadTree tree, float x, float y, float width, float height, int depth) {
+        protected static QuadTreeNode obtainChild(QuadTree tree, float x, float y, float width, float height, int depth){
             QuadTreeNode child = pool.obtain();
             child.set(tree, x, y, width, height, depth);
             return child;
         }
 
         public QuadTree tree;
+        //left bottom coordinates
         public float width, height, x, y;
         public int depth;
         protected int count;
@@ -97,7 +114,9 @@ public class QuadTree{
             this.values = new int[tree.maxValues];
         }
 
-        /**查询矩形*/
+        /**
+         * 查询矩形
+         */
         public void query(float x, float y, float w, float h, IntArray result){
             if(x < this.x || x + w > this.x + this.width || y < this.y || y + h > this.y + this.height) return;
 
@@ -110,46 +129,48 @@ public class QuadTree{
 
             if(count > 0){
                 for(int i = 0; i < count; i++){
-                    PositionComp pos = tree.pm.get(values[i]);
-                    if(pos != null && pos.x >= x && pos.x <= x + w && pos.y >= y && pos.y <= y + h){
+                    if(tree.hitbox(values[i]).overlaps(r1.set(x, y, w, h))){
                         result.add(values[i]);
                     }
                 }
             }
         }
 
-        /**添加一个整数值, 无唯一性检查*/
-        public void add(int value, float valueX, float valueY){
+        /**
+         * 添加一个实体
+         */
+        public void add(int entity, float valueX, float valueY){
             if(count == -1){
-                addToChild(value, valueX, valueY);
+                addToChild(entity, valueX, valueY);
             }else if(count == tree.maxValues){
                 if(depth < tree.maxDepth){
                     split();
-                    addToChild(value, valueX, valueY);
+                    addToChild(entity, valueX, valueY);
                 }else{
                     throw new RuntimeException("QuadTree is full");
                 }
-            }else
-                values[count++] = value;
+            }else if(tree.hitbox(entity).overlaps(r1.set(x, y, width, height))){
+                values[count++] = entity;
+            }
         }
 
-        protected void split() {
+        protected void split(){
             int[] values = this.values;
-            for (int i = 0; i < tree.maxValues; i++) addToChild(values[i], values[i + 1], values[i + 2]);
+            for(int i = 0; i < tree.maxValues; i++) addToChild(values[i], values[i + 1], values[i + 2]);
             // values isn't nulled because the trees are pooled.
             count = -1;
         }
 
-        private void addToChild(int value, float valueX, float valueY) {
+        private void addToChild(int value, float valueX, float valueY){
             QuadTreeNode child;
             float halfWidth = width / 2, halfHeight = height / 2;
-            if (valueX < x + halfWidth) {
-                if (valueY < y + halfHeight)
+            if(valueX < x + halfWidth){
+                if(valueY < y + halfHeight)
                     child = sw != null ? sw : (sw = obtainChild(tree, x, y, halfWidth, halfHeight, depth + 1));
                 else
                     child = nw != null ? nw : (nw = obtainChild(tree, x, y + halfHeight, halfWidth, halfHeight, depth + 1));
-            } else {
-                if (valueY < y + halfHeight)
+            }else{
+                if(valueY < y + halfHeight)
                     child = se != null ? se : (se = obtainChild(tree, x + halfWidth, y, halfWidth, halfHeight, depth + 1));
                 else
                     child = ne != null ? ne : (ne = obtainChild(tree, x + halfWidth, y + halfHeight, halfWidth, halfHeight, depth + 1));
@@ -159,20 +180,20 @@ public class QuadTree{
 
         @Override
         public void reset(){
-            if (count == -1) {
-                if (nw != null) {
+            if(count == -1){
+                if(nw != null){
                     pool.free(nw);
                     nw = null;
                 }
-                if (sw != null) {
+                if(sw != null){
                     pool.free(sw);
                     sw = null;
                 }
-                if (ne != null) {
+                if(ne != null){
                     pool.free(ne);
                     ne = null;
                 }
-                if (se != null) {
+                if(se != null){
                     pool.free(se);
                     se = null;
                 }
@@ -181,5 +202,9 @@ public class QuadTree{
             values = null;
             tree = null;
         }
+    }
+
+    public Rectangle hitbox(int entity){
+        return re.setSize(hm.get(entity).width, hm.get(entity).height).setCenter(pm.get(entity).x, pm.get(entity).y);
     }
 }

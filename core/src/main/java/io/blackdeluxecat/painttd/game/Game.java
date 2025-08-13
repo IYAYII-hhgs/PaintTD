@@ -4,16 +4,48 @@ import com.artemis.*;
 import com.artemis.managers.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.*;
+import io.blackdeluxecat.painttd.map.Map;
 import io.blackdeluxecat.painttd.struct.*;
 import io.blackdeluxecat.painttd.systems.*;
 
 public class Game{
     public static float lfps = 60;
     public static World world;
+    public static Map map = new Map();
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups = new GroupManager();
 
+    /**每帧开始时重建树*/
     public static QuadTree entities = new QuadTree();
+
+    public static void create(){
+        createSystems();
+        loadMap();
+    }
+
+    /**重建整个世界, 加载地图.*/
+    public static void loadMap(){
+        WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
+
+        builder.register(lm);
+
+        //systems
+        lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
+        builder.with(groups);
+
+        if(world != null) world.dispose();
+        world = new World(builder.build());
+
+        //为单位创建默认组件。def中的组件来自new构造，没有进入池化管理，copy到world中的过程也只是属性拷贝，不涉及池化管理。
+        Entities.create();
+        map.create(60, 40);
+    }
+
+    public static final float LOGIC_LAYER = 0, RENDER_LAYER = 10000;
+
+    public static LayerManager.Layer<BaseSystem>
+        render = lm.lm.registerLayer("render", RENDER_LAYER),
+        logic = lm.lm.registerLayer("logic", LOGIC_LAYER);
 
     public static void createSystems(){
         logic.with(l -> {
@@ -28,31 +60,9 @@ public class Game{
                     ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
                 }
             });
+            l.add(new MapGridDraw());
             l.add(new DebugDrawer());
         });
     }
 
-    public static void create(){
-        WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-
-        builder.register(lm);
-        createSystems();
-
-        //systems
-        lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
-        builder.with(groups);
-
-        if(world != null) world.dispose();  //以防有人替换world
-        world = new World(builder.build());
-        entities.create(world, 0, 0, 200, 150);
-
-        //为单位创建默认组件。尽管组件并不指向world，所以是否有必要在world每次重建时创建一遍？是有必要的，这里的一切组件都在world.cm中进行池化，不能让任何组件脱离池化管理。等下，因为def中的组件来自new构造，因此没有进入池化管理，copy到world中的过程也只是重载的自定义属性拷贝，不涉及池化管理。
-        Entities.create();
-    }
-
-    public static final float LOGIC_LAYER = 0, RENDER_LAYER = 10000;
-
-    public static LayerManager.Layer<BaseSystem>
-        render = lm.lm.registerLayer("render", RENDER_LAYER),
-        logic = lm.lm.registerLayer("logic", LOGIC_LAYER);
 }

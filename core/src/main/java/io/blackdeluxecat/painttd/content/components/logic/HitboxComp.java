@@ -2,30 +2,30 @@ package io.blackdeluxecat.painttd.content.components.logic;
 
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class SizeComp extends CopyableComponent{
+public class HitboxComp extends CopyableComponent{
     public float width = 1;
     public float height = 1;
     public float scale = 1;
 
-    public SizeComp(){}
+    public HitboxComp(){}
 
-    public SizeComp(float width, float height){
+    public HitboxComp(float width, float height){
         this.width = width;
         this.height = height;
     }
 
-    public SizeComp(float size){
+    public HitboxComp(float size){
         this.width = size;
         this.height = size;
     }
 
     @Override
-    public SizeComp copy(CopyableComponent other){
-        SizeComp sizeComp = (SizeComp)other;
-        sizeComp.width = width;
-        sizeComp.height = height;
-        sizeComp.scale = scale;
-        return sizeComp;
+    public HitboxComp copy(CopyableComponent other){
+        HitboxComp hitboxComp = (HitboxComp)other;
+        hitboxComp.width = width;
+        hitboxComp.height = height;
+        hitboxComp.scale = scale;
+        return hitboxComp;
     }
 
     @Override

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.viewport.*;
-import io.blackdeluxecat.painttd.ui.*;
 
 public class Core{
     public static AssetManager assets = new AssetManager();
@@ -18,5 +17,4 @@ public class Core{
     public static Stage stage = new Stage(new ScalingViewport(Scaling.fit, 1280, 960));
     /**集成的输入处理器。任何自定义处理器自行持有、在此插入一个InputProcessor。*/
     public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
-    public static Hud hud = new Hud();
 }

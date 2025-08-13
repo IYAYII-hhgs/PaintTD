@@ -1,21 +1,49 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.struct.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
+import static io.blackdeluxecat.painttd.Vars.worldViewport;
 
 public class Input{
     public static LayerManager<InputProcessor> inputProcessors = new LayerManager<>();
 
-    //layers
+    //layers, z层级低的优先级高
     public static LayerManager.Layer<InputProcessor>
         stage = inputProcessors.registerLayer("stage", 0),
-        placement = inputProcessors.registerLayer("placement", 1);
+        placement = inputProcessors.registerLayer("placement", 1),
+        camera = inputProcessors.registerLayer("camera", 2);
+
+    public static InputAdapter placementInput = new InputAdapter(){
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button){
+            if(Vars.hud.select != null){
+                var e = Vars.hud.select.create();
+                var pos = e.getComponent(PositionComp.class);
+                if(pos != null){
+                    var v = Vars.v1;
+                    worldViewport.unproject(v.set(screenX, screenY));
+                    if(e.getComponent(MarkerComp.PlaceSnapGrid.class) != null){
+                        v.x = (int)v.x;
+                        v.y = (int)v.y;
+                    }
+                    pos.x = v.x;
+                    pos.y = v.y;
+                }
+                Vars.hud.select = null;
+                return true;
+            }
+            return false;
+        }
+    };
 
     public static void create(){
         stage.add(Core.stage);
-        placement.add(hud.placement.inputPlacement);
+        placement.add(placementInput);
+
         sort();
     }
 

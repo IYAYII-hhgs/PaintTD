@@ -14,5 +14,6 @@ public class TargetFind extends IteratingSystem{
     protected void process(int entityId){
         TargetCurrentComp current = world.getMapper(TargetCurrentComp.class).get(entityId);
         TargetPriorityComp priority = world.getMapper(TargetPriorityComp.class).get(entityId);
+
     }
 }

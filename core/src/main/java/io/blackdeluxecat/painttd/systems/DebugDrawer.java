@@ -26,7 +26,7 @@ public class DebugDrawer extends IteratingSystem{
         PositionComp pos = pm.get(entityId);
         shaper.begin(ShapeRenderer.ShapeType.Line);
         shaper.setColor(Color.WHITE);
-        shaper.rect(pos.x, pos.y, 16, 16);
+        shaper.rect(pos.x, pos.y, 1, 1);
         shaper.end();
     }
 }

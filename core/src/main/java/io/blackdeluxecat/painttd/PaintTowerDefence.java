@@ -1,7 +1,6 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
-import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.*;
 
@@ -23,8 +22,8 @@ public class PaintTowerDefence extends ApplicationAdapter{
         assets.finishLoading();
         Styles.load();
 
-        hud.create();
-        stage.addActor(hud.group);
+        Vars.hud.create();
+        stage.addActor(Vars.hud.group);
 
         Input.create();
         Game.create();
@@ -32,8 +31,12 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void render(){
-        stage.act();
+        Vars.worldViewport.setWorldSize(map.width, map.height);
+        Vars.worldViewport.apply(true);
+        shaper.setProjectionMatrix(Vars.worldViewport.getCamera().combined);
         world.process();
+
+        stage.act();
         stage.draw();
     }
 
@@ -48,6 +51,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
     public void resize(int width, int height){
         super.resize(width, height);
         stage.getViewport().update(width, height, true);
+        Vars.worldViewport.update(width, height, true);
     }
 
     @Override

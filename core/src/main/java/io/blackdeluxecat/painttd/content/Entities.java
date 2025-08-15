@@ -18,7 +18,6 @@ public class Entities{
                 groups.add("building");
                 def.add(new MarkerComp.PlaceSnapGrid());
                 def.add(new PositionComp());
-                def.add(new TargetPriorityComp(TargetPriorityComp.CLOSEST, TargetPriorityComp.SORT_DESCENDING));
                 def.add(new HealthComp(1));
                 def.add(new HitboxComp(1));
             }
@@ -28,9 +27,12 @@ public class Entities{
             {
                 def.add(new EnergyComp(2));
                 def.add(new EnergyRegenComp(2));
+                def.add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
+                def.add(new TargetComp());
                 def.add(new RangeComp(8));
                 def.add(new CooldownComp(1));
                 def.add(new DamageComp(1));
+                def.add(new MarkerComp.UseQuadTree());
             }
         };
     }

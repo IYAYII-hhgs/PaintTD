@@ -15,7 +15,7 @@ public class EnergyRegenComp extends CopyableComponent{
     public EnergyRegenComp copy(CopyableComponent other){
         EnergyRegenComp energyRegenComp = (EnergyRegenComp)other;
         energyRegenComp.regenRate = regenRate;
-        return energyRegenComp;
+        return this;
     }
 
     @Override

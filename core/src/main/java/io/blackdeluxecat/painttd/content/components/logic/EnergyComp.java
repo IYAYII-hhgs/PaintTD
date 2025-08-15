@@ -17,9 +17,9 @@ public class EnergyComp extends CopyableComponent{
     @Override
     public EnergyComp copy(CopyableComponent other){
         EnergyComp energyComp = (EnergyComp)other;
-        energyComp.energy = energy;
-        energyComp.maxEnergy = maxEnergy;
-        return energyComp;
+        energy = energyComp.energy;
+        maxEnergy = energyComp.maxEnergy;
+        return this;
     }
 
     @Override

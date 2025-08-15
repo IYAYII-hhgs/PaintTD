@@ -18,8 +18,8 @@ public class RangeComp extends CopyableComponent{
 
     @Override
     public RangeComp copy(CopyableComponent other){
-        RangeComp rangeComp = (RangeComp) other;
-        rangeComp.range = range;
-        return rangeComp;
+        RangeComp rangeComp = (RangeComp)other;
+        range = rangeComp.range;
+        return this;
     }
 }

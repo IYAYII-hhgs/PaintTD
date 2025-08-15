@@ -18,7 +18,7 @@ public class CooldownComp extends CopyableComponent{
         CooldownComp c = (CooldownComp)other;
         c.cooldown = cooldown;
         c.currentCooldown = currentCooldown;
-        return c;
+        return this;
     }
 
     @Override

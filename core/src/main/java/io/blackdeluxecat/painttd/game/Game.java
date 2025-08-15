@@ -38,7 +38,7 @@ public class Game{
 
         //为单位创建默认组件。def中的组件来自new构造，没有进入池化管理，copy到world中的过程也只是属性拷贝，不涉及池化管理。
         Entities.create();
-        map.create(60, 40);
+        map.create(30, 20);
     }
 
     public static final float LOGIC_LAYER = 0, RENDER_LAYER = 10000;
@@ -49,6 +49,8 @@ public class Game{
 
     public static void createSystems(){
         logic.with(l -> {
+            l.add(new RebuildQuadTree());
+            l.add(new TargetFind());
             l.add(new EnergyRegenerator());
             l.add(new MovementVelocity());
         });
@@ -61,7 +63,8 @@ public class Game{
                 }
             });
             l.add(new MapGridDraw());
-            l.add(new DebugDrawer());
+            l.add(new DebugDraw());
+            l.add(new TargetDraw());
         });
     }
 

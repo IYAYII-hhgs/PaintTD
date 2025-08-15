@@ -15,7 +15,7 @@ public class LevelComp extends CopyableComponent{
     public LevelComp copy(CopyableComponent other){
         LevelComp levelComp = (LevelComp)other;
         levelComp.level = level;
-        return levelComp;
+        return this;
     }
 
     @Override

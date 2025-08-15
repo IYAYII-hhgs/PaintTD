@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.struct;
+package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
 import com.badlogic.gdx.math.*;
@@ -7,14 +7,13 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.struct.func.*;
 
 /**
- * TODO即时删除, 储存实体id的四叉树.
  * 点坐标为实体id映射的{@link io.blackdeluxecat.painttd.content.components.logic.PositionComp}
  *
  * @author BlackDeluxeCat
  */
 public class QuadTree{
     protected static Rectangle re = new Rectangle(), r1 = new Rectangle();
-    protected static Vector2 v1 = new Vector2();
+    protected static Vector2 v = new Vector2();
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<HitboxComp> hm;
     public final int maxValues;
@@ -41,15 +40,13 @@ public class QuadTree{
     }
 
     public void add(int entityId){
-        hitbox(entityId);
-        re.getCenter(v1);
-        root.add(entityId, v1.x, v1.y);
+        pos(entityId);
+        root.add(entityId, v.x, v.y);
     }
 
     /**
      * 查询矩形
      */
-    //TODO 邻居节点查询优化
     public void queryRect(float x, float y, float width, float height, IntArray result, @Null IntBoolf filter){
         root.query(x, y, width, height, result);
         if(filter != null){
@@ -67,11 +64,71 @@ public class QuadTree{
         }
     }
 
+    public int closestRect(float x, float y, float w, float h, IntFloatf filter){
+        innerResults.clear();
+        queryRect(x, y, w, h, innerResults, null);
+        if(innerResults.isEmpty()) return -1;
+        int closest = -1;
+        float closestDist = Float.MAX_VALUE;
+        for(int i = 0; i < innerResults.size; i++){
+            float dist = filter.get(innerResults.get(i));
+            if(dist < closestDist){
+                closestDist = dist;
+                closest = innerResults.get(i);
+            }
+        }
+        return closest;
+    }
+
+    public int closestRect(float x, float y, float w, float h){
+        return closestRect(x, y, w, h, (id) -> {
+            pos(id);
+            return v.sub(x, y).len2();
+        });
+    }
+
+    /**查询圆域.
+     * 查询碰撞箱中心在圆域内的实体.
+     * */
+    public void queryCircle(float x, float y, float radius, IntArray result, @Null IntBoolf filter){
+        root.query(x - radius, y - radius, radius * 2, radius * 2, result);
+        for(int i = result.size - 1; i >= 0; i--){
+            pos(result.get(i));
+            if(v.sub(x, y).len2() > radius * radius) result.removeIndex(i);
+            if(filter != null && !filter.get(result.get(i))) result.removeIndex(i);
+        }
+    }
+
     public void eachCircle(float x, float y, float radius, @Null IntBoolf filter, Intc cons){
-        eachRect(x - radius, y - radius, radius * 2, radius * 2, i -> {
-            PositionComp pos = pm.get(i);
-            return (pos != null && v1.set(pos.x, pos.y).sub(x, y).len2() < radius * radius) && (filter == null || filter.get(i));
-        }, cons);
+        innerResults.clear();
+        queryCircle(x, y, radius, innerResults, filter);
+        if(innerResults.isEmpty()) return;
+        for(int i = 0; i < innerResults.size; i++){
+            cons.get(innerResults.get(i));
+        }
+    }
+
+    public int closestCircle(float x, float y, float radius, IntFloatf filter){
+        innerResults.clear();
+        queryCircle(x, y, radius, innerResults, null);
+        if(innerResults.isEmpty()) return -1;
+        int closest = -1;
+        float closestDist = Float.MAX_VALUE;
+        for(int i = 0; i < innerResults.size; i++){
+            float dist = filter.get(innerResults.get(i));
+            if(dist < closestDist){
+                closestDist = dist;
+                closest = innerResults.get(i);
+            }
+        }
+        return closest;
+    }
+
+    public int closestCircle(float x, float y, float radius){
+        return closestCircle(x, y, radius, (id) -> {
+            pos(id);
+            return v.sub(x, y).len2();
+        });
     }
 
     public void clear(){
@@ -116,9 +173,12 @@ public class QuadTree{
 
         /**
          * 查询矩形
+         * @param x 矩形左下角x坐标
+         * @param y 矩形左下角y坐标
          */
         public void query(float x, float y, float w, float h, IntArray result){
-            if(x < this.x || x + w > this.x + this.width || y < this.y || y + h > this.y + this.height) return;
+            //使用矩形重叠粗判断是否查询该节点
+            if(!re.set(x, y, w, h).overlaps(r1.set(this.x, this.y, this.width, this.height))) return;
 
             if(count == -1){
                 if(nw != null) nw.query(x, y, w, h, result);
@@ -156,7 +216,10 @@ public class QuadTree{
 
         protected void split(){
             int[] values = this.values;
-            for(int i = 0; i < tree.maxValues; i++) addToChild(values[i], values[i + 1], values[i + 2]);
+            for(int i = 0; i < tree.maxValues; i++){
+                tree.pos(values[i]);
+                addToChild(values[i], v.x, v.y);
+            }
             // values isn't nulled because the trees are pooled.
             count = -1;
         }
@@ -204,7 +267,12 @@ public class QuadTree{
         }
     }
 
+    /**获取一个实体的碰撞箱, 储存在{@link #re}*/
     public Rectangle hitbox(int entity){
         return re.setSize(hm.get(entity).width, hm.get(entity).height).setCenter(pm.get(entity).x, pm.get(entity).y);
+    }
+
+    public Vector2 pos(int entity){
+        return pm.get(entity).out(v);
     }
 }

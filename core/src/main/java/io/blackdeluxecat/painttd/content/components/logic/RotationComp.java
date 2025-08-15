@@ -20,6 +20,6 @@ public class RotationComp extends CopyableComponent{
     public RotationComp copy(CopyableComponent other){
         RotationComp rotationComp = (RotationComp) other;
         rotationComp.rotation = rotation;
-        return rotationComp;
+        return this;
     }
 }

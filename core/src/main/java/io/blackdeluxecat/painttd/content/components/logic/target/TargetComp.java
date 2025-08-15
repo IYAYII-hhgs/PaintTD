@@ -2,10 +2,10 @@ package io.blackdeluxecat.painttd.content.components.logic.target;
 
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class TargetCurrentComp extends CopyableComponent{
+public class TargetComp extends CopyableComponent{
     public int targetId = -1;
 
-    public TargetCurrentComp(){}
+    public TargetComp(){}
 
     @Override
     protected void reset(){
@@ -13,8 +13,8 @@ public class TargetCurrentComp extends CopyableComponent{
     }
 
     @Override
-    public TargetCurrentComp copy(CopyableComponent other){
-        TargetCurrentComp tcc = (TargetCurrentComp)other;
+    public TargetComp copy(CopyableComponent other){
+        TargetComp tcc = (TargetComp)other;
         targetId = tcc.targetId;
         return tcc;
     }

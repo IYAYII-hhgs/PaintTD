@@ -1,5 +1,6 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
+import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class PositionComp extends CopyableComponent{
@@ -24,5 +25,9 @@ public class PositionComp extends CopyableComponent{
         this.x = positionComp.x;
         this.y = positionComp.y;
         return this;
+    }
+
+    public Vector2 out(Vector2 out){
+        return out.set(x, y);
     }
 }

@@ -25,7 +25,7 @@ public class HitboxComp extends CopyableComponent{
         hitboxComp.width = width;
         hitboxComp.height = height;
         hitboxComp.scale = scale;
-        return hitboxComp;
+        return this;
     }
 
     @Override

@@ -16,9 +16,9 @@ public class HealthComp extends CopyableComponent{
     @Override
     public HealthComp copy(CopyableComponent other){
         HealthComp healthComp = (HealthComp)other;
-        healthComp.health = health;
-        healthComp.maxHealth = maxHealth;
-        return healthComp;
+        health = healthComp.health;
+        maxHealth = healthComp.maxHealth;
+        return this;
     }
 
     @Override

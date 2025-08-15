@@ -4,14 +4,15 @@ import com.artemis.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 
-public class DebugDrawer extends IteratingSystem{
+public class DebugDraw extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;
 
-    public DebugDrawer(){
+    public DebugDraw(){
         super(Aspect.all(PositionComp.class));
     }
 
@@ -26,7 +27,7 @@ public class DebugDrawer extends IteratingSystem{
         PositionComp pos = pm.get(entityId);
         shaper.begin(ShapeRenderer.ShapeType.Line);
         shaper.setColor(Color.WHITE);
-        shaper.rect(pos.x, pos.y, 1, 1);
+        shaper.rect(pos.x - 0.5f, pos.y - 0.5f, 1, 1);
         shaper.end();
     }
 }

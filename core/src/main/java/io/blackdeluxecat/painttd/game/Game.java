@@ -51,8 +51,12 @@ public class Game{
         logic.with(l -> {
             l.add(new RebuildQuadTree());
             l.add(new TargetFind());
-            l.add(new EnergyRegenerator());
+            l.add(new EnergyRegenerate());
             l.add(new MovementVelocity());
+            l.add(new CooldownShoot());
+            l.add(new DamageDeal());
+            l.add(new MarkHealthDead());
+            l.add(new RemoveDead());
         });
 
         render.with(l -> {

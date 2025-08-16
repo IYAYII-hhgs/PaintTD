@@ -22,9 +22,9 @@ public class HitboxComp extends CopyableComponent{
     @Override
     public HitboxComp copy(CopyableComponent other){
         HitboxComp hitboxComp = (HitboxComp)other;
-        hitboxComp.width = width;
-        hitboxComp.height = height;
-        hitboxComp.scale = scale;
+        width = hitboxComp.width;
+        height = hitboxComp.height;
+        scale = hitboxComp.scale;
         return this;
     }
 

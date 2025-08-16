@@ -8,16 +8,16 @@ public class CooldownComp extends CopyableComponent{
 
     public CooldownComp(){}
 
-    public CooldownComp(float cooldown){
-        this.cooldown = cooldown;
-
+    public CooldownComp(float cooldownTicks){
+        this.cooldown = cooldownTicks;
+        this.currentCooldown = cooldownTicks;
     }
 
     @Override
     public CooldownComp copy(CopyableComponent other){
         CooldownComp c = (CooldownComp)other;
-        c.cooldown = cooldown;
-        c.currentCooldown = currentCooldown;
+        cooldown = c.cooldown;
+        currentCooldown = c.currentCooldown;
         return this;
     }
 

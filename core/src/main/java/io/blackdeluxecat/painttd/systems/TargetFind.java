@@ -44,7 +44,8 @@ public class TargetFind extends IteratingSystem{
         TargetPriorityComp priority =  tpm.get(entityId);
         PositionComp pos = pm.get(entityId);
         RangeComp range = rm.get(entityId);
-        if(current.targetId == -1 || dm.get(current.targetId) != null){
+        //TODO 测试用强制更新目标
+        if(true || current.targetId == -1 || dm.get(current.targetId) != null){
             entityPos.set(pos.x, pos.y);
             current.targetId = Game.entities.closestCircle(pos.x, pos.y, range.range, getDistanceFilter(priority.priority));
         }

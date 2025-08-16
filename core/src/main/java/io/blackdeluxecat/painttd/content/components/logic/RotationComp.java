@@ -19,7 +19,7 @@ public class RotationComp extends CopyableComponent{
     @Override
     public RotationComp copy(CopyableComponent other){
         RotationComp rotationComp = (RotationComp) other;
-        rotationComp.rotation = rotation;
+        rotation = rotationComp.rotation;
         return this;
     }
 }

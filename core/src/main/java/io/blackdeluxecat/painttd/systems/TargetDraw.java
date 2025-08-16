@@ -32,7 +32,7 @@ public class TargetDraw extends IteratingSystem{
     protected void process(int entityId){
         TargetComp target = tm.get(entityId);
         PositionComp pos = pm.get(entityId), targetPos;
-        if(target.targetId != -1){
+        if(target.targetId != -1 && pm.has(target.targetId)){
             targetPos = pm.get(target.targetId);
             shaper.begin(ShapeRenderer.ShapeType.Line);
             shaper.setColor(Color.RED);

@@ -14,7 +14,7 @@ public class ArmorComp extends CopyableComponent{
     @Override
     public ArmorComp copy(CopyableComponent other){
         ArmorComp armorComp = (ArmorComp)other;
-        armorComp.armor = armor;
+        armor = armorComp.armor;
         return this;
     }
 

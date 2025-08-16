@@ -32,9 +32,9 @@ public class CooldownShoot extends IteratingSystem{
     protected void process(int entityId){
         CooldownComp cooldown = cm.get(entityId);
         if(cooldown.currentCooldown <= 0){
-            cooldown.currentCooldown = cooldown.cooldown;
+            cooldown.currentCooldown += cooldown.cooldown;
             int tgt = tm.get(entityId).targetId;
-            if(tgt != -1){
+            if(tgt != -1 && drc.has(tgt)){
                 drc.get(tgt).add(dm.get(entityId).damage);
             }
         }else{

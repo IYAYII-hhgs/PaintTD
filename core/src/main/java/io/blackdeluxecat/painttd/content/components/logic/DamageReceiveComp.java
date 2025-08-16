@@ -4,10 +4,10 @@ import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class DamageReceiveComp extends CopyableComponent{
-    public FloatArray received = new FloatArray();
+    public FloatArray damages = new FloatArray();
 
     public void add(float amount){
-        received.add(amount);
+        damages.add(amount);
     }
 
     @Override
@@ -16,9 +16,12 @@ public class DamageReceiveComp extends CopyableComponent{
         return this;
     }
 
+    /**
+     * 清空记录.
+     */
     @Override
     protected void reset(){
-        received.clear();
+        damages.clear();
         //是否需要resize释放内存?
     }
 }

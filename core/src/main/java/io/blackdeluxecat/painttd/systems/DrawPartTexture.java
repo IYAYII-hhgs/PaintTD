@@ -29,19 +29,11 @@ public class DrawPartTexture extends IteratingSystem{
 
     @Override
     protected void process(int entityId){
+        batch.setColor(Color.WHITE);
+
         PartTextureComp partTextureComp = partTextureMapper.get(entityId);
-
-//        float w = partTextureComp.atlasRegion.getRegionWidth();
-//        float h = partTextureComp.atlasRegion.getRegionHeight();
-//
-//        if(hitboxMapper.has(entityId)){
-//            w = hitboxMapper.get(entityId).width;
-//            h = hitboxMapper.get(entityId).height;
-//        }
-
         PositionComp positionComp = positionMapper.get(entityId);
 
-        //batch.setColor(Color.WHITE);
         partTextureComp.drawable.draw(batch, positionComp.x - 0.5f, positionComp.y - 0.5f, 1, 1);
     }
 }

@@ -72,9 +72,6 @@ public class Game{
                 }
             });
 
-            l.add(new DrawMapGrid());
-            l.add(new DrawDebugHitbox());
-            l.add(new DrawTarget());
             l.add(new DrawPartTexture());
 
             l.add(new BaseSystem(){
@@ -83,6 +80,12 @@ public class Game{
                     Core.batch.end();
                 }
             });
+
+            //使用了ShapeRenderer的系统
+            l.add(new DrawMapGrid());
+            l.add(new DrawDebugHitbox());
+            l.add(new DrawTarget());
+
         });
     }
 

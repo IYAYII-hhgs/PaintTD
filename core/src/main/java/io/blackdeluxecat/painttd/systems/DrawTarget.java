@@ -11,12 +11,12 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 
 import static io.blackdeluxecat.painttd.Core.shaper;
 
-public class TargetDraw extends IteratingSystem{
+public class DrawTarget extends IteratingSystem{
     public ComponentMapper<TargetComp> tm;
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<RangeComp> rm;
 
-    public TargetDraw(){
+    public DrawTarget(){
         super(Aspect.all(TargetComp.class, PositionComp.class).exclude(MarkerComp.Dead.class));
     }
 

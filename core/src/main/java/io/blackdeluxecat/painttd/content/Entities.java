@@ -4,6 +4,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
+import io.blackdeluxecat.painttd.content.components.render.*;
 
 public class Entities{
     public static EntityType
@@ -40,6 +41,8 @@ public class Entities{
                 def.add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
                 def.add(new TargetComp());
                 def.add(new CooldownComp(60f));
+
+                def.add(new PartTextureComp("b-pencil"));
             }
         };
     }

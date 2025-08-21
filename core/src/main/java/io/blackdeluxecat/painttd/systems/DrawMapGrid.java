@@ -7,7 +7,7 @@ import io.blackdeluxecat.painttd.game.*;
 
 import static io.blackdeluxecat.painttd.Core.shaper;
 
-public class MapGridDraw extends BaseSystem{
+public class DrawMapGrid extends BaseSystem{
 
     @Override
     protected void processSystem(){

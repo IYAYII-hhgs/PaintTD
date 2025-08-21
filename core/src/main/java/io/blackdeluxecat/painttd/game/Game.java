@@ -3,6 +3,7 @@ package io.blackdeluxecat.painttd.game;
 import com.artemis.*;
 import com.artemis.managers.*;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.map.Map;
 import io.blackdeluxecat.painttd.struct.*;
@@ -67,11 +68,21 @@ public class Game{
                 @Override
                 protected void processSystem(){
                     ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+                    Core.batch.begin();
                 }
             });
-            l.add(new MapGridDraw());
-            l.add(new DebugDraw());
-            l.add(new TargetDraw());
+
+            l.add(new DrawMapGrid());
+            l.add(new DrawDebugHitbox());
+            l.add(new DrawTarget());
+            l.add(new DrawPartTexture());
+
+            l.add(new BaseSystem(){
+                @Override
+                protected void processSystem(){
+                    Core.batch.end();
+                }
+            });
         });
     }
 

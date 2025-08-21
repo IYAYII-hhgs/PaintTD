@@ -9,11 +9,11 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 
-public class DebugDraw extends IteratingSystem{
+public class DrawDebugHitbox extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<HealthComp> hm;
 
-    public DebugDraw(){
+    public DrawDebugHitbox(){
         super(Aspect.all(PositionComp.class));
     }
 

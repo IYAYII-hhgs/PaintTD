@@ -34,6 +34,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
         Vars.worldViewport.setWorldSize(map.width, map.height);
         Vars.worldViewport.apply(true);
         shaper.setProjectionMatrix(Vars.worldViewport.getCamera().combined);
+        batch.setProjectionMatrix(Vars.worldViewport.getCamera().combined);
         world.process();
 
         stage.act();

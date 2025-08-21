@@ -4,9 +4,16 @@ size: 512, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-libgdx
+b-pencil
   rotate: false
   xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+libgdx
+  rotate: false
+  xy: 2, 20
   size: 378, 63
   orig: 378, 63
   offset: 0, 0

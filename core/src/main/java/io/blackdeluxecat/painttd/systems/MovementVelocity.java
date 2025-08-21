@@ -3,7 +3,7 @@ package io.blackdeluxecat.painttd.systems;
 import com.artemis.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
-import io.blackdeluxecat.painttd.content.components.logic.movement.*;
+import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 
 public class MovementVelocity extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;

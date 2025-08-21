@@ -15,7 +15,7 @@ public class Game{
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups = new GroupManager();
 
-    /**每帧开始时重建树*/
+    /**每帧开始时重建树, 已失效的单位不会被加入, 在当前帧中失效的单位直到帧结束才会被移除.*/
     public static QuadTree entities = new QuadTree();
 
     public static void create(){
@@ -38,7 +38,7 @@ public class Game{
 
         //为单位创建默认组件。def中的组件来自new构造，没有进入池化管理，copy到world中的过程也只是属性拷贝，不涉及池化管理。
         Entities.create();
-        map.create(30, 20);
+        map.create(world, 30, 20);
     }
 
     public static final float LOGIC_LAYER = 0, RENDER_LAYER = 10000;
@@ -50,10 +50,13 @@ public class Game{
     public static void createSystems(){
         logic.with(l -> {
             l.add(new RebuildQuadTree());
-            l.add(new TargetFind());
-            l.add(new EnergyRegenerate());
+            l.add(new CollideDetect());
+
             l.add(new MovementVelocity());
+            l.add(new TargetFind());
             l.add(new CooldownShoot());
+
+            l.add(new EnergyRegenerate());
             l.add(new DamageDeal());
             l.add(new MarkHealthDead());
             l.add(new RemoveDead());

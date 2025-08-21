@@ -4,6 +4,7 @@ import com.artemis.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.struct.func.*;
 
 /**
@@ -197,7 +198,7 @@ public class QuadTree{
         }
 
         /**
-         * 添加一个实体
+         * 添加一个实体. 检查碰撞箱与区域是否存在重叠.
          */
         public void add(int entity, float valueX, float valueY){
             if(count == -1){

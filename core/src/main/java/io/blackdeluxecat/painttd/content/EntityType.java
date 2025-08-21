@@ -10,6 +10,7 @@ import static io.blackdeluxecat.painttd.game.Game.world;
 
 public class EntityType{
     public String name;
+
     /**默认组件包。默认组件使用构造函数创建，不需要池化管理。由{@link #create()}创建的实体将拷贝一份受到池化管理的组件包。*/
     public Bag<CopyableComponent> def = new Bag<>();
     public Bag<String> groups = new Bag<>();
@@ -37,7 +38,7 @@ public class EntityType{
         return e;
     }
 
-    /**从基类拷贝副本*/
+    /**拷贝基类的默认组件包到该子类*/
     public void copyType(EntityType superType){
         for(CopyableComponent component : superType.def){
             try{

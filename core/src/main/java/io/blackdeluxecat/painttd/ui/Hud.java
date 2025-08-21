@@ -53,16 +53,23 @@ public class Hud{
                     t1.add(ActorUtils.wrapper
                               .set(new TextButton("敌人", sTextB))
                               .click(b -> {
-                                  select = Entities.eraser;
+                                  select = select == Entities.eraser ? null : Entities.eraser;
                               })
                               .actor);
 
                     t1.add(ActorUtils.wrapper
                               .set(new TextButton("基础塔", sTextB))
                               .click(b -> {
-                                  select = Entities.pencil;
+                                  select = select == Entities.pencil ? null : Entities.pencil;
                               })
                               .actor);
+
+                    t1.add(ActorUtils.wrapper
+                               .set(new TextButton("染色", sTextB))
+                               .click(b -> {
+                                   select = select == Entities.tileStain ? null : Entities.tileStain;
+                               })
+                               .actor);
                 }).actor).growX();
 
             }).actor).growX().row();

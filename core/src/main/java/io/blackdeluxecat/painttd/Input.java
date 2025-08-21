@@ -3,6 +3,7 @@ package io.blackdeluxecat.painttd;
 import com.badlogic.gdx.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
+import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.struct.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
@@ -30,10 +31,9 @@ public class Input{
                         v.x = (int)v.x;
                         v.y = (int)v.y;
                     }
-                    pos.x = v.x;
-                    pos.y = v.y;
+                    EntityUtils.setPosition(e, v.x, v.y);
                 }
-                Vars.hud.select = null;
+                //Vars.hud.select = null;
                 return true;
             }
             return false;

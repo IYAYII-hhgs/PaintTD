@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.content.components.logic.movement;
+package io.blackdeluxecat.painttd.content.components.logic.physics;
 
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.content.components.*;

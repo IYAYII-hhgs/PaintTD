@@ -25,4 +25,9 @@ public class EntityUtils{
             erc.regenRate = regenRate;
         }
     }
+
+    public static void setTeam(Entity e, int team){
+        TeamComp tc = world.getMapper(TeamComp.class).get(e);
+        if(tc != null) tc.team = team;
+    }
 }

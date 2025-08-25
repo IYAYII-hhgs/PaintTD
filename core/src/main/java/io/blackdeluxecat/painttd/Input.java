@@ -3,11 +3,11 @@ package io.blackdeluxecat.painttd;
 import com.badlogic.gdx.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
-import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.struct.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.Vars.worldViewport;
+import static io.blackdeluxecat.painttd.game.Game.map;
 import static io.blackdeluxecat.painttd.game.Game.utils;
 
 public class Input{
@@ -24,8 +24,7 @@ public class Input{
         public boolean touchDown(int screenX, int screenY, int pointer, int button){
             if(Vars.hud.select != null){
                 var e = Vars.hud.select.create();
-                var pos = e.getComponent(PositionComp.class);
-                if(pos != null){
+                if(e.getComponent(PositionComp.class) != null){
                     var v = Vars.v1;
                     worldViewport.unproject(v.set(screenX, screenY));
                     if(e.getComponent(MarkerComp.PlaceSnapGrid.class) != null){
@@ -34,8 +33,15 @@ public class Input{
                     }
                     utils.setPosition(e.getId(), v.x, v.y);
                 }
-                //Vars.hud.select = null;
                 return true;
+            }else if(Vars.hud.drawSolid){
+                var v = Vars.v1;
+                worldViewport.unproject(v.set(screenX, screenY));
+
+                var tile = map.get((int)v.x, (int)v.y);
+                if(tile != null){
+                    tile.isWall = !tile.isWall;
+                }
             }
             return false;
         }

@@ -30,6 +30,6 @@ public class Map{
 
     public Tile get(int x, int y){
         if(x < 0 || x >= width || y < 0 || y >= height) return null;
-        return get(x, y);
+        return unsafeGet(x, y);
     }
 }

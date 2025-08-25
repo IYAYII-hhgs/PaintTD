@@ -15,6 +15,7 @@ import static io.blackdeluxecat.painttd.ui.Styles.*;
 
 public class Hud{
     public @Null EntityType select;
+    public boolean drawSolid;
     public WidgetGroup group;
 
     public Table buttons = new Table();
@@ -68,6 +69,14 @@ public class Hud{
                                .set(new TextButton("染色", sTextB))
                                .click(b -> {
                                    select = select == Entities.tileStain ? null : Entities.tileStain;
+                               })
+                               .actor);
+
+                    t1.add(ActorUtils.wrapper
+                               .set(new TextButton("绘制墙体", sTextB))
+                               .click(b -> {
+                                   drawSolid = !drawSolid;
+                                   select = null;
                                })
                                .actor);
                 }).actor).growX();

@@ -1,10 +1,16 @@
 package io.blackdeluxecat.painttd.game.pathfind;
 
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.game.*;
+import io.blackdeluxecat.painttd.struct.*;
 
 import java.util.*;
+
+import static io.blackdeluxecat.painttd.Core.shaper;
 
 public class JPSPathfind{
     public interface JPSMapEntry{
@@ -31,8 +37,9 @@ public class JPSPathfind{
 
         // 2. 初始化
         PriorityQueue<Node> openList = new PriorityQueue<>(comparator);
-        ObjectSet<Node> closedList = new ObjectSet<>();
-        Node start = new Node(startGridX, startGridY);
+        Array<Node> closedList = new Array<>();
+        Node start = pool.obtain().set(startGridX, startGridY);
+        Array<Vector2> result = null;
 
         // 3. 添加起点
         openList.add(start);
@@ -41,16 +48,21 @@ public class JPSPathfind{
         while(!openList.isEmpty()){
             Node current = openList.poll();
 
+            shaper.begin(ShapeRenderer.ShapeType.Filled);
+            shaper.setColor(Vars.c1.set(Color.CYAN, 0.3f));
+            shaper.rect(current.x - 0.2f, current.y - 0.2f, 0.4f, 0.4f);
+            shaper.end();
+
             // 找到目标, 构建完整路径
             if(current.x == goalGridX && current.y == goalGridY){
-                return reconstructPath(current);
+                result = reconstructPath(current);
+                break;
             }
 
-            //探索可能的跳点
-            Array<Node> neighbors = findSuccessors(current, goalGridX, goalGridY);
+            Array<Node> neighbors = findNeighbor(current, pool.obtain().set(goalGridX, goalGridY));
 
             for(Node neighbor : neighbors){
-                if(closedList.contains(neighbor)){
+                if(closedList.contains(neighbor, false)){
                     continue;
                 }
 
@@ -70,14 +82,18 @@ public class JPSPathfind{
             closedList.add(current);
         }
 
-        return null; // 没有找到路径
+        IterateUtils.each(closedList, node -> pool.free(node));
+        while(!openList.isEmpty()){
+            pool.free(openList.poll());
+        }
+
+        return result;
     }
 
     /**
-     * 从当前点向周围探索跳点
-     * 如果为起点(无父节点), 全向探索
+     * 获取感兴趣的邻居
      */
-    private Array<Node> findSuccessors(Node node, int goalX, int goalY){
+    private Array<Node> findNeighbor(Node node, Node goal){
         Array<Node> successors = new Array<>();
         int x = node.x;
         int y = node.y;
@@ -87,11 +103,7 @@ public class JPSPathfind{
             for(int dx = -1; dx <= 1; dx++){
                 for(int dy = -1; dy <= 1; dy++){
                     if(dx == 0 && dy == 0) continue;
-
-                    Node jumpPoint = findJumpPoint(node, dx, dy, new Node(goalX, goalY));
-                    if(jumpPoint != null){
-                        successors.add(jumpPoint);
-                    }
+                    if(entry.isValidPosition(x + dx, y + dy)) successors.add(pool.obtain().set(node.x + dx, node.y + dy));
                 }
             }
             return successors;
@@ -101,49 +113,65 @@ public class JPSPathfind{
         int dx = Integer.compare(x, node.parent.x);
         int dy = Integer.compare(y, node.parent.y);
 
-        Node jumpPoint = findJumpPoint(node, dx, dy, new Node(goalX, goalY));
-        if(jumpPoint != null){
-            successors.add(jumpPoint);
+        //水平垂直方向, 对一个邻居和两个强迫邻居感兴趣
+        if(dx != 0 && dy == 0){
+            if(entry.isValidPosition(x + dx, y)) successors.add(pool.obtain().set(x + dx, y));
+            // 检查水平方向的强迫邻居
+            if(!entry.isValidPosition(x, y - 1) && entry.isValidPosition(x + dx, y - 1)) successors.add(pool.obtain().set(x + dx, y - 1));
+            if(!entry.isValidPosition(x, y + 1) && entry.isValidPosition(x + dx, y + 1)){
+                successors.add(pool.obtain().set(x + dx, y + 1));
+            }
+        }
+        else if(dx == 0 && dy != 0){
+            if(entry.isValidPosition(x, y + dy)) successors.add(pool.obtain().set(x, y + dy));
+            // 检查垂直方向的强迫邻居
+            if(!entry.isValidPosition(x - 1, y) && entry.isValidPosition(x - 1, y + dy)) successors.add(pool.obtain().set(x - 1, y + dy));
+            if(!entry.isValidPosition(x + 1, y) && entry.isValidPosition(x + 1, y + dy)) successors.add(pool.obtain().set(x + 1, y + dy));
+        }
+        //对角线方向, 对三个邻居和两个强迫邻居感兴趣
+        else{
+            if(entry.isValidPosition(x + dx, y)) successors.add(pool.obtain().set(x + dx, y));
+            if(entry.isValidPosition(x, y + dy)) successors.add(pool.obtain().set(x, y + dy));
+            if(entry.isValidPosition(x + dx, y + dy)) successors.add(pool.obtain().set(x + dx, y + dy));
+
+            if(!entry.isValidPosition(x, y + dy) && entry.isValidPosition(x - dx, y + dy)) successors.add(pool.obtain().set(x - dx, y + dy));
+
+            if(!entry.isValidPosition(x + dx, y) && entry.isValidPosition(x + dx, y - dy)) successors.add(pool.obtain().set(x + dx, y - dy));
         }
 
         return successors;
     }
 
     /**
-     * 检查当前点是否为跳点
-     * 1.终点总是跳点
-     * 2.有强迫邻居的是跳点
-     * 3.对角线移动时, 如果分量方向探索到跳点, 则自身是跳点
+     * 递归验证当前点是否是跳点
+     * 1.是终点
+     * 2.有强迫邻居
+     * 3.对角线移动时, 向分量方向探索到跳点
      */
     private Node findJumpPoint(Node current, int dx, int dy, Node goal){
-        int x = current.x + dx;
-        int y = current.y + dy;
-
-        // 前方障碍物
-        if(!entry.isValidPosition(x, y)){
-            return null;
-        }
-
-        //终点总是跳点
-        //起点已在第一次循环中被加入
+        //是终点
         if((current.x == goal.x && current.y == goal.y)){
-            return new Node(x, y);
+            return current;
         }
 
         if(hasForceNeighbor(current, dx, dy)){
-            return new Node(x, y);
+            return current;
         }
 
-        // 对角线方向
+        // 对角线方向, 在水平/垂直分量上递归探索跳点
         if(dx != 0 && dy != 0){
-            // 水平/垂直分量, 递归探索跳点
-            if(findJumpPoint(new Node(x, y), dx, 0, goal) != null || findJumpPoint(new Node(x, y), 0, dy, goal) != null){
-                //探索到跳点时, 自身也是跳点
-                return new Node(x, y);
+            if(findJumpPoint(current, dx, 0, goal) != null || findJumpPoint(current, 0, dy, goal) != null){
+                return current;
             }
         }
 
-        return null;
+
+        int x = current.x + dx;
+        int y = current.y + dy;
+
+        if(!entry.isValidPosition(x, y)) return null;
+
+        return findJumpPoint(current, dx, dy, goal);
     }
 
     /**
@@ -198,7 +226,21 @@ public class JPSPathfind{
     float distance(int x1, int y1, int x2, int y2){
         int dx = Math.abs(x1 - x2);
         int dy = Math.abs(y1 - y2);
-        return Math.max(dx, dy) + ((float)Math.sqrt(2) - 1) * Math.min(dx, dy);
+//        return Math.max(dx, dy) + ((float)Math.sqrt(2) - 1) * Math.min(dx, dy);
+        float cost = 0;
+
+        // 计算路径上所有格子的代价总和
+        if (dx > dy) {
+            for (int i = 1; i <= dx; i++) {
+                cost += entry.cost(x1 + (i * (x2 > x1 ? 1 : -1)), y1);
+            }
+        } else {
+            for (int i = 1; i <= dy; i++) {
+                cost += entry.cost(x1, y1 + (i * (y2 > y1 ? 1 : -1)));
+            }
+        }
+
+        return cost;
     }
 
     private Array<Vector2> reconstructPath(Node goal){
@@ -217,14 +259,45 @@ public class JPSPathfind{
         return path;
     }
 
-    public static class Node{
+    public static Pool<Node> pool = new Pool<>(128, 1024){
+        @Override
+        protected Node newObject(){
+            return new Node();
+        }
+    };
+
+    public static class Node implements Pool.Poolable{
         public int x, y;
         public float g, h, f;
         public Node parent;
 
+        public Node(){}
+
         public Node(int x, int y){
             this.x = x;
             this.y = y;
+        }
+
+        public Node set(int x, int y){
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        @Override
+        public void reset(){
+            x = y = 0;
+            g = h = f = 0;
+            parent = null;
+        }
+
+        @Override
+        public boolean equals(Object obj){
+            if(obj == this) return true;
+            if(obj == null) return false;
+            if(obj.getClass() != getClass()) return false;
+            Node other = (Node)obj;
+            return x == other.x && y == other.y;
         }
     }
 

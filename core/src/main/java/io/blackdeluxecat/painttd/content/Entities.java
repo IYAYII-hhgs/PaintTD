@@ -2,6 +2,7 @@ package io.blackdeluxecat.painttd.content;
 
 import io.blackdeluxecat.painttd.content.components.event.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.logic.PathfindComp;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
@@ -67,6 +68,7 @@ public class Entities{
                 def.add(new HealthComp(8));
                 def.add(new DamageDealEventComp());
 
+                def.add(new PathfindComp());
                 def.add(new MoveSpeedComp(1f / lfps));
                 def.add(new VelocityComp());
             }

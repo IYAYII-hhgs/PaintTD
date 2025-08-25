@@ -5,6 +5,7 @@ import com.artemis.managers.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
+import io.blackdeluxecat.painttd.game.pathfind.*;
 import io.blackdeluxecat.painttd.map.Map;
 import io.blackdeluxecat.painttd.struct.*;
 import io.blackdeluxecat.painttd.systems.*;
@@ -17,6 +18,7 @@ public class Game{
     public static Map map = new Map();
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups = new GroupManager();
+    public static JPSPathfind pathfinder = new JPSPathfind();
 
     /**每帧开始时重建树, 已失效的单位不会被加入, 在当前帧中失效的单位直到帧结束才会被移除.*/
     public static QuadTree entities = new QuadTree();
@@ -46,28 +48,49 @@ public class Game{
         map.create(world, 30, 20);
     }
 
-    public static final float LOGIC_LAYER = 0, RENDER_LAYER = 10000;
-
+    /**循环系统层级, z越小, 越早执行*/
     public static LayerManager.Layer<BaseSystem>
-        render = lm.lm.registerLayer("render", RENDER_LAYER),
-        logic = lm.lm.registerLayer("logic", LOGIC_LAYER);
+        logicFirstWork = lm.lm.registerLayer("logicFirstWork", 0),
+        logicCollide = lm.lm.registerLayer("logicCollide", 100),
+        logicAI = lm.lm.registerLayer("logicAI", 200),
+        logic = lm.lm.registerLayer("logic", 300),
+        logicLastWork = lm.lm.registerLayer("logicLastWork", 9000),
+        render = lm.lm.registerLayer("render", 10000);
 
     public static void createSystems(){
-        logic.with(l -> {
-            l.add(utils);
+        logicFirstWork.with(l -> {
+            //debug
+            l.add(new BaseSystem(){
+                @Override
+                protected void processSystem(){
+                    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+                }
+            });
 
+            l.add(utils);
             l.add(new RebuildQuadTree());
+        });
+
+        logicCollide.with(l -> {
             l.add(new CollideDetect());
             l.add(new UnitHitEnemyHealth());
+        });
 
+        logicAI.with(l -> {
             l.add(new TargetFind());
+            l.add(new MovementVelGenPathfind());
+        });
+
+        logic.with(l -> {
             l.add(new CooldownShoot());
 
-            l.add(new MovementVelGenerateDebug());
             l.add(new MovementVelPush());
 
             l.add(new EnergyRegenerate());
             l.add(new DamageDeal());
+        });
+
+        logicLastWork.with(l -> {
             l.add(new MarkHealthDead());
             l.add(new RemoveDead());
         });
@@ -76,7 +99,7 @@ public class Game{
             l.add(new BaseSystem(){
                 @Override
                 protected void processSystem(){
-                    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+                    //ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
                     Core.batch.begin();
                 }
             });
@@ -94,7 +117,6 @@ public class Game{
             l.add(new DrawMapGrid());
             l.add(new DrawDebugHitbox());
             l.add(new DrawTarget());
-
         });
     }
 

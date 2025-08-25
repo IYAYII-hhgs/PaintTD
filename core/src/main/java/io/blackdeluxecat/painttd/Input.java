@@ -8,6 +8,7 @@ import io.blackdeluxecat.painttd.struct.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.Vars.worldViewport;
+import static io.blackdeluxecat.painttd.game.Game.utils;
 
 public class Input{
     public static LayerManager<InputProcessor> inputProcessors = new LayerManager<>();
@@ -31,7 +32,7 @@ public class Input{
                         v.x = (int)v.x;
                         v.y = (int)v.y;
                     }
-                    EntityUtils.setPosition(e, v.x, v.y);
+                    utils.setPosition(e.getId(), v.x, v.y);
                 }
                 //Vars.hud.select = null;
                 return true;

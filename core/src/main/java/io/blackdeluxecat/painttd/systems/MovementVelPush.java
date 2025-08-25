@@ -5,11 +5,11 @@ import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 
-public class MovementVelocity extends IteratingSystem{
+public class MovementVelPush extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<VelocityComp> vm;
 
-    public MovementVelocity(){
+    public MovementVelPush(){
         super(Aspect.all(PositionComp.class, VelocityComp.class));
     }
 

@@ -1,0 +1,21 @@
+package io.blackdeluxecat.painttd.map;
+
+/**地图瓦片类, 维护该瓦片的基本属性.*/
+public class Tile{
+    public int x, y;
+    public int layer;
+    public boolean isWall;
+
+    public Tile(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setLayer(int layer){
+        this.layer = layer;
+    }
+
+    public void setWall(boolean isWall){
+        this.isWall = isWall;
+    }
+}

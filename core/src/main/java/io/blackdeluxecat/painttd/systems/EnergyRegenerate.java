@@ -23,6 +23,6 @@ public class EnergyRegenerate extends IteratingSystem{
 
     @Override
     protected void process(int entityId){
-        em.get(entityId).energy += erm.get(entityId).regenRate / lfps;
+        em.get(entityId).energy += erm.get(entityId).regenRate;
     }
 }

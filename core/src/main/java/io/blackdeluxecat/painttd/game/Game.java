@@ -8,6 +8,8 @@ import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.map.Map;
 import io.blackdeluxecat.painttd.struct.*;
 import io.blackdeluxecat.painttd.systems.*;
+import io.blackdeluxecat.painttd.systems.collide.*;
+import io.blackdeluxecat.painttd.systems.utils.*;
 
 public class Game{
     public static float lfps = 60;
@@ -18,6 +20,8 @@ public class Game{
 
     /**每帧开始时重建树, 已失效的单位不会被加入, 在当前帧中失效的单位直到帧结束才会被移除.*/
     public static QuadTree entities = new QuadTree();
+
+    public static StaticUtils utils = new StaticUtils();
 
     public static void create(){
         createSystems();
@@ -50,12 +54,17 @@ public class Game{
 
     public static void createSystems(){
         logic.with(l -> {
+            l.add(utils);
+
             l.add(new RebuildQuadTree());
             l.add(new CollideDetect());
+            l.add(new UnitHitEnemyHealth());
 
-            l.add(new MovementVelocity());
             l.add(new TargetFind());
             l.add(new CooldownShoot());
+
+            l.add(new MovementVelGenerateDebug());
+            l.add(new MovementVelPush());
 
             l.add(new EnergyRegenerate());
             l.add(new DamageDeal());

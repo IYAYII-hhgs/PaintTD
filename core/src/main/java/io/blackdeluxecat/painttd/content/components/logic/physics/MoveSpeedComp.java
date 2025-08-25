@@ -6,16 +6,16 @@ public class MoveSpeedComp extends CopyableComponent{
     public float baseSpeed, speed;
     public MoveSpeedComp(){}
 
-    public MoveSpeedComp(float baseSpeed){
-        this.baseSpeed = baseSpeed;
-        this.speed = baseSpeed;
+    public MoveSpeedComp(float baseSpeedUnitPerTick){
+        this.baseSpeed = baseSpeedUnitPerTick;
+        this.speed = baseSpeedUnitPerTick;
     }
 
     @Override
     public MoveSpeedComp copy(CopyableComponent other){
         MoveSpeedComp moveSpeedComp = (MoveSpeedComp)other;
-        moveSpeedComp.baseSpeed = baseSpeed;
-        moveSpeedComp.speed = speed;
+        baseSpeed = moveSpeedComp.baseSpeed;
+        speed = moveSpeedComp.speed;
         return moveSpeedComp;
     }
 

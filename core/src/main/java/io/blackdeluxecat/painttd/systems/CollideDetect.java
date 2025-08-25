@@ -47,6 +47,7 @@ public class CollideDetect extends IteratingSystem{
         float y = positionComp.y;
         float width = hitboxComp.width;
         float height = hitboxComp.height;
+        result.clear();
         Game.entities.queryRect(x - width * 3, y - height * 3, x + width * 3, y + height * 3, result, null);
 
         for(int i = 0; i < result.size; i++){

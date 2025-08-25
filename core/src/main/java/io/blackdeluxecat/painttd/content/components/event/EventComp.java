@@ -11,7 +11,7 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class EventComp extends CopyableComponent{
     public EventComp(){}
 
-    /**不建议事件类拷贝属性.*/
+    /**事件类通常不需要拷贝.*/
     @Override
     public EventComp copy(CopyableComponent other){
         return this;

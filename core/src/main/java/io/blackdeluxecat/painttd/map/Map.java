@@ -9,7 +9,7 @@ import io.blackdeluxecat.painttd.content.*;
  * */
 public class Map{
     public int width, height;
-    public int[] tiles;
+    public Tile[] tiles;
 
     World world;
 
@@ -17,28 +17,19 @@ public class Map{
         this.world = world;
         this.width = width;
         this.height = height;
-        tiles = new int[width * height];
+        tiles = new Tile[width * height];
 
         for(int i = 0; i < tiles.length; i++){
-            tiles[i] = Entities.tile.create().getId();
+            tiles[i] = new Tile(i % width, i / width);
         }
     }
 
-    public int get(int x, int y){
+    public Tile unsafeGet(int x, int y){
         return tiles[x + y * width];
     }
 
-    public int getSafe(int x, int y){
-        if(x < 0 || x >= width || y < 0 || y >= height) return -1;
+    public Tile get(int x, int y){
+        if(x < 0 || x >= width || y < 0 || y >= height) return null;
         return get(x, y);
-    }
-
-    public void set(int x, int y, int entityId){
-        tiles[x + y * width] = entityId;
-    }
-
-    public void setSafe(int x, int y, int entityId){
-        if(x < 0 || x >= width || y < 0 || y >= height) return;
-        set(x, y, entityId);
     }
 }

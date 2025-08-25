@@ -1,19 +1,20 @@
 package io.blackdeluxecat.painttd.content;
 
+import io.blackdeluxecat.painttd.content.components.event.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.content.components.render.*;
 
+import static io.blackdeluxecat.painttd.game.Game.lfps;
+
 public class Entities{
     public static EntityType
         //enemies
         unit, eraser, tileStain,
         //turrets
-        building, pencil,
-        //map
-        tile;
+        building, pencil;
 
     public static void createBuilding(){
         building = new EntityType("building"){
@@ -31,10 +32,10 @@ public class Entities{
                 def.add(new TeamComp(0));
 
                 def.add(new HealthComp(1));
-                def.add(new DamageReceiveComp());
+                def.add(new DamageDealEventComp());
 
                 def.add(new EnergyComp(2));
-                def.add(new EnergyRegenComp(2));
+                def.add(new EnergyRegenComp(2 / lfps));
 
                 def.add(new RangeComp(8));
                 def.add(new DamageComp(1));
@@ -59,15 +60,15 @@ public class Entities{
         eraser = new EntityType("eraser", unit){
             {
                 def.add(new MarkerComp.UseQuadTree());
+                def.add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
+                def.add(new CollideEventComp());
                 def.add(new TeamComp(1));
 
                 def.add(new HealthComp(8));
-                def.add(new DamageReceiveComp());
+                def.add(new DamageDealEventComp());
 
-                def.add(new MoveSpeedComp(1));
+                def.add(new MoveSpeedComp(1f / lfps));
                 def.add(new VelocityComp());
-                def.add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
-
             }
         };
 
@@ -75,28 +76,17 @@ public class Entities{
             {
                 def.add(new MarkerComp.UseQuadTree());
                 def.add(new MarkerComp.PlaceSnapGrid());
-                def.add(new HealthComp(1));
                 def.add(new CollideComp(CollideComp.OVERLAY, true).setCollidesMask(CollideComp.ENTITY));
-            }
-        };
-    }
+                def.add(new CollideEventComp());
+                def.add(new TeamComp(0));
 
-
-    public static void createMap(){
-        /* 地图瓦片的基本属性 */
-        tile = new EntityType("tile"){
-            {
-                groups.add("map");
-                def.add(new MarkerComp.PlaceSnapGrid());
-                def.add(new HitboxComp(1));
-
-                def.add(new CollideComp(CollideComp.FLOOR, true).setCollidesMask(CollideComp.ENTITY));
+                def.add(new HealthComp(1));
+                def.add(new DamageDealEventComp());
             }
         };
     }
 
     public static void create(){
-        createMap();
         createUnit();
         createBuilding();
     }

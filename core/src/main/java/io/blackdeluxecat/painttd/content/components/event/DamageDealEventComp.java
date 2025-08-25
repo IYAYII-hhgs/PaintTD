@@ -1,19 +1,13 @@
-package io.blackdeluxecat.painttd.content.components.logic;
+package io.blackdeluxecat.painttd.content.components.event;
 
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class DamageReceiveComp extends CopyableComponent{
+public class DamageDealEventComp extends EventComp{
     public FloatArray damages = new FloatArray();
 
     public void add(float amount){
         damages.add(amount);
-    }
-
-    @Override
-    public CopyableComponent copy(CopyableComponent other){
-        //无需copy
-        return this;
     }
 
     /**

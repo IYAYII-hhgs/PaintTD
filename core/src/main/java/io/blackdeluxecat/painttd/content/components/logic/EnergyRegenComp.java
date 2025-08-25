@@ -7,8 +7,8 @@ public class EnergyRegenComp extends CopyableComponent{
     public float regenRate;
     public EnergyRegenComp(){}
 
-    public EnergyRegenComp(float regenPreSec){
-        this.regenRate = regenPreSec;
+    public EnergyRegenComp(float regenPreTick){
+        this.regenRate = regenPreTick;
     }
 
     @Override

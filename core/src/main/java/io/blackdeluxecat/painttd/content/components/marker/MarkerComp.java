@@ -14,20 +14,8 @@ public class MarkerComp extends CopyableComponent{
     @Override
     protected void reset(){}
 
-    public static class MapAttribute extends MarkerComp{
-        public MapAttribute(){}
-    }
-
-    public static class Unit extends MarkerComp{
-        public Unit(){}
-    }
-
-    public static class Building extends MarkerComp{
-        public Building(){}
-    }
-
-    public static class Bullet extends MarkerComp{
-        public Bullet(){}
+    public static class CoreStain extends MarkerComp{
+        public CoreStain(){}
     }
 
     /** 该组件标记的实体视为已失效 */

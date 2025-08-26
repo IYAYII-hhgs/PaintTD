@@ -12,9 +12,10 @@ public class MovementVelGenFlowField extends IteratingSystem{
     private ComponentMapper<PositionComp> positionMapper;
     private ComponentMapper<VelocityComp> velocityMapper;
     private ComponentMapper<MoveSpeedComp> moveSpeedMapper;
+    private ComponentMapper<MovementNextPathComp> nextPathMapper;
 
     public MovementVelGenFlowField() {
-        super(Aspect.all(PositionComp.class, VelocityComp.class, MoveSpeedComp.class).exclude(MarkerComp.Dead.class));
+        super(Aspect.all(PositionComp.class, VelocityComp.class, MoveSpeedComp.class, MovementNextPathComp.class).exclude(MarkerComp.Dead.class));
     }
 
     @Override
@@ -23,6 +24,7 @@ public class MovementVelGenFlowField extends IteratingSystem{
         positionMapper = world.getMapper(PositionComp.class);
         velocityMapper = world.getMapper(VelocityComp.class);
         moveSpeedMapper = world.getMapper(MoveSpeedComp.class);
+        nextPathMapper = world.getMapper(MovementNextPathComp.class);
     }
 
     @Override
@@ -30,13 +32,18 @@ public class MovementVelGenFlowField extends IteratingSystem{
         PositionComp pos = positionMapper.get(entityId);
         VelocityComp vel = velocityMapper.get(entityId);
         MoveSpeedComp moveSpeed = moveSpeedMapper.get(entityId);
+        MovementNextPathComp nextPath = nextPathMapper.get(entityId);
 
-        //如果进入没有场的块, 可能是抵达目标, 直接前往块中心
-        if (Game.flowField.getDirection((int)pos.x, (int)pos.y, Vars.v1).len2() < 0.1){
-            vel.set(Game.flowField.getDirection((int)pos.x, (int)pos.y, Vars.v1).scl(moveSpeed.speed));
+        //当前格无效或偏离当前格, 更新当前格
+        if(nextPath.current.dst(pos.x, pos.y) > 0.71f){
+            nextPath.current.set(Math.round(pos.x), Math.round(pos.y));
         }
 
-        // 获取当前位置的方向
-        vel.set(Game.flowField.getDirection((int)pos.x, (int)pos.y, Vars.v1).scl(moveSpeed.speed));
+        //当前格有效, 从流场读取下一格, 更新下一格, 单位向下一格移动
+        if(nextPath.current.dst(pos.x, pos.y) <= 0.71f){
+            nextPath.next.set(nextPath.current).add(Game.flowField.getDirection((int)nextPath.current.x, (int)nextPath.current.y, Vars.v1));
+
+            vel.set(Vars.v1.set(nextPath.next.x - pos.x, nextPath.next.y - pos.y).nor().scl(moveSpeed.speed));
+        }
     }
 }

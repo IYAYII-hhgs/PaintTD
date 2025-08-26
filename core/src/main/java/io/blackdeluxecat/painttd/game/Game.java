@@ -18,7 +18,6 @@ public class Game{
     public static Map map = new Map();
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups = new GroupManager();
-    public static JPSPathfind pathfinder = new JPSPathfind();
 
     public static FlowField flowField;
 
@@ -89,7 +88,6 @@ public class Game{
         logicAI.with(l -> {
             l.add(new TargetFind());
             l.add(new MovementVelGenFlowField());
-            //l.add(new MovementVelGenPathfind());
         });
 
         logic.with(l -> {

@@ -5,7 +5,7 @@ import static io.blackdeluxecat.painttd.game.Game.flowField;
 /**地图瓦片类, 维护该瓦片的基本属性.*/
 public class Tile{
     public int x, y;
-    public int layer;
+    public int layer = 1;
     public boolean isWall;
 
     public Tile(int x, int y){
@@ -15,11 +15,11 @@ public class Tile{
 
     public void setLayer(int layer){
         this.layer = layer;
-        flowField.dirty(x, y);
+        flowField.change(x, y);
     }
 
     public void setWall(boolean isWall){
         this.isWall = isWall;
-        flowField.dirty(x, y);
+        flowField.change(x, y);
     }
 }

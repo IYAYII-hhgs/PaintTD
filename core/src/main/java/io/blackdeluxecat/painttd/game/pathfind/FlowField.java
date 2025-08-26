@@ -42,58 +42,79 @@ public class FlowField{
         goal.stackCost = 0;
         goal.parent = null;
 
-        //脏标记终点的邻居(排除其他终点)
-        for(int i = 0; i < 4; i++){
-            int nx = goal.x + d4x[i];
-            int ny = goal.y + d4y[i];
-            if(!entry.isValid(nx, ny)) continue;
-            dirty(nx, ny);
-        }
+        //脏化终点邻居(TODO排除其他终点)
+        dirtyNeighbor(goal.x, goal.y);
 
         //启动扩散
         update();
     }
 
     /**
-     * 扩散. 尝试更新自身, 如果积分更新, 就将所有邻居加入openList
-     * 父节点应该不会被循环更新积分
+     * 扩散. 逐一更新脏化节点, 如果积分更新, 就将所有邻居脏化
+     * 父节点应该不会被循环脏化
      */
     public void update(){
+        boolean needFlow = false;
         while(!openList.isEmpty()){
             Node current = openList.poll();
             current.cost = entry.cost(current.x, current.y);
 
-            boolean updated = false;
-
-            for(int i = 0; i < 4; i++){
-                int nx = current.x + d4x[i];
-                int ny = current.y + d4y[i];
-                if(!entry.isValid(nx, ny)) continue;
-
-                Node neighbor = nodes[nx][ny];
-                float newCost = neighbor.stackCost + current.cost;
-
-                if(newCost < current.stackCost){
-                    current.stackCost = newCost;
-                    current.parent = neighbor;
-                    updated = true;
-                }
-            }
-
-            if(updated){
-                for(int i = 0; i < 4; i++){
-                    int nx = current.x + d4x[i];
-                    int ny = current.y + d4y[i];
-                    if(!entry.isValid(nx, ny)) continue;
-                    openList.add(nodes[nx][ny]);
-                }
+            if(updateNode(current)){
+                dirtyNeighbor(current.x, current.y);
+                needFlow = true;
             }
         }
 
-        flow();
+        if(needFlow) flow();
     }
 
-    /**生成流场方向*/
+    public boolean updateNode(Node node){
+        boolean updated = false;
+
+        for(int i = 0; i < 4; i++){
+            int nx = node.x + d4x[i];
+            int ny = node.y + d4y[i];
+            if(!entry.isValid(nx, ny)) continue;
+
+            Node neighbor = nodes[nx][ny];
+            float newCost = neighbor.stackCost + node.cost;
+
+            if(newCost < node.stackCost){
+                node.stackCost = newCost;
+                node.parent = neighbor;
+                updated = true;
+            }
+        }
+
+        return updated;
+    }
+
+    public void dirtyNeighbor(int x, int y){
+        for(int i = 0; i < 4; i++){
+            int nx = x + d4x[i];
+            int ny = y + d4y[i];
+            if(!entry.isValid(nx, ny)) continue;
+            openList.add(nodes[nx][ny]);
+        }
+    }
+
+    /**标记变更的节点及其子节点为脏
+     * 在循环中, 脏邻居通常会更新积分, 从而传播更新. 如果遇到了不更新的邻居, 自然停止传播.
+     */
+    public void change(int changedX, int changedY){
+        Node changed = nodes[changedX][changedY];
+        openList.add(changed);
+        changed.stackCost = Float.MAX_VALUE;
+        for(int i = 0; i < 4; i++){
+            int nx = changedX + d4x[i];
+            int ny = changedY + d4y[i];
+            if(!entry.isValid(nx, ny)) continue;
+            Node neighbor = nodes[nx][ny];
+            if(neighbor.parent == changed && !openList.contains(neighbor)) change(neighbor.x, neighbor.y);
+        }
+    }
+
+    /**生成流场*/
     public void flow(){
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
@@ -102,15 +123,6 @@ public class FlowField{
                 node.direction.set(node.parent.x - x, node.parent.y - y).nor();
             }
         }
-    }
-
-    /**标记变化的节点为脏, 加入openList
-     * 在循环中, 脏节点通常会更新积分, 导致邻居被标记为脏, 从而传播更新. 如果遇到了不更新的邻居, 自然停止传播.
-     */
-    public void dirty(int changedX, int changedY){
-        Node changed = nodes[changedX][changedY];
-        if(openList.contains(changed)) return;
-        openList.add(changed);
     }
 
     public Vector2 getDirection(int x, int y, Vector2 out){

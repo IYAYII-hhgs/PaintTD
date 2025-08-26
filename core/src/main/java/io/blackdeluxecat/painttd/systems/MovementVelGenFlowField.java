@@ -31,6 +31,11 @@ public class MovementVelGenFlowField extends IteratingSystem{
         VelocityComp vel = velocityMapper.get(entityId);
         MoveSpeedComp moveSpeed = moveSpeedMapper.get(entityId);
 
+        //如果进入没有场的块, 可能是抵达目标, 直接前往块中心
+        if (Game.flowField.getDirection((int)pos.x, (int)pos.y, Vars.v1).len2() < 0.1){
+            vel.set(Game.flowField.getDirection((int)pos.x, (int)pos.y, Vars.v1).scl(moveSpeed.speed));
+        }
+
         // 获取当前位置的方向
         vel.set(Game.flowField.getDirection((int)pos.x, (int)pos.y, Vars.v1).scl(moveSpeed.speed));
     }

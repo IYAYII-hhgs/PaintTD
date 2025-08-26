@@ -40,7 +40,7 @@ public class Input{
 
                 var tile = map.get((int)v.x, (int)v.y);
                 if(tile != null){
-                    tile.isWall = !tile.isWall;
+                    tile.setWall(!tile.isWall);
                 }
             }
             return false;

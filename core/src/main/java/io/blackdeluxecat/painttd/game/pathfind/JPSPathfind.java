@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
-import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.struct.*;
 
 import java.util.*;
@@ -13,19 +12,8 @@ import java.util.*;
 import static io.blackdeluxecat.painttd.Core.shaper;
 
 public class JPSPathfind{
-    public interface JPSMapEntry{
-        default boolean isValidPosition(int x, int y){
-            var tile = Game.map.get(x, y);
-            return tile != null && !tile.isWall;
-        }
 
-        default float cost(int x, int y){
-            var tile = Game.map.get(x, y);
-            return tile == null ? Float.MAX_VALUE : tile.layer;
-        }
-    }
-
-    public JPSMapEntry entry = new JPSMapEntry(){};
+    public PathfindMapEntry entry = new PathfindMapEntry(){};
 
     // 主寻路函数
     public Array<Vector2> findPath(float startX, float startY, float targetX, float targetY){
@@ -103,7 +91,7 @@ public class JPSPathfind{
             for(int dx = -1; dx <= 1; dx++){
                 for(int dy = -1; dy <= 1; dy++){
                     if(dx == 0 && dy == 0) continue;
-                    if(entry.isValidPosition(x + dx, y + dy)) successors.add(pool.obtain().set(node.x + dx, node.y + dy));
+                    if(entry.isValid(x + dx, y + dy)) successors.add(pool.obtain().set(node.x + dx, node.y + dy));
                 }
             }
             return successors;
@@ -115,28 +103,28 @@ public class JPSPathfind{
 
         //水平垂直方向, 对一个邻居和两个强迫邻居感兴趣
         if(dx != 0 && dy == 0){
-            if(entry.isValidPosition(x + dx, y)) successors.add(pool.obtain().set(x + dx, y));
+            if(entry.isValid(x + dx, y)) successors.add(pool.obtain().set(x + dx, y));
             // 检查水平方向的强迫邻居
-            if(!entry.isValidPosition(x, y - 1) && entry.isValidPosition(x + dx, y - 1)) successors.add(pool.obtain().set(x + dx, y - 1));
-            if(!entry.isValidPosition(x, y + 1) && entry.isValidPosition(x + dx, y + 1)){
+            if(!entry.isValid(x, y - 1) && entry.isValid(x + dx, y - 1)) successors.add(pool.obtain().set(x + dx, y - 1));
+            if(!entry.isValid(x, y + 1) && entry.isValid(x + dx, y + 1)){
                 successors.add(pool.obtain().set(x + dx, y + 1));
             }
         }
         else if(dx == 0 && dy != 0){
-            if(entry.isValidPosition(x, y + dy)) successors.add(pool.obtain().set(x, y + dy));
+            if(entry.isValid(x, y + dy)) successors.add(pool.obtain().set(x, y + dy));
             // 检查垂直方向的强迫邻居
-            if(!entry.isValidPosition(x - 1, y) && entry.isValidPosition(x - 1, y + dy)) successors.add(pool.obtain().set(x - 1, y + dy));
-            if(!entry.isValidPosition(x + 1, y) && entry.isValidPosition(x + 1, y + dy)) successors.add(pool.obtain().set(x + 1, y + dy));
+            if(!entry.isValid(x - 1, y) && entry.isValid(x - 1, y + dy)) successors.add(pool.obtain().set(x - 1, y + dy));
+            if(!entry.isValid(x + 1, y) && entry.isValid(x + 1, y + dy)) successors.add(pool.obtain().set(x + 1, y + dy));
         }
         //对角线方向, 对三个邻居和两个强迫邻居感兴趣
         else{
-            if(entry.isValidPosition(x + dx, y)) successors.add(pool.obtain().set(x + dx, y));
-            if(entry.isValidPosition(x, y + dy)) successors.add(pool.obtain().set(x, y + dy));
-            if(entry.isValidPosition(x + dx, y + dy)) successors.add(pool.obtain().set(x + dx, y + dy));
+            if(entry.isValid(x + dx, y)) successors.add(pool.obtain().set(x + dx, y));
+            if(entry.isValid(x, y + dy)) successors.add(pool.obtain().set(x, y + dy));
+            if(entry.isValid(x + dx, y + dy)) successors.add(pool.obtain().set(x + dx, y + dy));
 
-            if(!entry.isValidPosition(x, y + dy) && entry.isValidPosition(x - dx, y + dy)) successors.add(pool.obtain().set(x - dx, y + dy));
+            if(!entry.isValid(x, y + dy) && entry.isValid(x - dx, y + dy)) successors.add(pool.obtain().set(x - dx, y + dy));
 
-            if(!entry.isValidPosition(x + dx, y) && entry.isValidPosition(x + dx, y - dy)) successors.add(pool.obtain().set(x + dx, y - dy));
+            if(!entry.isValid(x + dx, y) && entry.isValid(x + dx, y - dy)) successors.add(pool.obtain().set(x + dx, y - dy));
         }
 
         return successors;
@@ -169,7 +157,7 @@ public class JPSPathfind{
         int x = current.x + dx;
         int y = current.y + dy;
 
-        if(!entry.isValidPosition(x, y)) return null;
+        if(!entry.isValid(x, y)) return null;
 
         return findJumpPoint(current, dx, dy, goal);
     }
@@ -184,30 +172,30 @@ public class JPSPathfind{
         // 水平移动
         if(dx != 0 && dy == 0){
             // 检查垂直方向的强迫邻居
-            if(!entry.isValidPosition(x, y - 1) && entry.isValidPosition(x + dx, y - 1)){
+            if(!entry.isValid(x, y - 1) && entry.isValid(x + dx, y - 1)){
                 return true;
             }
-            if(!entry.isValidPosition(x, y + 1) && entry.isValidPosition(x + dx, y + 1)){
+            if(!entry.isValid(x, y + 1) && entry.isValid(x + dx, y + 1)){
                 return true;
             }
         }
         // 垂直移动
         else if(dx == 0 && dy != 0){
             // 检查水平方向的强迫邻居
-            if(!entry.isValidPosition(x - 1, y) && entry.isValidPosition(x - 1, y + dy)){
+            if(!entry.isValid(x - 1, y) && entry.isValid(x - 1, y + dy)){
                 return true;
             }
-            if(!entry.isValidPosition(x + 1, y) && entry.isValidPosition(x + 1, y + dy)){
+            if(!entry.isValid(x + 1, y) && entry.isValid(x + 1, y + dy)){
                 return true;
             }
         }
         // 对角线移动
         else if(dx != 0 && dy != 0){
             // 检查两个对角方向的强迫邻居
-            if(!entry.isValidPosition(x - dx, y) && entry.isValidPosition(x - dx, y + dy)){
+            if(!entry.isValid(x - dx, y) && entry.isValid(x - dx, y + dy)){
                 return true;
             }
-            if(!entry.isValidPosition(x, y - dy) && entry.isValidPosition(x + dx, y - dy)){
+            if(!entry.isValid(x, y - dy) && entry.isValid(x + dx, y - dy)){
                 return true;
             }
         }
@@ -272,11 +260,6 @@ public class JPSPathfind{
         public Node parent;
 
         public Node(){}
-
-        public Node(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
 
         public Node set(int x, int y){
             this.x = x;

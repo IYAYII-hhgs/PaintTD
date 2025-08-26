@@ -20,6 +20,8 @@ public class Game{
     public static GroupManager groups = new GroupManager();
     public static JPSPathfind pathfinder = new JPSPathfind();
 
+    public static FlowField flowField;
+
     /**每帧开始时重建树, 已失效的单位不会被加入, 在当前帧中失效的单位直到帧结束才会被移除.*/
     public static QuadTree entities = new QuadTree();
 
@@ -46,6 +48,8 @@ public class Game{
         //为单位创建默认组件。def中的组件来自new构造，没有进入池化管理，copy到world中的过程也只是属性拷贝，不涉及池化管理。
         Entities.create();
         map.create(world, 30, 20);
+        flowField = new FlowField(map);
+        flowField.fullUpdate();
     }
 
     /**循环系统层级, z越小, 越早执行*/
@@ -66,6 +70,12 @@ public class Game{
                     ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
                 }
             });
+            l.add(new BaseSystem(){
+                @Override
+                protected void processSystem(){
+                    flowField.update();
+                }
+            });
 
             l.add(utils);
             l.add(new RebuildQuadTree());
@@ -78,7 +88,8 @@ public class Game{
 
         logicAI.with(l -> {
             l.add(new TargetFind());
-            l.add(new MovementVelGenPathfind());
+            l.add(new MovementVelGenFlowField());
+            //l.add(new MovementVelGenPathfind());
         });
 
         logic.with(l -> {

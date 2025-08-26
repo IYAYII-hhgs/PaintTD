@@ -22,6 +22,7 @@ public class DrawMapGrid extends BaseSystem{
 
                 shaper.setColor(Color.DARK_GRAY);
                 shaper.rect(x - 0.5f, y - 0.5f, 1, 1);
+
             }
         }
         shaper.end();

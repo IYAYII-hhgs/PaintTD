@@ -33,7 +33,14 @@ public class DrawPartTexture extends IteratingSystem{
 
         PartTextureComp partTextureComp = partTextureMapper.get(entityId);
         PositionComp positionComp = positionMapper.get(entityId);
+        HitboxComp hitboxComp = hitboxMapper.get(entityId);
 
-        partTextureComp.drawable.draw(batch, positionComp.x - 0.5f, positionComp.y - 0.5f, 1, 1);
+        boolean hasSize = hitboxComp != null;
+        float w = hasSize ? hitboxComp.width : 1;
+        float h = hasSize ? hitboxComp.height : 1;
+
+        batch.setColor(Color.WHITE);
+        //渲染宽高比非1的实体可能出问题
+        partTextureComp.drawable.draw(batch, positionComp.x - w / 2f, positionComp.y - h / 2f, w / 2f, h / 2f, w, h, 1, 1, 0);
     }
 }

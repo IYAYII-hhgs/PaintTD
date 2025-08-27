@@ -48,7 +48,7 @@ public class Game{
         Entities.create();
         map.create(world, 30, 20);
         flowField = new FlowField(map);
-        flowField.fullUpdate();
+        flowField.rebuild();
     }
 
     /**循环系统层级, z越小, 越早执行*/
@@ -62,21 +62,8 @@ public class Game{
 
     public static void createSystems(){
         logicFirstWork.with(l -> {
-            //debug
-            l.add(new BaseSystem(){
-                @Override
-                protected void processSystem(){
-                    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-                }
-            });
-            l.add(new BaseSystem(){
-                @Override
-                protected void processSystem(){
-                    flowField.update();
-                }
-            });
-
             l.add(utils);
+            l.add(new FlowFieldUpdate());
             l.add(new RebuildQuadTree());
         });
 
@@ -108,7 +95,7 @@ public class Game{
             l.add(new BaseSystem(){
                 @Override
                 protected void processSystem(){
-                    //ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+                    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
                     Core.batch.begin();
                 }
             });
@@ -124,7 +111,7 @@ public class Game{
 
             //使用了ShapeRenderer的系统
             l.add(new DrawMapGrid());
-            l.add(new DrawDebugHitbox());
+            l.add(new DrawUnitHitbox());
             l.add(new DrawTarget());
         });
     }

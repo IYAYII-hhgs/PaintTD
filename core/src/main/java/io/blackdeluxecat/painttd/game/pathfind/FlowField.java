@@ -1,10 +1,16 @@
 package io.blackdeluxecat.painttd.game.pathfind;
 
+import com.artemis.*;
+import com.artemis.utils.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.map.Map;
 
 import java.util.*;
+
+import static io.blackdeluxecat.painttd.game.Game.groups;
+import static io.blackdeluxecat.painttd.game.Game.world;
 
 public class FlowField{
     public Map map;
@@ -26,7 +32,7 @@ public class FlowField{
     }
 
     /**流场重新生成*/
-    public void fullUpdate(){
+    public void rebuild(){
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
                 nodes[x][y] = Node.obtain();
@@ -37,13 +43,20 @@ public class FlowField{
             }
         }
         //终点
-        Node goal = nodes[map.width / 2][map.height / 2];
-        goal.cost = 0;
-        goal.stackCost = 0;
-        goal.parent = null;
+        ComponentMapper<PositionComp> positionMapper = world.getMapper(PositionComp.class);
+        IntBag bag = (IntBag)groups.getEntityIds("core");
+        for(int i = 0; i < bag.size(); i++){
+            int entityId = bag.get(i);
+            if(world.getEntity(entityId) == null) continue;
+            PositionComp positionComp = positionMapper.get(entityId);
+            Node goal = nodes[Math.round(positionComp.x)][Math.round(positionComp.y)];
+            goal.cost = 0;
+            goal.stackCost = 0;
+            goal.parent = null;
 
-        //脏化终点邻居(TODO排除其他终点)
-        dirtyNeighbor(goal.x, goal.y);
+            //脏化终点邻居(TODO排除其他终点)
+            dirtyNeighbor(goal.x, goal.y);
+        }
 
         //启动扩散
         update();

@@ -8,6 +8,11 @@ public class HealthComp extends CopyableComponent{
 
     public HealthComp(){}
 
+    public HealthComp(float health, float maxHealth){
+        this.health = health;
+        this.maxHealth = maxHealth;
+    }
+
     public HealthComp(float maxHealth){
         this.maxHealth = maxHealth;
         this.health = maxHealth;

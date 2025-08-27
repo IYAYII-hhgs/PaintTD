@@ -1,5 +1,6 @@
 package io.blackdeluxecat.painttd.content.components.marker;
 
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class MarkerComp extends CopyableComponent{

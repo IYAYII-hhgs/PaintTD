@@ -18,3 +18,10 @@ libgdx
   orig: 378, 63
   offset: 0, 0
   index: -1
+u-eraser
+  rotate: false
+  xy: 382, 67
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

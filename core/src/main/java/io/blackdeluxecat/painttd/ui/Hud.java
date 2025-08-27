@@ -52,44 +52,44 @@ public class Hud{
 
                 line1.add(new ActorUtils<>(new Table()).with(t1 -> {
                     t1.add(ActorUtils.wrapper
-                              .set(new TextButton("敌人", sTextB))
-                              .click(b -> {
-                                  select = select == Entities.eraser ? null : Entities.eraser;
-                                  drawSolid = false;
-                              })
-                              .actor);
+                            .set(new TextButton("敌人", sTextB))
+                            .click(b -> {
+                              select = select == Entities.eraser ? null : Entities.eraser;
+                              drawSolid = false;
+                            })
+                            .actor);
 
                     t1.add(ActorUtils.wrapper
-                              .set(new TextButton("基础塔", sTextB))
-                              .click(b -> {
-                                  select = select == Entities.pencil ? null : Entities.pencil;
-                                  drawSolid = false;
-                              })
-                              .actor);
+                            .set(new TextButton("基础塔", sTextB))
+                            .click(b -> {
+                              select = select == Entities.pencil ? null : Entities.pencil;
+                              drawSolid = false;
+                            })
+                            .actor);
 
                     t1.add(ActorUtils.wrapper
-                               .set(new TextButton("染色", sTextB))
-                               .click(b -> {
-                                   select = select == Entities.tileStain ? null : Entities.tileStain;
-                                   drawSolid = false;
-                               })
-                               .actor);
+                            .set(new TextButton("染色", sTextB))
+                            .click(b -> {
+                               select = select == Entities.tileStain ? null : Entities.tileStain;
+                               drawSolid = false;
+                            })
+                            .actor);
 
                     t1.add(ActorUtils.wrapper
-                               .set(new TextButton("染色核心", sTextB))
-                               .click(b -> {
-                                   select = select == Entities.tileStainCore ? null : Entities.tileStainCore;
-                                   drawSolid = false;
-                               })
-                               .actor);
+                            .set(new TextButton("染色核心", sTextB))
+                            .click(b -> {
+                               select = select == Entities.tileStainCore ? null : Entities.tileStainCore;
+                               drawSolid = false;
+                            })
+                            .actor);
 
                     t1.add(ActorUtils.wrapper
-                               .set(new TextButton("绘制墙体", sTextB))
-                               .click(b -> {
-                                   drawSolid = !drawSolid;
-                                   select = null;
-                               })
-                               .actor);
+                            .set(new TextButton("绘制墙体", sTextB))
+                            .click(b -> {
+                               drawSolid = !drawSolid;
+                               select = null;
+                            })
+                            .actor);
                 }).actor).growX();
 
             }).actor).growX().row();

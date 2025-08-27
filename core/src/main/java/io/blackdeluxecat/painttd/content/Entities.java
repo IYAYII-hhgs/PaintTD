@@ -1,6 +1,5 @@
 package io.blackdeluxecat.painttd.content;
 
-import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.event.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
@@ -72,11 +71,14 @@ public class Entities{
                 def.add(new MoveSpeedComp(1f / lfps));
                 def.add(new VelocityComp());
                 def.add(new MovementNextPathComp());
+
+                def.add(new PartTextureComp("u-eraser"));
             }
         };
 
         tileStain = new EntityType("tileStain", unit){
             {
+                groups.add("tileStain");
                 def.add(new MarkerComp.UseQuadTree());
                 def.add(new MarkerComp.PlaceSnapGrid());
                 def.add(new CollideComp(CollideComp.OVERLAY, true).setCollidesMask(CollideComp.ENTITY));

@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.systems;
+package io.blackdeluxecat.painttd.content.components.logic;
 
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.content.components.*;

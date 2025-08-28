@@ -15,11 +15,15 @@ public class Tile{
 
     public void setLayer(int layer){
         this.layer = layer;
-        flowField.change(x, y);
+        fireChange();
     }
 
     public void setWall(boolean isWall){
         this.isWall = isWall;
+        fireChange();
+    }
+
+    public void fireChange(){
         flowField.change(x, y);
     }
 }

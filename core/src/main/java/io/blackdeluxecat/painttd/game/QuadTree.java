@@ -46,7 +46,7 @@ public class QuadTree{
     }
 
     /**
-     * 查询矩形
+     * 查询矩形, xy为矩形左下角坐标
      */
     public void queryRect(float x, float y, float width, float height, IntArray result, @Null IntBoolf filter){
         root.query(x, y, width, height, result);
@@ -54,6 +54,10 @@ public class QuadTree{
             for(int i = result.size - 1; i >= 0; i--)
                 if(!filter.get(result.get(i))) result.removeIndex(i);
         }
+    }
+
+    public void queryRect(Rectangle rect, IntArray result, @Null IntBoolf filter){
+        queryRect(rect.x, rect.y, rect.width, rect.height, result, filter);
     }
 
     public void eachRect(float x, float y, float w, float h, @Null IntBoolf filter, Intc cons){
@@ -88,7 +92,7 @@ public class QuadTree{
         });
     }
 
-    /**查询圆域.
+    /**查询圆心坐标xy, 半径为radius的圆域.
      * 查询碰撞箱中心在圆域内的实体.
      * */
     public void queryCircle(float x, float y, float radius, IntArray result, @Null IntBoolf filter){
@@ -269,8 +273,12 @@ public class QuadTree{
     }
 
     /**获取一个实体的碰撞箱, 储存在{@link #re}*/
-    public Rectangle hitbox(int entity){
+    protected Rectangle hitbox(int entity){
         return re.setSize(hm.get(entity).width, hm.get(entity).height).setCenter(pm.get(entity).x, pm.get(entity).y);
+    }
+
+    public Rectangle hitbox(int entity, Rectangle out){
+        return out.set(hitbox(entity));
     }
 
     public Vector2 pos(int entity){

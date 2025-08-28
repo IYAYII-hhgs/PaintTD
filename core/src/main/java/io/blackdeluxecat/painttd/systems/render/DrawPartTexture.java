@@ -1,9 +1,8 @@
-package io.blackdeluxecat.painttd.systems;
+package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.graphics.*;
-import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.render.*;

@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.systems;
+package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
 import com.badlogic.gdx.graphics.*;

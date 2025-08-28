@@ -20,17 +20,16 @@ public class CollideEnemyRequestDamage extends BaseSystem{
 
     @Override
     protected void processSystem(){
-        collideQueue.clearHandled();
-
-        for(CollideQueue.CollideRequest collideRequest : collideQueue.queue){
-            if(collideRequest.handled) continue;
-
-            var source = world.getEntity(collideRequest.e1);
-            var target = world.getEntity(collideRequest.e2);
+        for(int i = 0; i < collideQueue.queue.size; i++){
+            CollideQueue.CollideRequest req = collideQueue.queue.get(i);
+            if(req.handled) continue;
+            var source = world.getEntity(req.e1);
+            var target = world.getEntity(req.e2);
 
             if(aspect.isInterested(source) && aspect.isInterested(target)){
                 if(!utils.isTeammate(source.getId(), target.getId())){
-                    damageQueue.add(collideRequest.e1, collideRequest.e2, DamageQueue.DamageType.collide);
+                    damageQueue.add(req.e1, req.e2, DamageQueue.DamageType.collide);
+                    req.handle();
                 }
             }
         }

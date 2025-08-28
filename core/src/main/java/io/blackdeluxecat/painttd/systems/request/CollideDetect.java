@@ -12,9 +12,8 @@ import static io.blackdeluxecat.painttd.game.Game.collideQueue;
 import static io.blackdeluxecat.painttd.game.Game.entities;
 
 /**
- * 执行碰撞检查. 用四叉树查询三倍尺寸的碰撞箱, 并将发生碰撞的实体添加到碰撞事件组件中.
+ * 执行碰撞检查. 用四叉树查询三倍尺寸的碰撞箱, 并产生碰撞请求.
  * 遍历每个使用四叉树的实体.
- * TODO应该会产生双向碰撞, 待解决
  * */
 public class CollideDetect extends IteratingSystem{
     protected IntArray result = new IntArray();
@@ -40,7 +39,9 @@ public class CollideDetect extends IteratingSystem{
             if(otherId != entityId){
                 entities.hitbox(entityId, r1);
                 entities.hitbox(otherId, r2);
-                if(r1.overlaps(r2)) collideQueue.add(entityId, otherId);
+                if(r1.overlaps(r2) && !collideQueue.isColliding(entityId, otherId)){
+                    collideQueue.add(entityId, otherId);
+                }
             }
         }
     }

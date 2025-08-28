@@ -23,7 +23,7 @@ public class Game{
 
     public static FlowField flowField;
 
-    /**每帧开始时重建树, 已失效的单位不会被加入, 在当前帧中失效的单位在帧结束被移除.*/
+    /**每帧开始时重建树, 需自行检查在当前帧中失效的单位.*/
     public static QuadTree entities = new QuadTree();
 
     public static CollideQueue collideQueue = new CollideQueue();
@@ -73,6 +73,7 @@ public class Game{
         });
 
         logicCollide.with(l -> {
+            l.add(new CollideQueueRemoveNoLongerOverlaps());
             l.add(new CollideDetect());
             l.add(new CollideEnemyRequestDamage());
         });
@@ -92,7 +93,6 @@ public class Game{
         });
 
         logicPost.with(l -> {
-            l.add(new PostCollideQueue());
             l.add(new PostDamageQueue());
 
             l.add(new MarkHealthDead());

@@ -79,7 +79,7 @@ public class Entities{
                 def.add(new CollideComp(CollideComp.OVERLAY, true).setCollidesMask(CollideComp.ENTITY));
 
                 def.add(new TeamComp(0));
-                def.add(new HealthComp(1));
+                def.add(new HealthComp(2));
             }
         };
 

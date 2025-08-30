@@ -40,6 +40,7 @@ public class Entities{
                 def.add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
                 def.add(new TargetComp());
                 def.add(new CooldownComp(60f));
+                def.add(new ColorLevelComp());
 
                 def.add(new PartTextureComp("b-pencil"));
             }
@@ -74,6 +75,7 @@ public class Entities{
         tileStain = new EntityType("tileStain", unit){
             {
                 groups.add("tileStain");
+                def.add(new MarkerComp.TileStain());
                 def.add(new MarkerComp.UseQuadTree());
                 def.add(new MarkerComp.PlaceSnapGrid());
                 def.add(new CollideComp(CollideComp.OVERLAY, true).setCollidesMask(CollideComp.ENTITY));

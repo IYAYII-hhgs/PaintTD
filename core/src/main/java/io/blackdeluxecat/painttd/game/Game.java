@@ -7,7 +7,7 @@ import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.game.pathfind.*;
 import io.blackdeluxecat.painttd.game.request.*;
-import io.blackdeluxecat.painttd.map.Map;
+import io.blackdeluxecat.painttd.map.*;
 import io.blackdeluxecat.painttd.struct.*;
 import io.blackdeluxecat.painttd.systems.*;
 import io.blackdeluxecat.painttd.systems.render.*;
@@ -51,7 +51,10 @@ public class Game{
 
         //为单位创建默认组件。def中的组件来自new构造，没有进入池化管理，copy到world中的过程也只是属性拷贝，不涉及池化管理。
         Entities.create();
-        map.create(world, 30, 20);
+
+        ColorPalette palette = new ColorPalette();
+
+        map.create(world, 30, 20, palette);
         flowField = new FlowField(map);
         flowField.rebuild();
     }

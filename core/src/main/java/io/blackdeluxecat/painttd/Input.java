@@ -28,8 +28,8 @@ public class Input{
                     var v = Vars.v1;
                     worldViewport.unproject(v.set(screenX, screenY));
                     if(e.getComponent(MarkerComp.PlaceSnapGrid.class) != null){
-                        v.x = (int)v.x;
-                        v.y = (int)v.y;
+                        v.x = Math.round(v.x);
+                        v.y = Math.round(v.y);
                     }
                     utils.setPosition(e.getId(), v.x, v.y);
                 }

@@ -2,6 +2,7 @@ package io.blackdeluxecat.painttd.map;
 
 import com.artemis.*;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.content.*;
 
 import java.util.*;
 
@@ -12,8 +13,8 @@ public class Map{
     public int width, height;
     public Tile[] tiles;
 
-    /**使用composition id - entity id调取特定实体/瓦片. 请勿随意修改实体组件组合*/
-    public IntMap<int[]> tileToEntity;
+    /**使用group name - entity id调取特定实体/瓦片. 请勿随意修改实体组件组合*/
+    public ObjectMap<String, int[]> tileToEntity;
     public IntIntMap entityToTile;
 
     public ColorPalette colorPalette;
@@ -26,7 +27,7 @@ public class Map{
         this.height = height;
         tiles = new Tile[width * height];
         entityToTile = new IntIntMap();
-        tileToEntity = new IntMap<>();
+        tileToEntity = new ObjectMap<>();
 
         this.colorPalette = colorPalette;
 
@@ -55,39 +56,42 @@ public class Map{
     public int pos(int x, int y){
         return x + y * width;
     }
-
-    public int[] getTileToEntityMap(int compositionId){
-        if(!tileToEntity.containsKey(compositionId)){
-            var map = tileToEntity.put(compositionId, new int[width * height]);
+    
+    public int[] getTileToEntityMap(String group){
+        if(!tileToEntity.containsKey(group)){
+            var map = new int[width * height];
+            tileToEntity.put(group, map);
             Arrays.fill(map, -1);
             return map;
         }
-        return tileToEntity.get(compositionId);
+        return tileToEntity.get(group);
     }
 
-    public void putEntity(int e, int x, int y){
-        removeEntity(e);
+    public void putEntity(int e, String group, int x, int y){
+        removeEntity(e, group);
         if(!validPos(x, y)) return;
 
+        var map = getTileToEntityMap(group);
         entityToTile.put(e, pos(x, y));
-        getTileToEntityMap(world.compositionId(e))[pos(x, y)] = e;
+        map[pos(x, y)] = e;
     }
 
-    public void removeEntity(int e){
-        int old = entityToTile.remove(e, -1);
-        if(old != -1){
-            getTileToEntityMap(world.compositionId(e))[old] = -1;
+    public void removeEntity(int e, String group){
+        int oldPos = entityToTile.remove(e, -1);
+        if(oldPos != -1){
+            getTileToEntityMap(group)[oldPos] = -1;
         }
     }
 
-    public int getEntityUnsafe(int x, int y, int compositionId){
-        return getTileToEntityMap(compositionId)[pos(x, y)];
+    public int getEntityUnsafe(int x, int y, String group){
+        return getTileToEntityMap(group)[pos(x, y)];
     }
 
-    public int getEntity(int x, int y, int compositionId){
+    /**高性能get方案是{@link #getTileToEntityMap(String)}获取数组引用并按pos索引*/
+    public int getEntity(int x, int y, String group){
         //lazy 有效性检查
         if(!validPos(x, y)) return -1;
-        int e = getEntityUnsafe(x, y, compositionId);
+        int e = getEntityUnsafe(x, y, group);
         if(!world.getEntityManager().isActive(e)) return -1;
         return e;
     }

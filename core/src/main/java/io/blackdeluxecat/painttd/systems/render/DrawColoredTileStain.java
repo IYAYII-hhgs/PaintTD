@@ -1,39 +1,51 @@
 package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
-import com.artemis.utils.*;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 
 import static io.blackdeluxecat.painttd.Core.shaper;
-import static io.blackdeluxecat.painttd.game.Game.groups;
 import static io.blackdeluxecat.painttd.game.Game.map;
 
 public class DrawColoredTileStain extends BaseSystem{
     public ComponentMapper<HealthComp> healthMapper;
-    public ComponentMapper<PositionComp> positionMapper;
+    public ComponentMapper<TileStainComp> tileStainMapper;
 
     @Override
     protected void setWorld(World world){
         super.setWorld(world);
         healthMapper = world.getMapper(HealthComp.class);
-        positionMapper = world.getMapper(PositionComp.class);
+        tileStainMapper = world.getMapper(TileStainComp.class);
     }
 
     @Override
     protected void processSystem(){
-        shaper.begin(ShapeRenderer.ShapeType.Filled);
-        IntBag bag = (IntBag)groups.getEntityIds("tileStain");
-        for(int i = 0; i < bag.size(); i++){
-            int e = bag.get(i);
-            var health = healthMapper.get(e);
-            var position = positionMapper.get(e);
-            var color = map.colorPalette.getColor(MathUtils.ceil(health.health));
-            shaper.setColor(Vars.c1.set(color));
-            shaper.rect(position.x - 0.5f, position.y - 0.5f, 1, 1);
+        for(int x = 0; x < map.width; x++){
+            for(int y = 0; y < map.height; y++){
+                var e = map.getEntity(x, y, "tileStain");
+                if(e == -1) continue;
+                var health = healthMapper.get(e);
+                var stain = tileStainMapper.get(e);
+
+                if(health.health > 0){
+                    var color = map.colorPalette.getColor(MathUtils.ceil(health.health) - 1);
+                    shaper.setColor(Vars.c1.set(color));
+                    shaper.begin(ShapeRenderer.ShapeType.Filled);
+                    shaper.rect(x - 0.4f, y - 0.4f, 0.8f, 0.8f);
+                    shaper.end();
+                }
+
+                if(stain.isCore){
+                    shaper.setColor(Color.WHITE);
+
+                    shaper.begin(ShapeRenderer.ShapeType.Line);
+                    shaper.circle(x, y, 0.3f, 6);
+                    shaper.end();
+                }
+            }
         }
-        shaper.end();
     }
 }

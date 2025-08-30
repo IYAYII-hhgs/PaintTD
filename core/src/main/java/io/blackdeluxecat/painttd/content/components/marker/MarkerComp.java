@@ -14,14 +14,6 @@ public class MarkerComp extends CopyableComponent{
     @Override
     protected void reset(){}
 
-    public static class TileStain extends MarkerComp{
-        public TileStain(){}
-    }
-
-    public static class CoreStain extends MarkerComp{
-        public CoreStain(){}
-    }
-
     /** 该组件标记的实体视为已失效 */
     public static class Dead extends MarkerComp{
         public Dead(){}

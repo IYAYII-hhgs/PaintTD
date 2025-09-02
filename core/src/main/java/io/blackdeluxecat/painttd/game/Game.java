@@ -41,6 +41,9 @@ public class Game{
 
     /**重建整个世界, 加载地图.*/
     public static void loadMap(){
+        collideQueue.clear();
+        damageQueue.clear();
+
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
 
         builder.register(lm);

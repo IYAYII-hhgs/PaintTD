@@ -12,25 +12,25 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 import static io.blackdeluxecat.painttd.Core.shaper;
 
 public class DrawTarget extends IteratingSystem{
-    public ComponentMapper<TargetComp> tm;
+    public ComponentMapper<TargetSingleComp> tm;
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<RangeComp> rm;
 
     public DrawTarget(){
-        super(Aspect.all(TargetComp.class, PositionComp.class).exclude(MarkerComp.Dead.class));
+        super(Aspect.all(TargetSingleComp.class, PositionComp.class).exclude(MarkerComp.Dead.class));
     }
 
     @Override
     protected void setWorld(World world){
         super.setWorld(world);
-        tm = world.getMapper(TargetComp.class);
+        tm = world.getMapper(TargetSingleComp.class);
         pm = world.getMapper(PositionComp.class);
         rm = world.getMapper(RangeComp.class);
     }
 
     @Override
     protected void process(int entityId){
-        TargetComp target = tm.get(entityId);
+        TargetSingleComp target = tm.get(entityId);
         PositionComp pos = pm.get(entityId), targetPos;
         if(target.targetId != -1 && pm.has(target.targetId)){
             targetPos = pm.get(target.targetId);
@@ -44,7 +44,7 @@ public class DrawTarget extends IteratingSystem{
         if(range != null){
             shaper.begin(ShapeRenderer.ShapeType.Line);
             shaper.setColor(Color.DARK_GRAY);
-            shaper.circle(pos.x, pos.y, range.range, 24);
+            shaper.circle(pos.x, pos.y, range.range, 36);
             shaper.end();
         }
     }

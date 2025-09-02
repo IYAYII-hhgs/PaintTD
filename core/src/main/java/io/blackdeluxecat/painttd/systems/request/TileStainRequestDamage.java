@@ -35,7 +35,7 @@ public class TileStainRequestDamage extends IteratingSystem{
         CollideComp collide = collideMapper.get(entityId);
         if(collide.isCollideWith(CollideComp.OVERLAY)){
             PositionComp positionComp = positionMapper.get(entityId);
-            damageQueue.add(entityId, Game.map.getEntity(positionComp.tileX(), positionComp.tileY(), "tileStain"), DamageQueue.DamageType.collide);
+            damageQueue.add(entityId, Game.map.getEntity(positionComp.tileX(), positionComp.tileY(), "tileStain"), 9999, DamageQueue.DamageRequestType.collide);
         }
     }
 }

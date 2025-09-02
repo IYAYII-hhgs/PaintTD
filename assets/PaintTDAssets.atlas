@@ -4,30 +4,37 @@ size: 512, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+b-brush
+  rotate: false
+  xy: 2, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 b-pencil
   rotate: false
-  xy: 2, 8
+  xy: 382, 85
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 libgdx
   rotate: false
-  xy: 2, 26
+  xy: 2, 38
   size: 378, 63
   orig: 378, 63
   offset: 0, 0
   index: -1
 u-eraser
   rotate: false
-  xy: 382, 73
+  xy: 2, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 2, 2
+  xy: 20, 32
   size: 4, 4
   orig: 4, 4
   offset: 0, 0

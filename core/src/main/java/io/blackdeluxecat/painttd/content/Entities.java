@@ -13,7 +13,7 @@ public class Entities{
         //enemies
         unit, eraser, tileStain,
         //turrets
-        building, pencil;
+        building, pencil, brush;
 
     public static void createBuilding(){
         building = new EntityType("building"){
@@ -32,17 +32,34 @@ public class Entities{
 
                 def.add(new HealthComp(1));
 
-                def.add(new EnergyComp(2));
-                def.add(new EnergyRegenComp(2 / lfps));
-
-                def.add(new RangeComp(8));
+                def.add(new RangeComp(6));
                 def.add(new DamageComp(1));
+
                 def.add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
-                def.add(new TargetComp());
+                def.add(new TargetSingleComp());
                 def.add(new CooldownComp(60f));
-                def.add(new ColorLevelComp());
+                def.add(new ColorLevelComp(2));
 
                 def.add(new PartTextureComp("b-pencil"));
+            }
+        };
+
+        brush = new EntityType("brush", building){
+            {
+                def.add(new MarkerComp.UseQuadTree());
+                def.add(new TeamComp(0));
+
+                def.add(new HealthComp(1));
+
+                def.add(new RangeComp(10));
+                def.add(new DamageSlashComp(1, 1));
+                def.add(new StainSlashComp(1));
+                def.add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
+                def.add(new TargetSingleComp());
+                def.add(new CooldownComp(180f));
+                def.add(new ColorLevelComp(1));
+
+                def.add(new PartTextureComp("b-brush"));
             }
         };
     }
@@ -52,7 +69,6 @@ public class Entities{
             {
                 groups.add("unit");
                 def.add(new PositionComp());
-                def.add(new HitboxComp(1));
             }
         };
 
@@ -62,7 +78,8 @@ public class Entities{
                 def.add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
                 def.add(new TeamComp(1));
 
-                def.add(new HealthComp(8));
+                def.add(new HealthComp(16));
+                def.add(new HitboxComp(0.8f));
 
                 def.add(new MoveSpeedComp(1f / lfps));
                 def.add(new VelocityComp());
@@ -76,6 +93,7 @@ public class Entities{
             {
                 groups.add("tileStain");
                 def.add(new TileStainComp());
+                def.add(new HitboxComp(1));
                 def.add(new CollideComp(CollideComp.OVERLAY, true).setCollidesMask(CollideComp.ENTITY));
 
                 def.add(new TeamComp(0));

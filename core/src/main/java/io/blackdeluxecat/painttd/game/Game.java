@@ -15,14 +15,12 @@ import io.blackdeluxecat.painttd.systems.render.*;
 import io.blackdeluxecat.painttd.systems.request.*;
 import io.blackdeluxecat.painttd.systems.utils.*;
 
-import java.awt.*;
-
 public class Game{
     public static float lfps = 60;
     public static World world;
     public static Map map = new Map();
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
-    public static GroupManager groups = new GroupManager();
+    public static GroupManager groups;
 
     public static FlowField flowField;
 
@@ -50,6 +48,7 @@ public class Game{
 
         //systems
         lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
+        groups = new GroupManager();
         builder.with(groups);
 
         if(world != null) world.dispose();
@@ -59,11 +58,12 @@ public class Game{
         Entities.create();
 
         ColorPalette palette = new ColorPalette();
-        palette.addColor(Color.FOREST.toIntBits());
-        palette.addColor(Color.RED.toIntBits());
-        palette.addColor(Color.ROYAL.toIntBits());
-        palette.addColor(Color.YELLOW.toIntBits());
-        palette.addColor(Color.PURPLE.toIntBits());
+        int l = 6;
+        Color color = Vars.c1.set(Color.ROYAL);
+        for(int i = 0; i < l; i++){
+            color.lerp(Color.YELLOW, i / (float)l);
+            palette.addColor(color.toIntBits());
+        }
 
         map.create(world, 30, 20, palette);
         Vars.hud.mapEditorTable.buildColorPalette();
@@ -80,7 +80,7 @@ public class Game{
     public static LayerManager.Layer<BaseSystem>
         logicPre = lm.lm.registerLayer("logicFirstWork", 0),
         logicCollide = lm.lm.registerLayer("logicCollide", 100),
-        logicAI = lm.lm.registerLayer("logicAI", 200),
+        logicShootAI = lm.lm.registerLayer("logicShootAI", 200),
         logic = lm.lm.registerLayer("logic", 300),
         logicPost = lm.lm.registerLayer("logicLastWork", 9000),
         render = lm.lm.registerLayer("render", 10000);
@@ -100,15 +100,18 @@ public class Game{
             l.add(new TileStainRequestDamage());
         });
 
-        logicAI.with(l -> {
+        logicShootAI.with(l -> {
             l.add(new TargetFind());
             l.add(new CooldownShoot());
-            l.add(new MovementVelGenFlowField());
-            l.add(new MovementVelPush());
+            l.add(new ShootSingleRequestDamage());
+            l.add(new ShootSingleSlashRequestDamage());
+            l.add(new ShootSingleSlashStain());
         });
 
         logic.with(l -> {
             l.add(new EnergyRegenerate());
+            l.add(new MovementVelGenFlowField());
+            l.add(new MovementVelPush());
 
             l.add(new DamageTypeCollideApply());
             l.add(new DamageTypeDirectApply());
@@ -125,7 +128,7 @@ public class Game{
             l.add(new BaseSystem(){
                 @Override
                 protected void processSystem(){
-                    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+                    ScreenUtils.clear(0, 0, 0, 1);
                     Core.batch.begin();
                 }
             });
@@ -140,8 +143,8 @@ public class Game{
             });
 
             //使用了ShapeRenderer的系统
-            l.add(new DrawMapGrid());
             l.add(new DrawColoredTileStain());
+            l.add(new DrawMapGrid());
             l.add(new DrawUnitHitbox());
             l.add(new DrawTarget());
         });

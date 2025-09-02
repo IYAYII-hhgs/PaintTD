@@ -28,7 +28,7 @@ public class CollideEnemyRequestDamage extends BaseSystem{
 
             if(aspect.isInterested(source) && aspect.isInterested(target)){
                 if(!utils.isTeammate(source.getId(), target.getId())){
-                    damageQueue.add(req.e1, req.e2, DamageQueue.DamageType.collide);
+                    damageQueue.add(req.e1, req.e2, 9999, DamageQueue.DamageRequestType.collide);
                     req.handle();
                 }
             }

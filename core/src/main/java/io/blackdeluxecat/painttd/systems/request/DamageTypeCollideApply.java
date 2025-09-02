@@ -7,14 +7,14 @@ import io.blackdeluxecat.painttd.game.request.*;
 import static io.blackdeluxecat.painttd.game.Game.damageQueue;
 
 public class DamageTypeCollideApply extends BaseSystem{
-    public DamageQueue.DamageType type;
+    public DamageQueue.DamageRequestType type;
 
     public ComponentMapper<HealthComp> healthMapper;
 
     @Override
     protected void setWorld(World world){
         super.setWorld(world);
-        type = DamageQueue.DamageType.collide;
+        type = DamageQueue.DamageRequestType.collide;
         healthMapper = world.getMapper(HealthComp.class);
     }
 

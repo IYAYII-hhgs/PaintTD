@@ -16,7 +16,7 @@ import io.blackdeluxecat.painttd.struct.func.*;
 public class TargetFind extends IteratingSystem{
     public ComponentMapper<TeamComp> tm;
     public ComponentMapper<PositionComp> pm;
-    public ComponentMapper<TargetComp> tcm;
+    public ComponentMapper<TargetSingleComp> tcm;
     public ComponentMapper<TargetPriorityComp> tpm;
     public ComponentMapper<RangeComp> rm;
     public ComponentMapper<MarkerComp.Dead> dm;
@@ -25,7 +25,7 @@ public class TargetFind extends IteratingSystem{
     protected int currentProcessId;
 
     public TargetFind(){
-        super(Aspect.all(TeamComp.class, PositionComp.class, TargetComp.class, TargetPriorityComp.class).exclude(MarkerComp.Dead.class));
+        super(Aspect.all(TeamComp.class, PositionComp.class, TargetSingleComp.class, TargetPriorityComp.class).exclude(MarkerComp.Dead.class));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class TargetFind extends IteratingSystem{
         super.setWorld(world);
         tm = world.getMapper(TeamComp.class);
         pm = world.getMapper(PositionComp.class);
-        tcm = world.getMapper(TargetComp.class);
+        tcm = world.getMapper(TargetSingleComp.class);
         tpm = world.getMapper(TargetPriorityComp.class);
         rm = world.getMapper(RangeComp.class);
         dm = world.getMapper(MarkerComp.Dead.class);
@@ -43,7 +43,7 @@ public class TargetFind extends IteratingSystem{
     protected void process(int entityId){
         currentProcessId = entityId;
         TeamComp team = tm.get(entityId);
-        TargetComp current = tcm.get(entityId);
+        TargetSingleComp current = tcm.get(entityId);
         TargetPriorityComp priority =  tpm.get(entityId);
         PositionComp pos = pm.get(entityId);
         RangeComp range = rm.get(entityId);

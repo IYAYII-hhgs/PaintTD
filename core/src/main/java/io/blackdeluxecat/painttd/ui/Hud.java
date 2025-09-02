@@ -56,18 +56,25 @@ public class Hud{
 
                 line1.add(new ActorUtils<>(new Table()).with(t1 -> {
                     t1.add(ActorUtils.wrapper
-                            .set(new TextButton("敌人", sTextB))
+                            .set(new TextButton(bEnemy.name, sTextB))
                             .click(b -> {
                                 current = bEnemy;
                             })
                             .actor);
 
                     t1.add(ActorUtils.wrapper
-                            .set(new TextButton("基础塔", sTextB))
+                            .set(new TextButton(bPencil.name, sTextB))
                             .click(b -> {
-                                current = bTower;
+                                current = bPencil;
                             })
                             .actor);
+
+                    t1.add(ActorUtils.wrapper
+                           .set(new TextButton(bBrush.name, sTextB))
+                           .click(b -> {
+                               current = bBrush;
+                           })
+                           .actor);
 
                 }).actor).growX();
 
@@ -140,10 +147,18 @@ public class Hud{
                     type = Entities.eraser;
                 }
             },
-            bTower = new EntityBrush("基础塔"){
+
+            bPencil = new EntityBrush("铅笔"){
                 @Override
                 public void getType(){
                     type = Entities.pencil;
+                }
+            },
+
+            bBrush = new EntityBrush("笔刷"){
+                @Override
+                public void getType(){
+                    type = Entities.brush;
                 }
             };
 }

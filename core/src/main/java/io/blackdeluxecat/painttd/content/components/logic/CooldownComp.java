@@ -5,6 +5,7 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class CooldownComp extends CopyableComponent{
     public float cooldown;
     public float currentCooldown;
+    public int shootCount;
 
     public CooldownComp(){}
 
@@ -18,6 +19,7 @@ public class CooldownComp extends CopyableComponent{
         CooldownComp c = (CooldownComp)other;
         cooldown = c.cooldown;
         currentCooldown = c.currentCooldown;
+        shootCount = c.shootCount;
         return this;
     }
 

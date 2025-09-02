@@ -34,7 +34,7 @@ public class DrawColoredTileStain extends BaseSystem{
                     var color = map.colorPalette.getColor(MathUtils.ceil(health.health) - 1);
                     shaper.setColor(Vars.c1.set(color));
                     shaper.begin(ShapeRenderer.ShapeType.Filled);
-                    shaper.rect(x - 0.4f, y - 0.4f, 0.8f, 0.8f);
+                    shaper.rect(x - 0.5f, y - 0.5f, 1, 1);
                     shaper.end();
                 }
 
@@ -42,7 +42,7 @@ public class DrawColoredTileStain extends BaseSystem{
                     shaper.setColor(Color.WHITE);
 
                     shaper.begin(ShapeRenderer.ShapeType.Line);
-                    shaper.circle(x, y, 0.3f, 6);
+                    shaper.circle(x, y, 0.3f, 8);
                     shaper.end();
                 }
             }

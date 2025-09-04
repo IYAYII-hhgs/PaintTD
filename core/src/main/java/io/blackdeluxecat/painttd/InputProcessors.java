@@ -1,16 +1,14 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
-import io.blackdeluxecat.painttd.content.components.logic.*;
-import io.blackdeluxecat.painttd.content.components.marker.*;
+import com.badlogic.gdx.math.*;
+import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.struct.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.Vars.worldViewport;
-import static io.blackdeluxecat.painttd.game.Game.map;
-import static io.blackdeluxecat.painttd.game.Game.utils;
 
-public class Input{
+public class InputProcessors{
     public static LayerManager<InputProcessor> inputProcessors = new LayerManager<>();
 
     //layers, z层级低的优先级高
@@ -22,11 +20,46 @@ public class Input{
     public static InputAdapter placementInput = new InputAdapter(){
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button){
-            if(Vars.hud.current != null){
+            if(Vars.hud.current != null && button == Input.Buttons.LEFT){
                 var v = Vars.v1;
                 worldViewport.unproject(v.set(screenX, screenY));
+                if(!Game.map.validPos(Math.round(v.x), Math.round(v.y))) return false;
                 Vars.hud.current.draw(v.x, v.y);
 
+                return true;
+            }
+            return false;
+        }
+    };
+
+    public static InputAdapter cameraZoom = new InputAdapter(){
+        @Override
+        public boolean scrolled(float amountX, float amountY){
+            Vars.zoom = MathUtils.clamp(Vars.zoom + amountY * 5, 1f, 200);
+            return super.scrolled(amountX, amountY);
+        }
+    },
+
+    cameraMove = new InputAdapter(){
+        float ox;
+        float oy;
+        Vector2 v = new Vector2();
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button){
+            if(button == Input.Buttons.RIGHT){
+                ox = screenX;
+                oy = screenY;
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button){
+            if(button == Input.Buttons.RIGHT){
+                v.set(ox, screenY).sub(screenX, oy).scl(worldViewport.getUnitsPerPixel());
+                worldViewport.getCamera().position.add(v.x, v.y, 0);
                 return true;
             }
             return false;
@@ -36,7 +69,8 @@ public class Input{
     public static void create(){
         stage.add(Core.stage);
         placement.add(placementInput);
-
+        camera.add(cameraZoom);
+        camera.add(cameraMove);
         sort();
     }
 

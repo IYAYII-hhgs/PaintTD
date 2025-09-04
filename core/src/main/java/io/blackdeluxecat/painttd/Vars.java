@@ -12,6 +12,8 @@ public class Vars{
     public static Rectangle r1 = new Rectangle(), r2 = new Rectangle(), r3 = new Rectangle();
     public static Color c1 = new Color(), c2 = new Color();
 
-    public static ScalingViewport worldViewport = new ScalingViewport(Scaling.fit, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    public static ScreenViewport worldViewport = new ScreenViewport();
+    public static float zoom = 64f, lerpZoom = zoom;
+
     public static Hud hud = new Hud();
 }

@@ -145,6 +145,7 @@ public class FlowField{
     }
 
     public Vector2 getDirection(int x, int y, Vector2 out){
+        if(!map.validPos(x, y)) return out.set(0, 0);
         return out.set(nodes[x][y].direction);
     }
 

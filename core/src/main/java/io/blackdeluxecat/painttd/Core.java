@@ -14,7 +14,7 @@ public class Core{
     public static SpriteBatch batch = new SpriteBatch();
     public static ShapeRenderer shaper = new ShapeRenderer();
 
-    public static Stage stage = new Stage(new ScalingViewport(Scaling.fit, 1280, 960));
+    public static Stage stage = new Stage(new ScreenViewport());
     /**集成的输入处理器。任何自定义处理器自行持有、在此插入一个InputProcessor。*/
     public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 }

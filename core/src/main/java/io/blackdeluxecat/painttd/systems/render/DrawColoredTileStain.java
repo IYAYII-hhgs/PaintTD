@@ -25,7 +25,7 @@ public class DrawColoredTileStain extends BaseSystem{
     protected void processSystem(){
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
-                var e = map.getEntity(x, y, "tileStain");
+                var e = map.getTileStain(x, y);
                 if(e == -1) continue;
                 var health = healthMapper.get(e);
                 var stain = tileStainMapper.get(e);

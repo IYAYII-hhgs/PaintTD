@@ -44,10 +44,9 @@ public class ShootSingleSlashStain extends IteratingSystem{
                 ColorLevelComp colorLevel = colorLevelMapper.get(entityId);
 
                 int x = tgtPos.tileX(), y = tgtPos.tileY();
-                int[] stainMap = map.getTileToEntityMap("tileStain");
                 for(int dx = -slash.range; dx <= slash.range; dx++){
                     for(int dy = -slash.range; dy <= slash.range; dy++){
-                        int tileStain = stainMap[MathUtils.clamp(dx + x, 0, map.width - 1) + MathUtils.clamp(dy + y, 0, map.height - 1) * map.width];
+                        int tileStain = map.getTileStain(MathUtils.clamp(dx + x, 0, map.width - 1), MathUtils.clamp(dy + y, 0, map.height - 1));
                         if(tileStain != -1){
                             HealthComp health = healthMapper.get(tileStain);
                             TeamComp stainTeam = teamMapper.get(tileStain);

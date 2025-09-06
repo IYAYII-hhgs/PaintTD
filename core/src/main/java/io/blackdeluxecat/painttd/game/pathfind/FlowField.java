@@ -52,7 +52,7 @@ public class FlowField{
                 nodes[x][y].cost = entry.cost(x, y);
                 nodes[x][y].stackCost = Float.MAX_VALUE;
 
-                int e = map.getEntityUnsafe(x, y, "tileStain");
+                int e = map.getTileStain(x, y);
                 if(e != -1 && tileStainMapper.get(e).isCore && hp.get(e).health > 0){
                     nodes[x][y].stackCost = 0;
                     toDirty.add(map.pos(x, y));

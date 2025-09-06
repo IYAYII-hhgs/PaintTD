@@ -72,7 +72,7 @@ public class MapEditorTable extends Table{
     }, drawStainCore = new Hud.MapEditBrush("核心"){
         @Override
         public void draw(float wx, float wy){
-            var e = Game.map.getEntity(Math.round(wx), Math.round(wy), "tileStain");
+            var e = Game.map.getTileStain(Math.round(wx), Math.round(wy));
             if(e == -1) return;
             var mapper = world.getMapper(TileStainComp.class);
             if(!mapper.has(e)) return;
@@ -82,7 +82,7 @@ public class MapEditorTable extends Table{
     }, drawStainColor = new Hud.MapEditBrush("地形染色"){
         @Override
         public void draw(float worldX, float worldY){
-            var e = Game.map.getEntity(Math.round(worldX), Math.round(worldY), "tileStain");
+            var e = Game.map.getTileStain(Math.round(worldX), Math.round(worldY));
             if(e == -1) return;
             var mapper = world.getMapper(HealthComp.class);
             if(!mapper.has(e)) return;

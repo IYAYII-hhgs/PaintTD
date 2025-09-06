@@ -13,6 +13,7 @@ public class StaticUtils extends BaseSystem{
     public ComponentMapper<TeamComp> teamMapper;
     public ComponentMapper<EnergyComp> energyMapper;
     public ComponentMapper<EnergyRegenComp> energyRegenMapper;
+    public ComponentMapper<TileStainComp> tileStainMapper;
 
     public boolean isTeammate(int e1, int e2){
         return teamMapper.get(e1).team == teamMapper.get(e2).team;
@@ -49,5 +50,6 @@ public class StaticUtils extends BaseSystem{
         teamMapper = world.getMapper(TeamComp.class);
         energyMapper = world.getMapper(EnergyComp.class);
         energyRegenMapper = world.getMapper(EnergyRegenComp.class);
+        tileStainMapper = world.getMapper(TileStainComp.class);
     }
 }

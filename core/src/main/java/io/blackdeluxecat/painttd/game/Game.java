@@ -54,8 +54,7 @@ public class Game{
         if(world != null) world.dispose();
         world = new World(builder.build());
 
-        //为单位创建默认组件。def中的组件来自new构造，没有进入池化管理，copy到world中的过程也只是属性拷贝，不涉及池化管理。
-        Entities.create();
+        Entities.create(world);
 
         ColorPalette palette = new ColorPalette();
         int l = 6;
@@ -66,7 +65,7 @@ public class Game{
         }
 
         map.create(world, 30, 20, palette);
-        Vars.hud.mapEditorTable.buildColorPalette();
+        Vars.hud.mapEditorTable.buildColorPalette();//重建调色盘ui
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
                 map.putEntity(Entities.tileStain.create().getId(), "tileStain", x, y);

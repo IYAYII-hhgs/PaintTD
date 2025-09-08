@@ -7,9 +7,11 @@ import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.request.*;
+import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.damageQueue;
 
+@IsLogicProcess
 public class TileStainRequestDamage extends IteratingSystem{
     public ComponentMapper<CollideComp> collideMapper;
     public ComponentMapper<HealthComp> healthMapper;

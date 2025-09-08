@@ -11,6 +11,7 @@ import static io.blackdeluxecat.painttd.content.components.marker.MarkerComp.*;
 /**
  * 在每帧的开始重建四叉树.
  */
+@IsLogicProcess
 public class RebuildQuadTree extends BaseEntitySystem{
     public RebuildQuadTree(){
         super(Aspect.all(UseQuadTree.class, PositionComp.class, HitboxComp.class).exclude(Dead.class));

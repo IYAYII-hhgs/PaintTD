@@ -13,6 +13,7 @@ import io.blackdeluxecat.painttd.struct.func.*;
 /**
  * 一个基础索敌系统. 根据索敌标识使用过滤器筛选 **一个** 敌人.
  * */
+@IsLogicProcess
 public class TargetFind extends IteratingSystem{
     public ComponentMapper<TeamComp> tm;
     public ComponentMapper<PositionComp> pm;

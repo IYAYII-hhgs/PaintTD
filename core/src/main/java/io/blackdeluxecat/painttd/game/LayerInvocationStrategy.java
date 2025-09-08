@@ -2,7 +2,12 @@ package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
 import com.artemis.utils.*;
+import com.badlogic.gdx.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.struct.*;
+import io.blackdeluxecat.painttd.systems.*;
+
+import static io.blackdeluxecat.painttd.game.Game.lfps;
 
 /**
  * 使用层管理系统优先级的系统执行策略.
@@ -12,7 +17,32 @@ import io.blackdeluxecat.painttd.struct.*;
 public class LayerInvocationStrategy extends InvocationStrategy{
     public LayerManager<BaseSystem> lm = new LayerManager<>();
 
+    public boolean frameLogicProcess;
+    long stackTime = 0;
     public LayerInvocationStrategy(){}
+
+    @Override
+    protected void process(){
+        stackTime += Time.getDelta();
+        if(stackTime > 1000 / lfps){
+            stackTime = 0;
+            frameLogicProcess = true;
+        }
+
+        BaseSystem[] systemsData = systems.getData();
+        for (int i = 0, s = systems.size(); s > i; i++) {
+            if(disabled.get(i)) continue;
+            if(frameLogicProcess || systemsData[i].getClass().getAnnotation(IsLogicProcess.class) == null){
+                updateEntityStates();
+                systemsData[i].process();
+            }
+
+        }
+
+        updateEntityStates();
+
+        frameLogicProcess = false;
+    }
 
     @Override
     protected void initialize(){

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
+import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.collideQueue;
 import static io.blackdeluxecat.painttd.game.Game.entities;
@@ -15,6 +16,7 @@ import static io.blackdeluxecat.painttd.game.Game.entities;
  * 执行碰撞检查. 用四叉树查询三倍尺寸的碰撞箱, 并产生碰撞请求.
  * 遍历每个使用四叉树的实体.
  * */
+@IsLogicProcess
 public class CollideDetect extends IteratingSystem{
     protected IntArray result = new IntArray();
     protected static Rectangle r1 = new Rectangle(), r2 = new Rectangle();

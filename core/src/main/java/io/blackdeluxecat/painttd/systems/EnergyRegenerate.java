@@ -6,6 +6,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
+@IsLogicProcess
 public class EnergyRegenerate extends IteratingSystem{
     public ComponentMapper<EnergyComp> em;
     public ComponentMapper<EnergyRegenComp> erm;

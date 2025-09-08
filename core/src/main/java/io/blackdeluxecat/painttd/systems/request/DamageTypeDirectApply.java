@@ -3,9 +3,11 @@ package io.blackdeluxecat.painttd.systems.request;
 import com.artemis.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.request.*;
+import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.damageQueue;
 
+@IsLogicProcess
 public class DamageTypeDirectApply extends BaseSystem{
     public DamageQueue.DamageRequestType type;
 

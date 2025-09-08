@@ -34,6 +34,8 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void render(){
+        Time.update();
+
         lerpZoom = MathUtils.lerp(lerpZoom, zoom, 0.1f);
         worldViewport.setUnitsPerPixel(1f / lerpZoom);
         worldViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);

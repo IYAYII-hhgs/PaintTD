@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
+import com.artemis.io.*;
 import com.artemis.managers.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.*;
@@ -16,11 +17,12 @@ import io.blackdeluxecat.painttd.systems.request.*;
 import io.blackdeluxecat.painttd.systems.utils.*;
 
 public class Game{
-    public static float lfps = 60;
+    public static float lfps = 60f;
     public static World world;
     public static Map map = new Map();
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups;
+    public static WorldSerializationManager serializer;
 
     public static FlowField flowField;
 
@@ -47,12 +49,18 @@ public class Game{
         builder.register(lm);
 
         //systems
-        lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
         groups = new GroupManager();
         builder.with(groups);
+        serializer = new WorldSerializationManager();
+        builder.with(serializer);
+        lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
 
         if(world != null) world.dispose();
         world = new World(builder.build());
+
+        serializer.setSerializer(new JsonArtemisSerializer(world));
+
+
 
         Entities.create(world);
 

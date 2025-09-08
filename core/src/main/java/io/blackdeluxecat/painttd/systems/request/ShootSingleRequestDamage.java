@@ -5,9 +5,11 @@ import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.game.request.*;
+import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.damageQueue;
 
+@IsLogicProcess
 public class ShootSingleRequestDamage extends IteratingSystem{
     public ComponentMapper<CooldownComp> cooldownMapper;
     public ComponentMapper<TargetSingleComp> targetSingleMapper;

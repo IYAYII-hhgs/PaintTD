@@ -5,6 +5,7 @@ import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 
+@IsLogicProcess
 public class MarkHealthDead extends IteratingSystem{
     public ComponentMapper<HealthComp> hm;
 

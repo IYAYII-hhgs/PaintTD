@@ -4,8 +4,6 @@ import com.artemis.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 
-import static io.blackdeluxecat.painttd.game.Game.world;
-
 public class StaticUtils extends BaseSystem{
     public ComponentMapper<PositionComp> positionMapper;
     public ComponentMapper<HitboxComp> hitboxMapper;

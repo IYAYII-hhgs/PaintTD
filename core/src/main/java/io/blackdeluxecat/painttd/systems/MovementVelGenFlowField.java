@@ -8,6 +8,7 @@ import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
 
+@IsLogicProcess
 public class MovementVelGenFlowField extends IteratingSystem{
     private ComponentMapper<PositionComp> positionMapper;
     private ComponentMapper<VelocityComp> velocityMapper;

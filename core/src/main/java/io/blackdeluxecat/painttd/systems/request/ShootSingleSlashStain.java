@@ -5,9 +5,11 @@ import com.artemis.systems.*;
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
+import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
+@IsLogicProcess
 public class ShootSingleSlashStain extends IteratingSystem{
     public ComponentMapper<CooldownComp> cooldownMapper;
     public ComponentMapper<TargetSingleComp> targetSingleMapper;

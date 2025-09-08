@@ -8,6 +8,7 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 
 import static io.blackdeluxecat.painttd.game.Game.flowField;
 
+@IsLogicProcess
 public class FlowFieldUpdate extends BaseSystem{
     @Override
     protected void processSystem(){

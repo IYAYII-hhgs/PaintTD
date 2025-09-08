@@ -9,6 +9,7 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 /**
  * 带有冷却的武器的攻击
  * */
+@IsLogicProcess
 public class CooldownShoot extends IteratingSystem{
     public ComponentMapper<CooldownComp> cm;
 

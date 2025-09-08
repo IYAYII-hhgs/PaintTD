@@ -6,6 +6,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
+@IsLogicProcess
 public class FlowFieldCoreChangeDetect extends IteratingSystem{
     public ComponentMapper<TileStainComp> tsc;
     public ComponentMapper<PositionComp> pc;

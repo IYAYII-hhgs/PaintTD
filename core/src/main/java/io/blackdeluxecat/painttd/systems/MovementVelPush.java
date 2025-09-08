@@ -5,6 +5,7 @@ import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 
+@IsLogicProcess
 public class MovementVelPush extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<VelocityComp> vm;

@@ -4,9 +4,11 @@ import com.artemis.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.request.*;
+import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
+@IsLogicProcess
 public class CollideEnemyRequestDamage extends BaseSystem{
     Aspect.Builder builder;
     Aspect aspect;

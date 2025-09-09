@@ -49,7 +49,7 @@ public class TargetFind extends IteratingSystem{
         PositionComp pos = pm.get(entityId);
         RangeComp range = rm.get(entityId);
 
-        if(current.targetId == -1 || !world.getEntity(current.targetId).isActive() || dm.has(current.targetId)){
+        if(current.targetId == -1 || dm.has(current.targetId)){
             entityPos.set(pos.x, pos.y);
             current.targetId = Game.entities.closestCircle(pos.x, pos.y, range.range, i -> {
                 //排除友军

@@ -2,11 +2,13 @@ package io.blackdeluxecat.painttd.game;
 
 import com.artemis.*;
 import com.artemis.io.*;
+import com.artemis.link.*;
 import com.artemis.managers.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
+import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.game.pathfind.*;
 import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.map.*;
@@ -23,6 +25,7 @@ public class Game{
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups;
     public static WorldSerializationManager serializer;
+    public static EntityLinkManager entityLinkManager;
 
     public static FlowField flowField;
 
@@ -53,13 +56,15 @@ public class Game{
         builder.with(groups);
         serializer = new WorldSerializationManager();
         builder.with(serializer);
+        entityLinkManager = new EntityLinkManager();
+        builder.with(entityLinkManager);
         lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
 
         if(world != null) world.dispose();
         world = new World(builder.build());
 
         serializer.setSerializer(new JsonArtemisSerializer(world));
-
+        createLinks();
 
 
         Entities.create(world);
@@ -81,6 +86,19 @@ public class Game{
         }
         flowField = new FlowField(map);
         flowField.rebuild();
+    }
+
+    /**持有实体引用的组件, 在此注册{@link com.artemis.annotations.EntityId}字段监听器*/
+    public static void createLinks(){
+        entityLinkManager.register(TargetSingleComp.class,
+            new LinkAdapter(){
+                private ComponentMapper<TargetSingleComp> comp;// relevant fields are injected by default
+
+                @Override
+                public void onTargetDead(int sourceId, int deadTargetId) {
+                    comp.get(sourceId).targetId = -1;
+                }
+            });
     }
 
     /**循环系统层级, z越小, 越早执行*/

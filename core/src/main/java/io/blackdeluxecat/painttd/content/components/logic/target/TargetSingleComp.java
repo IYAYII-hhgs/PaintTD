@@ -1,9 +1,10 @@
 package io.blackdeluxecat.painttd.content.components.logic.target;
 
+import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class TargetSingleComp extends CopyableComponent{
-    public int targetId = -1;
+    @EntityId public int targetId = -1;
 
     public TargetSingleComp(){}
 

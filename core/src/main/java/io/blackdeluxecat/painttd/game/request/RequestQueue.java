@@ -2,7 +2,8 @@ package io.blackdeluxecat.painttd.game.request;
 
 import com.badlogic.gdx.utils.*;
 
-/**维护一个请求队列.
+/**
+ * 维护一个请求队列.
  * 池方法需要自行实现
  */
 public abstract class RequestQueue<T extends RequestQueue.Request>{
@@ -37,9 +38,12 @@ public abstract class RequestQueue<T extends RequestQueue.Request>{
     public abstract static class Request implements Pool.Poolable{
         public boolean handled;
 
-        public Request(){}
+        public Request(){
+        }
 
-        /**标记为已处理. 在处理系统之间传递处理状态.*/
+        /**
+         * 标记为已处理. 在处理系统之间传递处理状态.
+         */
         public void handle(){
             handled = true;
         }

@@ -5,7 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class ColorLevelComp extends CopyableComponent{
     public int level;
 
-    public ColorLevelComp(){}
+    public ColorLevelComp(){
+    }
 
     public ColorLevelComp(int level){
         this.level = level;

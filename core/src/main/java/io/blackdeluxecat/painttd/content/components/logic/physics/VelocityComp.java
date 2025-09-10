@@ -5,7 +5,9 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 public class VelocityComp extends CopyableComponent{
     public float x, y;
-    public VelocityComp(){}
+
+    public VelocityComp(){
+    }
 
     public VelocityComp(float x, float y){
         this.x = x;
@@ -29,7 +31,7 @@ public class VelocityComp extends CopyableComponent{
 
     @Override
     public VelocityComp copy(CopyableComponent other){
-        VelocityComp velocityComp = (VelocityComp) other;
+        VelocityComp velocityComp = (VelocityComp)other;
         velocityComp.x = x;
         velocityComp.y = y;
         return velocityComp;

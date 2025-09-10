@@ -8,11 +8,11 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
-import io.blackdeluxecat.painttd.struct.func.*;
+import io.blackdeluxecat.painttd.utils.func.*;
 
 /**
  * 一个基础索敌系统. 根据索敌标识使用过滤器筛选 **一个** 敌人.
- * */
+ */
 @IsLogicProcess
 public class TargetFind extends IteratingSystem{
     public ComponentMapper<TeamComp> tm;
@@ -45,7 +45,7 @@ public class TargetFind extends IteratingSystem{
         currentProcessId = entityId;
         TeamComp team = tm.get(entityId);
         TargetSingleComp current = tcm.get(entityId);
-        TargetPriorityComp priority =  tpm.get(entityId);
+        TargetPriorityComp priority = tpm.get(entityId);
         PositionComp pos = pm.get(entityId);
         RangeComp range = rm.get(entityId);
 

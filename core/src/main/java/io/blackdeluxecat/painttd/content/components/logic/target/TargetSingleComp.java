@@ -4,9 +4,11 @@ import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class TargetSingleComp extends CopyableComponent{
-    @EntityId public int targetId = -1;
+    @EntityId
+    public int targetId = -1;
 
-    public TargetSingleComp(){}
+    public TargetSingleComp(){
+    }
 
     @Override
     protected void reset(){

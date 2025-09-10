@@ -9,15 +9,22 @@ public class CollideComp extends CopyableComponent{
     public static int FLOOR = 0, OVERLAY = 1, UNIT = 2, BUILDING = 3;
     public static long MAP = 1L << FLOOR | 1L << OVERLAY, ENTITY = 1L << UNIT | 1L << BUILDING, ALL = MAP | ENTITY;
 
-    /** 可碰撞层 */
+    /**
+     * 可碰撞层
+     */
     public long collidesMask;   //64位够你折腾了
-    /** 碰撞层 */
+    /**
+     * 碰撞层
+     */
     public int collideIndex;
     public boolean solid = false;
 
-    public CollideComp(){}
+    public CollideComp(){
+    }
 
-    /** 构造一个指定了碰撞层的单位. */
+    /**
+     * 构造一个指定了碰撞层的单位.
+     */
     public CollideComp(int collideIndex, boolean solid){
         this.collideIndex = collideIndex;
         this.solid = solid;

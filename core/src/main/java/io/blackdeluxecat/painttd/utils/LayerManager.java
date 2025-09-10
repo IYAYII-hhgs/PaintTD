@@ -1,8 +1,8 @@
-package io.blackdeluxecat.painttd.struct;
+package io.blackdeluxecat.painttd.utils;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.utils.*;
-import io.blackdeluxecat.painttd.struct.func.*;
+import io.blackdeluxecat.painttd.utils.func.*;
 
 
 public class LayerManager<T>{
@@ -41,14 +41,18 @@ public class LayerManager<T>{
         return l != null ? l.z : 0;
     }
 
-    /**线程不安全*/
+    /**
+     * 线程不安全
+     */
     public void sort(){
         layers.sort();
     }
 
     public static class Layer<A> implements Comparable<Layer<A>>{
         public final String name;
-        /**一旦修改, 必须排序LayerManager.*/
+        /**
+         * 一旦修改, 必须排序LayerManager.
+         */
         protected float z;
         public Array<A> objects = new Array<>();
 

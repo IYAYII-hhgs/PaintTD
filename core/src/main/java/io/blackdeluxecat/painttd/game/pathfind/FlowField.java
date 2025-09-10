@@ -1,23 +1,23 @@
 package io.blackdeluxecat.painttd.game.pathfind;
 
 import com.artemis.*;
-import com.artemis.utils.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.map.*;
 import io.blackdeluxecat.painttd.map.Map;
 
 import java.util.*;
 
-import static io.blackdeluxecat.painttd.game.Game.groups;
-import static io.blackdeluxecat.painttd.game.Game.world;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
 public class FlowField{
     public Map map;
 
     public Node[][] nodes;
 
-    public PathfindMapEntry entry = new PathfindMapEntry(){};
+    public PathfindMapEntry entry = new PathfindMapEntry(){
+    };
 
     private final PriorityQueue<Node> openList;
 
@@ -31,7 +31,9 @@ public class FlowField{
         openList = new PriorityQueue<>(comparator);
     }
 
-    /**流场重新生成*/
+    /**
+     * 流场重新生成
+     */
     public void rebuild(){
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
@@ -117,7 +119,8 @@ public class FlowField{
         }
     }
 
-    /**标记变更的节点及其子节点为脏
+    /**
+     * 标记变更的节点及其子节点为脏
      * 在循环中, 脏邻居通常会更新积分, 从而传播更新. 如果遇到了不更新的邻居, 自然停止传播.
      */
     public void change(int changedX, int changedY){
@@ -133,7 +136,9 @@ public class FlowField{
         }
     }
 
-    /**生成流场*/
+    /**
+     * 生成流场
+     */
     public void flow(){
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){

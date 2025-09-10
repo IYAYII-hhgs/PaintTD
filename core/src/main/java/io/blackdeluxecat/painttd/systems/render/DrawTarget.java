@@ -9,7 +9,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 
-import static io.blackdeluxecat.painttd.Core.shaper;
+import static io.blackdeluxecat.painttd.Core.*;
 
 public class DrawTarget extends IteratingSystem{
     public ComponentMapper<TargetSingleComp> tm;

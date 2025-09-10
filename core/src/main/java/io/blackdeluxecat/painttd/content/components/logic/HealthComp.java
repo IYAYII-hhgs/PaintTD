@@ -3,10 +3,13 @@ package io.blackdeluxecat.painttd.content.components.logic;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class HealthComp extends CopyableComponent{
-    /**无最大生命值限制令maxHealth == -1*/
+    /**
+     * 无最大生命值限制令maxHealth == -1
+     */
     public float health, maxHealth;
 
-    public HealthComp(){}
+    public HealthComp(){
+    }
 
     public HealthComp(float health, float maxHealth){
         this.health = health;

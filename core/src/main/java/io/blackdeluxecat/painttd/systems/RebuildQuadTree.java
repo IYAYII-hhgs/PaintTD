@@ -22,11 +22,11 @@ public class RebuildQuadTree extends BaseEntitySystem{
     }
 
     @Override
-    protected void processSystem() {
+    protected void processSystem(){
         Game.entities.create(world, 0, 0, Game.map.width, Game.map.height);
         IntBag actives = subscription.getEntities();
         int[] ids = actives.getData();
-        for (int i = 0, s = actives.size(); s > i; i++) {
+        for(int i = 0, s = actives.size(); s > i; i++){
             process(ids[i]);
         }
     }

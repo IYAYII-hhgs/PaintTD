@@ -5,7 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class TileLayerComp extends CopyableComponent{
     public int layer;
 
-    public TileLayerComp(){}
+    public TileLayerComp(){
+    }
 
     public TileLayerComp(int layer){
         this.layer = layer;
@@ -13,7 +14,7 @@ public class TileLayerComp extends CopyableComponent{
 
     @Override
     public TileLayerComp copy(CopyableComponent other){
-        TileLayerComp tileLayerComp = (TileLayerComp) other;
+        TileLayerComp tileLayerComp = (TileLayerComp)other;
         layer = tileLayerComp.layer;
         return this;
     }

@@ -1,9 +1,7 @@
 package io.blackdeluxecat.painttd;
 
-import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.viewport.*;
 import io.blackdeluxecat.painttd.ui.*;
 

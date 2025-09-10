@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
+import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.fragment.*;
 
 import java.util.function.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
-import static io.blackdeluxecat.painttd.game.Game.groups;
-import static io.blackdeluxecat.painttd.game.Game.world;
+import static io.blackdeluxecat.painttd.game.Game.*;
 import static io.blackdeluxecat.painttd.ui.Styles.*;
 
 public class Hud{
@@ -56,25 +56,25 @@ public class Hud{
 
                 line1.add(new ActorUtils<>(new Table()).with(t1 -> {
                     t1.add(ActorUtils.wrapper
-                            .set(new TextButton(bEnemy.name, sTextB))
-                            .click(b -> {
-                                current = bEnemy;
-                            })
-                            .actor);
+                               .set(new TextButton(bEnemy.name, sTextB))
+                               .click(b -> {
+                                   current = bEnemy;
+                               })
+                               .actor);
 
                     t1.add(ActorUtils.wrapper
-                            .set(new TextButton(bPencil.name, sTextB))
-                            .click(b -> {
-                                current = bPencil;
-                            })
-                            .actor);
+                               .set(new TextButton(bPencil.name, sTextB))
+                               .click(b -> {
+                                   current = bPencil;
+                               })
+                               .actor);
 
                     t1.add(ActorUtils.wrapper
-                           .set(new TextButton(bBrush.name, sTextB))
-                           .click(b -> {
-                               current = bBrush;
-                           })
-                           .actor);
+                               .set(new TextButton(bBrush.name, sTextB))
+                               .click(b -> {
+                                   current = bBrush;
+                               })
+                               .actor);
 
                 }).actor).growX();
 
@@ -86,10 +86,10 @@ public class Hud{
 
             t.add(new ActorUtils<>(new Table()).with(rt -> {
                 rt.add(ActorUtils.wrapper
-                          .set(new TextButton("取消", sTextB))
-                          .click(b -> {
-                              current = null;
-                          }).update(b -> b.setVisible(current != null)).actor).width(4 * buttonSize).growY();
+                           .set(new TextButton("取消", sTextB))
+                           .click(b -> {
+                               current = null;
+                           }).update(b -> b.setVisible(current != null)).actor).width(4 * buttonSize).growY();
             }).actor).fill();
 
             t.add(new ActorUtils<>(new Table()).with(rt -> {
@@ -142,23 +142,23 @@ public class Hud{
     }
 
     public EntityBrush bEnemy = new EntityBrush("敌人"){
-                @Override
-                public void getType(){
-                    type = Entities.eraser;
-                }
-            },
+        @Override
+        public void getType(){
+            type = Entities.eraser;
+        }
+    },
 
-            bPencil = new EntityBrush("铅笔"){
-                @Override
-                public void getType(){
-                    type = Entities.pencil;
-                }
-            },
+    bPencil = new EntityBrush("铅笔"){
+        @Override
+        public void getType(){
+            type = Entities.pencil;
+        }
+    },
 
-            bBrush = new EntityBrush("笔刷"){
-                @Override
-                public void getType(){
-                    type = Entities.brush;
-                }
-            };
+    bBrush = new EntityBrush("笔刷"){
+        @Override
+        public void getType(){
+            type = Entities.brush;
+        }
+    };
 }

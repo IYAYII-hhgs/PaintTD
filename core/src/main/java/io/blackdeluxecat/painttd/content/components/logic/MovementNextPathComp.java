@@ -6,7 +6,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class MovementNextPathComp extends CopyableComponent{
     public Vector2 current = new Vector2(), next = new Vector2();
 
-    public MovementNextPathComp(){}
+    public MovementNextPathComp(){
+    }
 
     @Override
     protected void reset(){

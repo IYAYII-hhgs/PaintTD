@@ -5,7 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class ArmorComp extends CopyableComponent{
     public float armor;
 
-    public ArmorComp(){}
+    public ArmorComp(){
+    }
 
     public ArmorComp(float armor){
         this.armor = armor;

@@ -6,7 +6,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class PositionComp extends CopyableComponent{
     public float x, y;
 
-    public PositionComp(){}
+    public PositionComp(){
+    }
 
     public PositionComp(float x, float y){
         this.x = x;

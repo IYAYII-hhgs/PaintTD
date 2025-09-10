@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 
-import static io.blackdeluxecat.painttd.Core.shaper;
-import static io.blackdeluxecat.painttd.game.Game.map;
+import static io.blackdeluxecat.painttd.Core.*;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
 public class DrawColoredTileStain extends BaseSystem{
     public ComponentMapper<HealthComp> healthMapper;

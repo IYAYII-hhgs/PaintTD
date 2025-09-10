@@ -7,7 +7,8 @@ public class HitboxComp extends CopyableComponent{
     public float height = 1;
     public float scale = 1;
 
-    public HitboxComp(){}
+    public HitboxComp(){
+    }
 
     public HitboxComp(float width, float height){
         this.width = width;

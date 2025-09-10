@@ -4,7 +4,7 @@ import com.artemis.*;
 import com.artemis.io.*;
 import com.artemis.link.*;
 import com.artemis.managers.*;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
@@ -12,11 +12,11 @@ import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.game.pathfind.*;
 import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.map.*;
-import io.blackdeluxecat.painttd.struct.*;
 import io.blackdeluxecat.painttd.systems.*;
 import io.blackdeluxecat.painttd.systems.render.*;
 import io.blackdeluxecat.painttd.systems.request.*;
 import io.blackdeluxecat.painttd.systems.utils.*;
+import io.blackdeluxecat.painttd.utils.*;
 
 public class Game{
     public static float lfps = 60f;
@@ -24,12 +24,14 @@ public class Game{
     public static Map map = new Map();
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups;
-    public static WorldSerializationManager serializer;
+    public static WorldSerializationManager worldSerializationManager;
     public static EntityLinkManager entityLinkManager;
 
     public static FlowField flowField;
 
-    /**每帧开始时重建树, 需自行检查在当前帧中失效的单位.*/
+    /**
+     * 每帧开始时重建树, 需自行检查在当前帧中失效的单位.
+     */
     public static QuadTree entities = new QuadTree();
 
     public static CollideQueue collideQueue = new CollideQueue();
@@ -42,7 +44,9 @@ public class Game{
         loadMap();
     }
 
-    /**重建整个世界, 加载地图.*/
+    /**
+     * 重建整个世界, 加载地图.
+     */
     public static void loadMap(){
         collideQueue.clear();
         damageQueue.clear();
@@ -54,8 +58,8 @@ public class Game{
         //systems
         groups = new GroupManager();
         builder.with(groups);
-        serializer = new WorldSerializationManager();
-        builder.with(serializer);
+        worldSerializationManager = new WorldSerializationManager();
+        builder.with(worldSerializationManager);
         entityLinkManager = new EntityLinkManager();
         builder.with(entityLinkManager);
         lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
@@ -63,9 +67,8 @@ public class Game{
         if(world != null) world.dispose();
         world = new World(builder.build());
 
-        serializer.setSerializer(new JsonArtemisSerializer(world));
+        worldSerializationManager.setSerializer(new JsonArtemisSerializer(world));
         createLinks();
-
 
         Entities.create(world);
 
@@ -88,20 +91,24 @@ public class Game{
         flowField.rebuild();
     }
 
-    /**持有实体引用的组件, 在此注册{@link com.artemis.annotations.EntityId}字段监听器*/
+    /**
+     * 持有实体引用的组件, 在此注册{@link com.artemis.annotations.EntityId}字段监听器
+     */
     public static void createLinks(){
         entityLinkManager.register(TargetSingleComp.class,
             new LinkAdapter(){
                 private ComponentMapper<TargetSingleComp> comp;// relevant fields are injected by default
 
                 @Override
-                public void onTargetDead(int sourceId, int deadTargetId) {
+                public void onTargetDead(int sourceId, int deadTargetId){
                     comp.get(sourceId).targetId = -1;
                 }
             });
     }
 
-    /**循环系统层级, z越小, 越早执行*/
+    /**
+     * 循环系统层级, z越小, 越早执行
+     */
     public static LayerManager.Layer<BaseSystem>
         logicPre = lm.lm.registerLayer("logicFirstWork", 0),
         logicCollide = lm.lm.registerLayer("logicCollide", 100),

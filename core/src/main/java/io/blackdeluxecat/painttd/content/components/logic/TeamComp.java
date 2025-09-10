@@ -5,7 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class TeamComp extends CopyableComponent{
     public int team;
 
-    public TeamComp(){}
+    public TeamComp(){
+    }
 
     public TeamComp(int team){
         this.team = team;

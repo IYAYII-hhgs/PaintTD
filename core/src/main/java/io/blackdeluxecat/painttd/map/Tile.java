@@ -1,8 +1,10 @@
 package io.blackdeluxecat.painttd.map;
 
-import static io.blackdeluxecat.painttd.game.Game.flowField;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
-/**地图瓦片类, 维护该瓦片的基本属性.*/
+/**
+ * 地图瓦片类, 维护该瓦片的基本属性.
+ */
 public class Tile{
     public int x, y;
     public int layer = 1;

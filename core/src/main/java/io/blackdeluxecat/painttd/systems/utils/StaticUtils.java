@@ -37,7 +37,8 @@ public class StaticUtils extends BaseSystem{
     }
 
     @Override
-    protected void processSystem(){}
+    protected void processSystem(){
+    }
 
     @Override
     protected void setWorld(World world){

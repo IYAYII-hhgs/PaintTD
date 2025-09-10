@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
-import io.blackdeluxecat.painttd.struct.func.*;
+import io.blackdeluxecat.painttd.utils.func.*;
 
 /**
  * 点坐标为实体id映射的{@link io.blackdeluxecat.painttd.content.components.logic.PositionComp}
@@ -92,9 +92,10 @@ public class QuadTree{
         });
     }
 
-    /**查询圆心坐标xy, 半径为radius的圆域.
+    /**
+     * 查询圆心坐标xy, 半径为radius的圆域.
      * 查询碰撞箱中心在圆域内的实体.
-     * */
+     */
     public void queryCircle(float x, float y, float radius, IntArray result, @Null IntBoolf filter){
         root.query(x - radius, y - radius, radius * 2, radius * 2, result);
         for(int i = result.size - 1; i >= 0; i--){
@@ -178,6 +179,7 @@ public class QuadTree{
 
         /**
          * 查询矩形
+         *
          * @param x 矩形左下角x坐标
          * @param y 矩形左下角y坐标
          */
@@ -272,7 +274,9 @@ public class QuadTree{
         }
     }
 
-    /**获取一个实体的碰撞箱, 储存在{@link #re}*/
+    /**
+     * 获取一个实体的碰撞箱, 储存在{@link #re}
+     */
     protected Rectangle hitbox(int entity){
         return re.setSize(hm.get(entity).width, hm.get(entity).height).setCenter(pm.get(entity).x, pm.get(entity).y);
     }

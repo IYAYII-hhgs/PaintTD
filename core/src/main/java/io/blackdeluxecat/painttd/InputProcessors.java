@@ -2,11 +2,12 @@ package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.*;
+import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
-import io.blackdeluxecat.painttd.struct.*;
+import io.blackdeluxecat.painttd.utils.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
-import static io.blackdeluxecat.painttd.Vars.worldViewport;
+import static io.blackdeluxecat.painttd.Vars.*;
 
 public class InputProcessors{
     public static LayerManager<InputProcessor> inputProcessors = new LayerManager<>();
@@ -74,7 +75,9 @@ public class InputProcessors{
         sort();
     }
 
-    /**当修改了某个Layer之后, 进行排序.*/
+    /**
+     * 当修改了某个Layer之后, 进行排序.
+     */
     public static void sort(){
         inputProcessors.sort();
         inputMultiplexer.clear();

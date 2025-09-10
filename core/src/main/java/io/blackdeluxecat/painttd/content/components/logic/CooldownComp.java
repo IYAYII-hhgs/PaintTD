@@ -7,7 +7,8 @@ public class CooldownComp extends CopyableComponent{
     public float currentCooldown;
     public int shootCount;
 
-    public CooldownComp(){}
+    public CooldownComp(){
+    }
 
     public CooldownComp(float cooldownTicks){
         this.cooldown = cooldownTicks;

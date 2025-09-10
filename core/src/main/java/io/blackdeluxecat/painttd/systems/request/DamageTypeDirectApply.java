@@ -5,7 +5,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.systems.*;
 
-import static io.blackdeluxecat.painttd.game.Game.damageQueue;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
 public class DamageTypeDirectApply extends BaseSystem{

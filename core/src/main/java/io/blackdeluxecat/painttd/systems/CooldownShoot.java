@@ -3,12 +3,11 @@ package io.blackdeluxecat.painttd.systems;
 import com.artemis.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
-import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 
 /**
  * 带有冷却的武器的攻击
- * */
+ */
 @IsLogicProcess
 public class CooldownShoot extends IteratingSystem{
     public ComponentMapper<CooldownComp> cm;

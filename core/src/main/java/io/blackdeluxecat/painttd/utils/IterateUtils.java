@@ -1,7 +1,7 @@
-package io.blackdeluxecat.painttd.struct;
+package io.blackdeluxecat.painttd.utils;
 
 import com.badlogic.gdx.utils.*;
-import io.blackdeluxecat.painttd.struct.func.*;
+import io.blackdeluxecat.painttd.utils.func.*;
 
 public class IterateUtils{
     public static <T> @Null T first(Iterable<T> array, Boolf<T> func){

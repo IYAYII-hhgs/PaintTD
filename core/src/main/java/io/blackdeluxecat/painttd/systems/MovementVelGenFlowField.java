@@ -15,7 +15,7 @@ public class MovementVelGenFlowField extends IteratingSystem{
     private ComponentMapper<MoveSpeedComp> moveSpeedMapper;
     private ComponentMapper<MovementNextPathComp> nextPathMapper;
 
-    public MovementVelGenFlowField() {
+    public MovementVelGenFlowField(){
         super(Aspect.all(PositionComp.class, VelocityComp.class, MoveSpeedComp.class, MovementNextPathComp.class).exclude(MarkerComp.Dead.class));
     }
 
@@ -29,7 +29,7 @@ public class MovementVelGenFlowField extends IteratingSystem{
     }
 
     @Override
-    protected void process(int entityId) {
+    protected void process(int entityId){
         PositionComp pos = positionMapper.get(entityId);
         VelocityComp vel = velocityMapper.get(entityId);
         MoveSpeedComp moveSpeed = moveSpeedMapper.get(entityId);

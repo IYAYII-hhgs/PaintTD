@@ -4,7 +4,9 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 public class MoveSpeedComp extends CopyableComponent{
     public float baseSpeed, speed;
-    public MoveSpeedComp(){}
+
+    public MoveSpeedComp(){
+    }
 
     public MoveSpeedComp(float baseSpeedUnitPerTick){
         this.baseSpeed = baseSpeedUnitPerTick;

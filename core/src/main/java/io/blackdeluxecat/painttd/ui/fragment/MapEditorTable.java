@@ -3,12 +3,11 @@ package io.blackdeluxecat.painttd.ui.fragment;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
-import io.blackdeluxecat.painttd.game.Game;
+import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.ui.*;
 
-import static io.blackdeluxecat.painttd.game.Game.world;
-import static io.blackdeluxecat.painttd.ui.Styles.sLabel;
-import static io.blackdeluxecat.painttd.ui.Styles.sTextB;
+import static io.blackdeluxecat.painttd.game.Game.*;
+import static io.blackdeluxecat.painttd.ui.Styles.*;
 
 public class MapEditorTable extends Table{
     public int selectColorIndex = 0;

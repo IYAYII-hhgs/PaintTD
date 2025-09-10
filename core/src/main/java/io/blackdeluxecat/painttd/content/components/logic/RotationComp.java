@@ -5,7 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class RotationComp extends CopyableComponent{
     public float rotation;
 
-    public RotationComp(){}
+    public RotationComp(){
+    }
 
     public RotationComp(float rotation){
         this.rotation = rotation;
@@ -18,7 +19,7 @@ public class RotationComp extends CopyableComponent{
 
     @Override
     public RotationComp copy(CopyableComponent other){
-        RotationComp rotationComp = (RotationComp) other;
+        RotationComp rotationComp = (RotationComp)other;
         rotation = rotationComp.rotation;
         return this;
     }

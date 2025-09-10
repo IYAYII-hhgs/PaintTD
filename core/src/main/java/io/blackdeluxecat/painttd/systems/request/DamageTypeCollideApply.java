@@ -5,7 +5,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.systems.*;
 
-import static io.blackdeluxecat.painttd.game.Game.damageQueue;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
 public class DamageTypeCollideApply extends BaseSystem{
@@ -29,7 +29,7 @@ public class DamageTypeCollideApply extends BaseSystem{
                 if(healthMapper.has(req.sourceId) && healthMapper.has(req.targetId)){
                     var sourceHealth = healthMapper.get(req.targetId);
                     var targetHealth = healthMapper.get(req.sourceId);
-                    if(sourceHealth.health <= 0 || targetHealth.health <=0){
+                    if(sourceHealth.health <= 0 || targetHealth.health <= 0){
                         continue;
                     }
                     float damage = Math.min(sourceHealth.health, targetHealth.health);

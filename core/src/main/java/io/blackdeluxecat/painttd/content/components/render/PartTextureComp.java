@@ -4,14 +4,15 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-import static io.blackdeluxecat.painttd.Core.atlas;
+import static io.blackdeluxecat.painttd.Core.*;
 
 public class PartTextureComp extends CopyableComponent{
     public String textureName;
     public TextureAtlas.AtlasRegion atlasRegion;
     public TextureRegionDrawable drawable;
 
-    public PartTextureComp(){}
+    public PartTextureComp(){
+    }
 
     public PartTextureComp(String textureName){
         this.textureName = textureName;
@@ -21,7 +22,7 @@ public class PartTextureComp extends CopyableComponent{
 
     @Override
     public PartTextureComp copy(CopyableComponent other){
-        PartTextureComp partTextureComp = (PartTextureComp) other;
+        PartTextureComp partTextureComp = (PartTextureComp)other;
         this.textureName = partTextureComp.textureName;
         this.atlasRegion = partTextureComp.atlasRegion;
         this.drawable = partTextureComp.drawable;

@@ -5,7 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class RangeComp extends CopyableComponent{
     public int range;
 
-    public RangeComp(){}
+    public RangeComp(){
+    }
 
     public RangeComp(int range){
         this.range = range;

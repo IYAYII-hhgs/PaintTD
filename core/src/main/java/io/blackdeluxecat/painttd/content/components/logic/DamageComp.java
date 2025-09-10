@@ -2,11 +2,14 @@ package io.blackdeluxecat.painttd.content.components.logic;
 
 import io.blackdeluxecat.painttd.content.components.*;
 
-/**武器的最终攻击力组件。*/
+/**
+ * 武器的最终攻击力组件。
+ */
 public class DamageComp extends CopyableComponent{
     public float damage;
 
-    public DamageComp(){}
+    public DamageComp(){
+    }
 
     public DamageComp(float damage){
         this.damage = damage;

@@ -6,7 +6,8 @@ public class DamageSlashComp extends CopyableComponent{
     public float damage;
     public float range;
 
-    public DamageSlashComp(){}
+    public DamageSlashComp(){
+    }
 
     public DamageSlashComp(float damage, float range){
         this.damage = damage;
@@ -15,7 +16,7 @@ public class DamageSlashComp extends CopyableComponent{
 
     @Override
     public CopyableComponent copy(CopyableComponent other){
-        DamageSlashComp otherComp = (DamageSlashComp) other;
+        DamageSlashComp otherComp = (DamageSlashComp)other;
         this.damage = otherComp.damage;
         this.range = otherComp.range;
         return this;

@@ -8,7 +8,7 @@ import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.content.components.render.*;
 
-import static io.blackdeluxecat.painttd.game.Game.lfps;
+import static io.blackdeluxecat.painttd.game.Game.*;
 
 public class Entities{
     public static Array<EntityType> types = new Array<>();
@@ -16,8 +16,8 @@ public class Entities{
     public static EntityType
         //enemies
         unit, eraser, tileStain,
-        //turrets
-        building, pencil, brush;
+    //turrets
+    building, pencil, brush;
 
     public static void createBuilding(){
         building = new EntityType("building"){

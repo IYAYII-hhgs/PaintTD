@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.struct.func;
+package io.blackdeluxecat.painttd.utils.func;
 
 public interface Cons4<A, B, C, D>{
     void get(A a, B b, C c, D d);

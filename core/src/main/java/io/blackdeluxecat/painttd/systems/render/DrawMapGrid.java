@@ -3,11 +3,9 @@ package io.blackdeluxecat.painttd.systems.render;
 import com.artemis.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
-import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.game.*;
 
-import static io.blackdeluxecat.painttd.Core.shaper;
-import static io.blackdeluxecat.painttd.game.Game.flowField;
+import static io.blackdeluxecat.painttd.Core.*;
 
 public class DrawMapGrid extends BaseSystem{
 

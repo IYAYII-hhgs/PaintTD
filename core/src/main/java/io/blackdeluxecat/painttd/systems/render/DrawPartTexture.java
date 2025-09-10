@@ -7,7 +7,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.render.*;
 
-import static io.blackdeluxecat.painttd.Core.batch;
+import static io.blackdeluxecat.painttd.Core.*;
 
 public class DrawPartTexture extends IteratingSystem{
     public ComponentMapper<PartTextureComp> partTextureMapper;

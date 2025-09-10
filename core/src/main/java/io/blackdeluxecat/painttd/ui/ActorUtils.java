@@ -3,7 +3,7 @@ package io.blackdeluxecat.painttd.ui;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
-import io.blackdeluxecat.painttd.struct.func.*;
+import io.blackdeluxecat.painttd.utils.func.*;
 
 /**
  * Actor元素的包装类, 提供更多链式调用.
@@ -15,7 +15,8 @@ public class ActorUtils<T extends Actor>{
 
     public T actor;
 
-    protected ActorUtils(){}
+    protected ActorUtils(){
+    }
 
     public ActorUtils(T actor){
         this.actor = actor;

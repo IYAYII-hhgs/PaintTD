@@ -5,7 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class TileStainComp extends CopyableComponent{
     public boolean isCore, lastIsCore;
 
-    public TileStainComp(){}
+    public TileStainComp(){
+    }
 
     public TileStainComp(boolean isCore){
         this.isCore = isCore;
@@ -14,7 +15,7 @@ public class TileStainComp extends CopyableComponent{
 
     @Override
     public TileStainComp copy(CopyableComponent other){
-        TileStainComp o = (TileStainComp) other;
+        TileStainComp o = (TileStainComp)other;
         this.isCore = o.isCore;
         this.lastIsCore = o.lastIsCore;
         return this;

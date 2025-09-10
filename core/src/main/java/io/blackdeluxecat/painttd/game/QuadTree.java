@@ -15,8 +15,6 @@ import io.blackdeluxecat.painttd.utils.func.*;
 public class QuadTree{
     protected static Rectangle re = new Rectangle(), r1 = new Rectangle();
     protected static Vector2 v = new Vector2();
-    public ComponentMapper<PositionComp> pm;
-    public ComponentMapper<HitboxComp> hm;
     public final int maxValues;
     public final int maxDepth;
 
@@ -35,8 +33,6 @@ public class QuadTree{
 
     public void create(World world, float x, float y, float width, float height){
         clear();
-        this.pm = world.getMapper(PositionComp.class);
-        this.hm = world.getMapper(HitboxComp.class);
         root.set(this, x, y, width, height, 0);
     }
 
@@ -278,7 +274,9 @@ public class QuadTree{
      * 获取一个实体的碰撞箱, 储存在{@link #re}
      */
     protected Rectangle hitbox(int entity){
-        return re.setSize(hm.get(entity).width, hm.get(entity).height).setCenter(pm.get(entity).x, pm.get(entity).y);
+        PositionComp pos = Game.utils.positionMapper.get(entity);
+        HitboxComp hitbox = Game.utils.hitboxMapper.get(entity);
+        return re.setSize(hitbox.width, hitbox.height).setCenter(pos.x, pos.y);
     }
 
     public Rectangle hitbox(int entity, Rectangle out){
@@ -286,6 +284,6 @@ public class QuadTree{
     }
 
     public Vector2 pos(int entity){
-        return pm.get(entity).out(v);
+        return Game.utils.positionMapper.get(entity).out(v);
     }
 }

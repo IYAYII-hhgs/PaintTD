@@ -27,12 +27,11 @@ public class Game{
     public static WorldSerializationManager worldSerializationManager;
     public static EntityLinkManager entityLinkManager;
 
-    public static FlowField flowField;
-
     /**
      * 每帧开始时重建树, 需自行检查在当前帧中失效的单位.
      */
     public static QuadTree entities = new QuadTree();
+    public static FlowField flowField;
 
     public static CollideQueue collideQueue = new CollideQueue();
     public static DamageQueue damageQueue = new DamageQueue();

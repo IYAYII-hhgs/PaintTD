@@ -7,6 +7,7 @@ import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
+import io.blackdeluxecat.painttd.io.*;
 import io.blackdeluxecat.painttd.ui.fragment.*;
 
 import java.util.function.*;
@@ -90,6 +91,14 @@ public class Hud{
                            .click(b -> {
                                current = null;
                            }).update(b -> b.setVisible(current != null)).actor).width(4 * buttonSize).growY();
+            }).actor).fill();
+
+            t.add(new ActorUtils<>(new Table()).with(rt -> {
+                rt.add(ActorUtils.wrapper
+                           .set(new TextButton("保存?", sTextB))
+                           .click(b -> {
+                               SaveHandler.save("save0");
+                           }).actor).width(4 * buttonSize).growY();
             }).actor).fill();
 
             t.add(new ActorUtils<>(new Table()).with(rt -> {

@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.math.*;
@@ -10,16 +11,10 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
+@Wire
 public class DrawColoredTileStain extends BaseSystem{
     public ComponentMapper<HealthComp> healthMapper;
     public ComponentMapper<TileStainComp> tileStainMapper;
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        healthMapper = world.getMapper(HealthComp.class);
-        tileStainMapper = world.getMapper(TileStainComp.class);
-    }
 
     @Override
     protected void processSystem(){

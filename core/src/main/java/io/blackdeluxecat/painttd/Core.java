@@ -20,5 +20,5 @@ public class Core{
      */
     public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
-    public static FileHandle externalFolder = Gdx.files.external("AppData\\Roaming\\PaintTD");
+    public static FileHandle gameDataFolder = Gdx.files.external("AppData\\Roaming\\PaintTD");
 }

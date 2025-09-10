@@ -2,7 +2,6 @@ package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.*;
-import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.*;
 
@@ -31,7 +30,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
         InputProcessors.create();
         Game.create();
 
-        externalFolder.child("save.txt").writeString("11", false);
+        gameDataFolder.child("save.txt").writeString("11", false);
     }
 
     @Override

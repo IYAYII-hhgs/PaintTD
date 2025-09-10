@@ -1,10 +1,14 @@
 package io.blackdeluxecat.painttd.systems.utils;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 
+@Wire
 public class StaticUtils extends BaseSystem{
+    @All public EntitySubscription allEntitiesSub;
+
     public ComponentMapper<PositionComp> positionMapper;
     public ComponentMapper<HitboxComp> hitboxMapper;
     public ComponentMapper<HealthComp> healthMapper;
@@ -38,17 +42,5 @@ public class StaticUtils extends BaseSystem{
 
     @Override
     protected void processSystem(){
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        positionMapper = world.getMapper(PositionComp.class);
-        hitboxMapper = world.getMapper(HitboxComp.class);
-        healthMapper = world.getMapper(HealthComp.class);
-        teamMapper = world.getMapper(TeamComp.class);
-        energyMapper = world.getMapper(EnergyComp.class);
-        energyRegenMapper = world.getMapper(EnergyRegenComp.class);
-        tileStainMapper = world.getMapper(TileStainComp.class);
     }
 }

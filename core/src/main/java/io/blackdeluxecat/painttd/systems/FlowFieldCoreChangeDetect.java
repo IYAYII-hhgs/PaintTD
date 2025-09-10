@@ -1,25 +1,20 @@
 package io.blackdeluxecat.painttd.systems;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
+@Wire
 public class FlowFieldCoreChangeDetect extends IteratingSystem{
     public ComponentMapper<TileStainComp> tsc;
     public ComponentMapper<PositionComp> pc;
 
     public FlowFieldCoreChangeDetect(){
         super(Aspect.all(TileStainComp.class, PositionComp.class));
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        tsc = world.getMapper(TileStainComp.class);
-        pc = world.getMapper(PositionComp.class);
     }
 
     @Override

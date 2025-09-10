@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.graphics.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
@@ -9,6 +10,7 @@ import io.blackdeluxecat.painttd.content.components.render.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 
+@Wire
 public class DrawPartTexture extends IteratingSystem{
     public ComponentMapper<PartTextureComp> partTextureMapper;
     public ComponentMapper<PositionComp> positionMapper;
@@ -16,14 +18,6 @@ public class DrawPartTexture extends IteratingSystem{
 
     public DrawPartTexture(){
         super(Aspect.all(PartTextureComp.class, PositionComp.class));
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        partTextureMapper = world.getMapper(PartTextureComp.class);
-        positionMapper = world.getMapper(PositionComp.class);
-        hitboxMapper = world.getMapper(HitboxComp.class);
     }
 
     @Override

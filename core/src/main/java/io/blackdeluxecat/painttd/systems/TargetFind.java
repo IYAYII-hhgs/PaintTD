@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.systems;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.*;
@@ -14,6 +15,7 @@ import io.blackdeluxecat.painttd.utils.func.*;
  * 一个基础索敌系统. 根据索敌标识使用过滤器筛选 **一个** 敌人.
  */
 @IsLogicProcess
+@Wire
 public class TargetFind extends IteratingSystem{
     public ComponentMapper<TeamComp> tm;
     public ComponentMapper<PositionComp> pm;
@@ -27,17 +29,6 @@ public class TargetFind extends IteratingSystem{
 
     public TargetFind(){
         super(Aspect.all(TeamComp.class, PositionComp.class, TargetSingleComp.class, TargetPriorityComp.class).exclude(MarkerComp.Dead.class));
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        tm = world.getMapper(TeamComp.class);
-        pm = world.getMapper(PositionComp.class);
-        tcm = world.getMapper(TargetSingleComp.class);
-        tpm = world.getMapper(TargetPriorityComp.class);
-        rm = world.getMapper(RangeComp.class);
-        dm = world.getMapper(MarkerComp.Dead.class);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.systems;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
@@ -9,17 +10,12 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
  * 带有冷却的武器的攻击
  */
 @IsLogicProcess
+@Wire
 public class CooldownShoot extends IteratingSystem{
     public ComponentMapper<CooldownComp> cm;
 
     public CooldownShoot(){
         super(Aspect.all(CooldownComp.class).exclude(MarkerComp.Dead.class));
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        cm = world.getMapper(CooldownComp.class);
     }
 
     @Override

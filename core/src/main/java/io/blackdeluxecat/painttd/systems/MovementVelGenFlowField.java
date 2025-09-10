@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.systems;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
@@ -9,6 +10,7 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
 
 @IsLogicProcess
+@Wire
 public class MovementVelGenFlowField extends IteratingSystem{
     private ComponentMapper<PositionComp> positionMapper;
     private ComponentMapper<VelocityComp> velocityMapper;
@@ -17,15 +19,6 @@ public class MovementVelGenFlowField extends IteratingSystem{
 
     public MovementVelGenFlowField(){
         super(Aspect.all(PositionComp.class, VelocityComp.class, MoveSpeedComp.class, MovementNextPathComp.class).exclude(MarkerComp.Dead.class));
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        positionMapper = world.getMapper(PositionComp.class);
-        velocityMapper = world.getMapper(VelocityComp.class);
-        moveSpeedMapper = world.getMapper(MoveSpeedComp.class);
-        nextPathMapper = world.getMapper(MovementNextPathComp.class);
     }
 
     @Override

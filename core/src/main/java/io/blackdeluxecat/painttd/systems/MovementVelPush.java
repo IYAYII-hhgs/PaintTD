@@ -1,24 +1,19 @@
 package io.blackdeluxecat.painttd.systems;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 
 @IsLogicProcess
+@Wire
 public class MovementVelPush extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<VelocityComp> vm;
 
     public MovementVelPush(){
         super(Aspect.all(PositionComp.class, VelocityComp.class));
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        pm = world.getMapper(PositionComp.class);
-        vm = world.getMapper(VelocityComp.class);
     }
 
     @Override

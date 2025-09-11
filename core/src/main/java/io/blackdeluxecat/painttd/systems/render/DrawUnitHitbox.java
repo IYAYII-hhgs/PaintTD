@@ -29,7 +29,7 @@ public class DrawUnitHitbox extends IteratingSystem{
         shaper.begin(ShapeRenderer.ShapeType.Line);
         Vars.c1.set(Color.WHITE);
         HealthComp hpc = hm.get(entityId);
-        if(hpc != null){
+        if(hpc != null && hpc.maxHealth != -1){
             Vars.c1.lerp(Color.RED, 1 - hpc.health / hpc.maxHealth);
         }
         shaper.setColor(Vars.c1);

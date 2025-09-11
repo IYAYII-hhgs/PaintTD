@@ -25,11 +25,6 @@ public class CollideDetect extends IteratingSystem{
     }
 
     @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-    }
-
-    @Override
     protected void process(int entityId){
         entities.hitbox(entityId, r1);
         result.clear();

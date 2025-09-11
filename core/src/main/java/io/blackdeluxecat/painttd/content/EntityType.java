@@ -5,12 +5,13 @@ import com.artemis.utils.*;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.reflect.*;
 import io.blackdeluxecat.painttd.content.components.*;
+import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 public class EntityType{
-    public String name;
+    public String id;
 
     /**
      * 默认组件包。默认组件使用构造函数创建，不需要池化管理。由{@link #create()}创建的实体将拷贝一份受到池化管理的组件包。
@@ -18,16 +19,15 @@ public class EntityType{
     public OrderedMap<Class<? extends CopyableComponent>, CopyableComponent> def = new OrderedMap<>();
     public Bag<String> groups = new Bag<>();
 
-    /**
-     * 推荐使用匿名构造函数编辑默认组件包
-     */
-    public EntityType(String name){
-        this.name = name;
+    /**推荐在匿名构造函数编辑默认组件包*/
+    public EntityType(String id){
+        this.id = id;
+        add(new EntityTypeComp(id));
         Entities.types.add(this);
     }
 
-    public EntityType(String name, EntityType superType){
-        this(name);
+    public EntityType(String id, EntityType superType){
+        this(id);
         copyType(superType);
     }
 
@@ -75,6 +75,15 @@ public class EntityType{
             Game.groups.add(e, group);
         }
         return e;
+    }
+
+    /**补足反序列化后的实体中缺少的组件*/
+    public void refill(Entity e){
+        for(CopyableComponent def : def.values()){
+            var comp = e.getComponent(def.getClass());
+            if(comp == null) comp = e.edit().create(def.getClass());
+            comp.refill(def);
+        }
     }
 
     /**

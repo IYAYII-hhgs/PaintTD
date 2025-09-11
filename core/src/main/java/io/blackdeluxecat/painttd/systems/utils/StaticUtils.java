@@ -4,6 +4,7 @@ import com.artemis.*;
 import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
+import io.blackdeluxecat.painttd.content.components.marker.*;
 
 @Wire
 public class StaticUtils extends BaseSystem{
@@ -13,9 +14,8 @@ public class StaticUtils extends BaseSystem{
     public ComponentMapper<HitboxComp> hitboxMapper;
     public ComponentMapper<HealthComp> healthMapper;
     public ComponentMapper<TeamComp> teamMapper;
-    public ComponentMapper<EnergyComp> energyMapper;
-    public ComponentMapper<EnergyRegenComp> energyRegenMapper;
     public ComponentMapper<TileStainComp> tileStainMapper;
+    public ComponentMapper<EntityTypeComp> entityTypeMapper;
 
     public boolean isTeammate(int e1, int e2){
         return teamMapper.get(e1).team == teamMapper.get(e2).team;
@@ -25,19 +25,6 @@ public class StaticUtils extends BaseSystem{
         PositionComp p = positionMapper.get(e);
         p.x = x;
         p.y = y;
-    }
-
-    public void setEnergySystem(int e, float cap, float init, boolean hasRegen, float regenRate){
-        EnergyComp ec = energyMapper.get(e);
-        if(ec != null){
-            ec.energy = init;
-            ec.maxEnergy = cap;
-        }
-
-        EnergyRegenComp erc = energyRegenMapper.get(e);
-        if(hasRegen && erc != null){
-            erc.regenRate = regenRate;
-        }
     }
 
     @Override

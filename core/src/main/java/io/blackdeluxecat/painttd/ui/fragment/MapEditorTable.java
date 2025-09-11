@@ -24,7 +24,7 @@ public class MapEditorTable extends Table{
         add(new ActorUtils<>(new Table()).with(t1 -> {
             t1.add(ActorUtils.wrapper
                        .set(new TextButton("重置世界", sTextB))
-                       .click(b -> Game.loadMap())
+                       .click(b -> Game.setupNewMap())
                        .actor);
 
             t1.add(ActorUtils.wrapper

@@ -83,7 +83,7 @@ public class Entities{
                 add(new TeamComp(1));
 
                 add(new HealthComp(16));
-                add(new HitboxComp(0.8f));
+                add(new HitboxComp(0.6f));
 
                 add(new MoveSpeedComp(1f / lfps));
                 add(new VelocityComp());
@@ -104,6 +104,15 @@ public class Entities{
                 add(new HealthComp(-1));
             }
         };
+    }
+
+    public static EntityType getByName(String id){
+        for(EntityType type : types){
+            if(type.id.equals(id)){
+                return type;
+            }
+        }
+        return null;
     }
 
     public static void create(World world){

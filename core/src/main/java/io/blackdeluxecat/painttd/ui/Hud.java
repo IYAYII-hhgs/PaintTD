@@ -95,9 +95,17 @@ public class Hud{
 
             t.add(new ActorUtils<>(new Table()).with(rt -> {
                 rt.add(ActorUtils.wrapper
-                           .set(new TextButton("保存?", sTextB))
+                           .set(new TextButton("存档?", sTextB))
                            .click(b -> {
                                SaveHandler.save("save0");
+                           }).actor).width(4 * buttonSize).growY();
+            }).actor).fill();
+
+            t.add(new ActorUtils<>(new Table()).with(rt -> {
+                rt.add(ActorUtils.wrapper
+                           .set(new TextButton("读档?", sTextB))
+                           .click(b -> {
+                               SaveHandler.load("save0");
                            }).actor).width(4 * buttonSize).growY();
             }).actor).fill();
 

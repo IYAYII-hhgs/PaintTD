@@ -4,10 +4,12 @@ import com.artemis.*;
 import com.artemis.io.*;
 import com.artemis.link.*;
 import com.artemis.managers.*;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.game.pathfind.*;
 import io.blackdeluxecat.painttd.game.request.*;
@@ -38,15 +40,24 @@ public class Game{
 
     public static StaticUtils utils = new StaticUtils();
 
+    /**初始化Game类及系统*/
     public static void create(){
         createSystems();
-        loadMap();
+
+        // 创建测试用地图
+        setupNewMap();
+    }
+
+    /**创建一张全新的地图*/
+    public static void setupNewMap(){
+        setupWorld();
+        setupTileStain();
     }
 
     /**
-     * 重建整个世界, 加载地图.
+     * 初始化World和Map.
      */
-    public static void loadMap(){
+    public static void setupWorld(){
         collideQueue.clear();
         damageQueue.clear();
 
@@ -73,7 +84,9 @@ public class Game{
 
         ColorPalette palette = new ColorPalette();
         int l = 6;
+
         Color color = Vars.c1.set(Color.ROYAL);
+
         for(int i = 0; i < l; i++){
             color.lerp(Color.YELLOW, i / (float)l);
             palette.addColor(color.toIntBits());
@@ -81,13 +94,30 @@ public class Game{
 
         map.create(world, 30, 20, palette);
         Vars.hud.mapEditorTable.buildColorPalette();//重建调色盘ui
-        for(int x = 0; x < map.width; x++){
-            for(int y = 0; y < map.height; y++){
-                map.putEntity(Entities.tileStain.create().getId(), "tileStain", x, y);
-            }
-        }
         flowField = new FlowField(map);
         flowField.rebuild();
+    }
+
+    /**初始化染色瓦片*/
+    public static void setupTileStain(){
+        for(int x = 0; x < map.width; x++){
+            for(int y = 0; y < map.height; y++){
+                int e = Entities.tileStain.create().getId();
+                utils.setPosition(e, x, y);
+                map.putEntity(e, "tileStain", x, y);
+            }
+        }
+    }
+
+    public static void rebindTileStain(){
+        var ids = groups.getEntityIds("tileStain");
+        for(int i = 0; i < ids.size(); i++){
+            PositionComp pos = utils.positionMapper.get(ids.get(i));
+            if(map.getTileStain(pos.tileX(), pos.tileY()) != -1){
+                Gdx.app.log("ERROR", "TileStain at " + pos.tileX() + ", " + pos.tileY() + " is not -1");
+            }
+            map.putEntity(ids.get(i), "tileStain", pos.tileX(), pos.tileY());
+        }
     }
 
     /**
@@ -140,7 +170,6 @@ public class Game{
         });
 
         logic.with(l -> {
-            l.add(new EnergyRegenerate());
             l.add(new MovementVelGenFlowField());
             l.add(new MovementVelPush());
 

@@ -1,10 +1,13 @@
 # PaintTD
 WIP Tower Defense
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+## Third-Party Libraries
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension
-that draws libGDX logo.
+This project uses several third-party libraries, each with its own license. Please refer to the [THIRD-PARTY-LICENSES](THIRD-PARTY-LICENSES) file for details on the licenses and the original projects.
+
+## License
+
+This project is licensed under the GNU General Public License (GPL) version 3. See the [LICENSE](LICENSE) file for more details.
 
 ## Platforms
 

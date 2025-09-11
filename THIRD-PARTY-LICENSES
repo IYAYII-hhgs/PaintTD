@@ -1,0 +1,59 @@
+# 第三方许可证声明
+
+本软件基于GNU General Public License (GPL) 发布。
+本产品包含了以下由第三方开发的软件和资源：
+
+## LibGDX
+- 用途：游戏开发框架
+- 许可证：Apache License, Version 2.0
+- 许可证副本：`licenses/Apache-2.0.txt`
+- 项目主页：https://github.com/libgdx/libgdx
+
+## Artemis-ODB
+- 用途：实体组件系统框架
+- 许可证：BSD 2-Clause "Simplified" License
+- 许可证副本：`licenses/BSD-2-Clause.txt`
+- 项目主页：https://github.com/junkdog/artemis-odb
+
+## Source Han Sans HWSC VF
+- 用途：字体资源
+- 许可证：SIL Open Font License, Version 1.1
+- 许可证副本：`licenses/OFL_SourceHanSansHWSC-VF.txt`
+- 项目主页：https://github.com/adobe-fonts/source-han-sans
+- 特别声明：本字体文件未经修改，其版权和名称均依许可证要求予以保留。
+
+## Anim8
+- 用途：动画库
+- 许可证：Apache License, Version 2.0
+- 许可证副本：`licenses/Apache-2.0.txt`
+- 项目主页：https://github.com/tommyettinger/anim8-gdx
+
+## Colorful
+- 用途：颜色处理库
+- 许可证：Apache License, Version 2.0
+- 许可证副本：`licenses/Apache-2.0.txt`
+- 项目主页：https://github.com/tommyettinger/colorful-gdx
+
+## Digital
+- 用途：数字格式化库
+- 许可证：Apache License, Version 2.0
+- 许可证副本：`licenses/Apache-2.0.txt`
+- 项目主页：https://github.com/tommyettinger/digital
+
+## Fury
+- 用途：高性能序列化库
+- 许可证：Apache License, Version 2.0
+- 许可证副本：`licenses/Apache-2.0.txt`
+- 项目主页：https://github.com/apache/fury
+
+## MiniAudio
+- 用途：音频处理库
+- 许可证：Apache License, Version 2.0
+- 许可证副本：`licenses/Apache-2.0.txt``
+- 项目主页：https://github.com/rednblackgames/gdx-miniaudio
+
+## ShapeDrawer
+- 用途：2D形状绘制库
+- 许可证：MIT License
+- 许可证副本：`licenses/MIT.txt`
+- 项目主页：https://github.com/earlygrey/shapedrawer

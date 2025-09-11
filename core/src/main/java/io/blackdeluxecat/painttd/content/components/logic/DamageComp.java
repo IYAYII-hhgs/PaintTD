@@ -1,10 +1,9 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
+import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-/**
- * 武器的最终攻击力组件。
- */
+@Transient
 public class DamageComp extends CopyableComponent{
     public float damage;
 
@@ -24,6 +23,10 @@ public class DamageComp extends CopyableComponent{
 
     @Override
     protected void reset(){
-        this.damage = 0;
+    }
+
+    @Override
+    public void refill(CopyableComponent def){
+        copy(def);
     }
 }

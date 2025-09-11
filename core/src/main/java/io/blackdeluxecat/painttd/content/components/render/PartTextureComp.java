@@ -1,11 +1,13 @@
 package io.blackdeluxecat.painttd.content.components.render;
 
+import com.artemis.annotations.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 
+@Transient
 public class PartTextureComp extends CopyableComponent{
     public String textureName;
     public TextureAtlas.AtlasRegion atlasRegion;
@@ -34,5 +36,10 @@ public class PartTextureComp extends CopyableComponent{
         this.textureName = null;
         this.atlasRegion = null;
         this.drawable = null;
+    }
+
+    @Override
+    public void refill(CopyableComponent def){
+        this.copy(def);
     }
 }

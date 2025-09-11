@@ -29,6 +29,7 @@ public class EntityType{
     public EntityType(String id, EntityType superType){
         this(id);
         copyType(superType);
+        get(EntityTypeComp.class).type = id;
     }
 
     public void addGroup(String group){

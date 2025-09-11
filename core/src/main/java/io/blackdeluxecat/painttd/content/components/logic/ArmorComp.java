@@ -1,7 +1,9 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
+import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
+@Transient
 public class ArmorComp extends CopyableComponent{
     public float armor;
 
@@ -22,5 +24,10 @@ public class ArmorComp extends CopyableComponent{
     @Override
     protected void reset(){
         armor = 0;
+    }
+
+    @Override
+    public void refill(CopyableComponent def){
+        copy(def);
     }
 }

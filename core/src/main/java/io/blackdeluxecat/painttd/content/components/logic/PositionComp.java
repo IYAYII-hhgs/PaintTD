@@ -22,6 +22,10 @@ public class PositionComp extends CopyableComponent{
         return Math.round(y);
     }
 
+    public Vector2 out(Vector2 out){
+        return out.set(x, y);
+    }
+
     @Override
     protected void reset(){
         x = 0;
@@ -34,9 +38,5 @@ public class PositionComp extends CopyableComponent{
         this.x = positionComp.x;
         this.y = positionComp.y;
         return this;
-    }
-
-    public Vector2 out(Vector2 out){
-        return out.set(x, y);
     }
 }

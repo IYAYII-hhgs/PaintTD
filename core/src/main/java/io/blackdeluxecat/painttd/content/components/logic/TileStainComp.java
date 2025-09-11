@@ -2,7 +2,7 @@ package io.blackdeluxecat.painttd.content.components.logic;
 
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class TileStainComp extends CopyableComponent{
+public class TileStainComp extends CopyableComponent {
     public boolean isCore, lastIsCore;
 
     public TileStainComp(){

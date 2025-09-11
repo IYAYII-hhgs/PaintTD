@@ -5,7 +5,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.files.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
-import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 
 import java.io.*;

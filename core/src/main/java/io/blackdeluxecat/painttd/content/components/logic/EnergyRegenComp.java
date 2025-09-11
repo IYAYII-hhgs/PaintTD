@@ -1,10 +1,12 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
+import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 /**
  * 能量系统回复组件。
  */
+@Transient
 public class EnergyRegenComp extends CopyableComponent{
     public float regenRate;
 

@@ -1,8 +1,9 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
+import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class HealthComp extends CopyableComponent{
+public class HealthComp extends CopyableComponent implements Json.Serializable{
     /**
      * 无最大生命值限制令maxHealth == -1
      */
@@ -33,5 +34,21 @@ public class HealthComp extends CopyableComponent{
     protected void reset(){
         health = 0;
         maxHealth = 0;
+    }
+
+    @Override
+    public void write(Json json){
+        json.writeValue("health", health);
+    }
+
+    @Override
+    public void read(Json json, JsonValue jsonData){
+        health = jsonData.getFloat("health");
+    }
+
+    @Override
+    public void refill(CopyableComponent def){
+        HealthComp healthComp = (HealthComp)def;
+        maxHealth = healthComp.maxHealth;
     }
 }

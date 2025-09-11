@@ -1,10 +1,12 @@
 package io.blackdeluxecat.painttd.content.components.logic.physics;
 
+import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 /**
  * 碰撞组件. 具有该组件的实体将参与碰撞检测, 并产生碰撞事件.
  */
+@Transient
 public class CollideComp extends CopyableComponent{
     public static int FLOOR = 0, OVERLAY = 1, UNIT = 2, BUILDING = 3;
     public static long MAP = 1L << FLOOR | 1L << OVERLAY, ENTITY = 1L << UNIT | 1L << BUILDING, ALL = MAP | ENTITY;
@@ -62,5 +64,10 @@ public class CollideComp extends CopyableComponent{
         this.collidesMask = 0;
         this.collideIndex = 0;
         this.solid = false;
+    }
+
+    @Override
+    public void refill(CopyableComponent def){
+        copy(def);
     }
 }

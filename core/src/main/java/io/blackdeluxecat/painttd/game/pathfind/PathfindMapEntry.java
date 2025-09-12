@@ -1,6 +1,5 @@
 package io.blackdeluxecat.painttd.game.pathfind;
 
-import com.badlogic.gdx.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.Game;
 

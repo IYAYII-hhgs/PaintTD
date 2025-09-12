@@ -6,7 +6,6 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 
-@Wire
 public class StaticUtils extends BaseSystem{
     @All public EntitySubscription allEntitiesSub;
 

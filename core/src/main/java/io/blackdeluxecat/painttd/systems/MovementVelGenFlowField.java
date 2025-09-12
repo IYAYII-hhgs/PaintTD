@@ -10,7 +10,6 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
 
 @IsLogicProcess
-@Wire
 public class MovementVelGenFlowField extends IteratingSystem{
     private ComponentMapper<PositionComp> positionMapper;
     private ComponentMapper<VelocityComp> velocityMapper;

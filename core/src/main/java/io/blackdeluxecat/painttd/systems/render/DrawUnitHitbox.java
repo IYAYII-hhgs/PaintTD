@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
@@ -15,12 +16,6 @@ public class DrawUnitHitbox extends IteratingSystem{
 
     public DrawUnitHitbox(){
         super(Aspect.all(PositionComp.class));
-    }
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        pm = world.getMapper(PositionComp.class);
     }
 
     @Override

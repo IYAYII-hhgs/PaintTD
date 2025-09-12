@@ -24,15 +24,6 @@ public class TileStainRequestDamage extends IteratingSystem{
     }
 
     @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        collideMapper = world.getMapper(CollideComp.class);
-        healthMapper = world.getMapper(HealthComp.class);
-        teamMapper = world.getMapper(TeamComp.class);
-        positionMapper = world.getMapper(PositionComp.class);
-    }
-
-    @Override
     protected void process(int entityId){
         CollideComp collide = collideMapper.get(entityId);
         if(collide.isCollideWith(CollideComp.OVERLAY)){

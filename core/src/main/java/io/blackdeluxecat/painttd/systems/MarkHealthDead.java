@@ -7,7 +7,6 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 
 @IsLogicProcess
-@Wire
 public class MarkHealthDead extends IteratingSystem{
     public ComponentMapper<HealthComp> hm;
 

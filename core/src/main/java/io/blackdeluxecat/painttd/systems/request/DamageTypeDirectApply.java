@@ -17,7 +17,6 @@ public class DamageTypeDirectApply extends BaseSystem{
     protected void setWorld(World world){
         super.setWorld(world);
         type = DamageQueue.DamageRequestType.direct;
-        hm = world.getMapper(HealthComp.class);
     }
 
     @Override

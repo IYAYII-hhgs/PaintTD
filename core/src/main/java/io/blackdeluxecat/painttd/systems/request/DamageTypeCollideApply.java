@@ -17,7 +17,6 @@ public class DamageTypeCollideApply extends BaseSystem{
     protected void setWorld(World world){
         super.setWorld(world);
         type = DamageQueue.DamageRequestType.collide;
-        healthMapper = world.getMapper(HealthComp.class);
     }
 
     @Override

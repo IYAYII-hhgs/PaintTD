@@ -20,14 +20,6 @@ public class ShootSingleRequestDamage extends IteratingSystem{
     }
 
     @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        cooldownMapper = world.getMapper(CooldownComp.class);
-        targetSingleMapper = world.getMapper(TargetSingleComp.class);
-        damageMapper = world.getMapper(DamageComp.class);
-    }
-
-    @Override
     protected void process(int entityId){
         CooldownComp cooldown = cooldownMapper.get(entityId);
         if(cooldown.shootCount > 0){

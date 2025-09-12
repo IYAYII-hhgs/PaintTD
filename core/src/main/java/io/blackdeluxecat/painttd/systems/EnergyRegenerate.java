@@ -6,7 +6,6 @@ import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 
 @IsLogicProcess
-@Wire
 public class EnergyRegenerate extends IteratingSystem{
     public ComponentMapper<EnergyComp> em;
     public ComponentMapper<EnergyRegenComp> erm;

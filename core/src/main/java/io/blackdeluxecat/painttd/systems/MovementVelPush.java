@@ -7,7 +7,6 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 
 @IsLogicProcess
-@Wire
 public class MovementVelPush extends IteratingSystem{
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<VelocityComp> vm;

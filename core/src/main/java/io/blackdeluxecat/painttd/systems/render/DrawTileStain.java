@@ -12,7 +12,7 @@ import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @Wire
-public class DrawColoredTileStain extends BaseSystem{
+public class DrawTileStain extends BaseSystem{
     public ComponentMapper<HealthComp> healthMapper;
     public ComponentMapper<TileStainComp> tileStainMapper;
 

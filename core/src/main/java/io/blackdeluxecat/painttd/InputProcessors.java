@@ -36,7 +36,7 @@ public class InputProcessors{
     public static InputAdapter cameraZoom = new InputAdapter(){
         @Override
         public boolean scrolled(float amountX, float amountY){
-            Vars.zoom = MathUtils.clamp(Vars.zoom + amountY * 5, 1f, 200);
+            Vars.zoom = MathUtils.clamp(Vars.zoom - amountY * 5, 1f, 200);
             return super.scrolled(amountX, amountY);
         }
     },

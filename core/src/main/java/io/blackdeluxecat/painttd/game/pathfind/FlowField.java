@@ -154,12 +154,7 @@ public class FlowField{
         return out.set(nodes[x][y].direction);
     }
 
-    protected static Comparator<Node> comparator = new Comparator<Node>(){
-        @Override
-        public int compare(Node o1, Node o2){
-            return Float.compare(o1.stackCost, o2.stackCost);
-        }
-    };
+    protected static Comparator<Node> comparator = (o1, o2) -> Float.compare(o1.stackCost, o2.stackCost);
 
     public static class Node implements Pool.Poolable{
         public static Pool<Node> pool = new Pool<>(){

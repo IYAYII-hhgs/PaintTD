@@ -4,7 +4,6 @@ import com.artemis.*;
 import com.artemis.io.*;
 import com.artemis.link.*;
 import com.artemis.managers.*;
-import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
@@ -209,9 +208,9 @@ public class Game{
             });
 
             //使用了ShapeRenderer的系统
-            l.add(new DrawColoredTileStain());
-            l.add(new DrawMapGrid());
-            l.add(new DrawUnitHitbox());
+            l.add(new DrawTileStain());
+            l.add(new DrawTile());
+            //l.add(new DrawUnitHitbox());
             l.add(new DrawTarget());
         });
     }

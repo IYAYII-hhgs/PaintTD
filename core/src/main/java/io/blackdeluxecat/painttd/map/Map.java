@@ -10,7 +10,6 @@ import java.util.*;
  */
 public class Map{
     public int width, height;
-    public Tile[] tiles;
 
     /**
      * entity id映射表, 绑定瓦片与实体.
@@ -20,6 +19,7 @@ public class Map{
     /**
      * tileStain映射表的引用, 勿直接修改.
      */
+    public int[] tiles;
     public int[] stains;
 
     public ColorPalette colorPalette;
@@ -30,30 +30,23 @@ public class Map{
         this.world = world;
         this.width = width;
         this.height = height;
-        tiles = new Tile[width * height];
+        tiles = new int[width * height];
         entityToTile = new IntIntMap();
         tileToEntity = new ObjectMap<>();
 
         this.colorPalette = colorPalette;
 
-        for(int i = 0; i < tiles.length; i++){
-            tiles[i] = new Tile(i % width, i / width);
-        }
-
+        tiles = getTileToEntityMap("tile");
         stains = getTileToEntityMap("tileStain");
     }
 
-    public Tile unsafeGet(int x, int y){
-        return tiles[x + y * width];
+    public int unsafeGet(int x, int y){
+        return tiles[pos(x, y)];
     }
 
-    public Tile get(int x, int y){
-        if(!validPos(x, y)) return null;
+    public int getTile(int x, int y){
+        if(!validPos(x, y)) return -1;
         return unsafeGet(x, y);
-    }
-
-    public Tile get(int pos){
-        return get(pos % width, pos / width);
     }
 
     public boolean validPos(int x, int y){
@@ -62,6 +55,14 @@ public class Map{
 
     public int pos(int x, int y){
         return x + y * width;
+    }
+
+    public int posX(int pos){
+        return pos % width;
+    }
+
+    public int posY(int pos){
+        return pos / width;
     }
 
     public int getTileStain(int x, int y){

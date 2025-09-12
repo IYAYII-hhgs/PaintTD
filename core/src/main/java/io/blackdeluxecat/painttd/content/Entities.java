@@ -17,9 +17,44 @@ public class Entities{
         //enemies
         unit, eraser, tileStain,
     //turrets
-    building, pencil, brush;
+    building, pencil, brush,
+    tile;
 
-    public static void createBuilding(){
+    public static EntityType getByName(String id){
+        for(EntityType type : types){
+            if(type.id.equals(id)){
+                return type;
+            }
+        }
+        return null;
+    }
+
+    public static void create(World world){
+        types.clear();
+        unit = new EntityType("unit"){
+            {
+                addGroup("unit");
+                add(new PositionComp());
+            }
+        };
+
+        eraser = new EntityType("eraser", unit){
+            {
+                add(new MarkerComp.UseQuadTree());
+                add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
+                add(new TeamComp(1));
+
+                add(new HealthComp(16));
+                add(new HitboxComp(0.6f));
+
+                add(new MoveSpeedComp(1f / lfps));
+                add(new VelocityComp());
+                add(new MovementNextPathComp());
+
+                add(new PartTextureComp("u-eraser"));
+            }
+        };
+
         building = new EntityType("building"){
             {
                 addGroup("building");
@@ -66,30 +101,14 @@ public class Entities{
                 add(new PartTextureComp("b-brush"));
             }
         };
-    }
 
-    public static void createUnit(){
-        unit = new EntityType("unit"){
+        tile = new EntityType("tile"){
             {
-                addGroup("unit");
+                addGroup("tile");
                 add(new PositionComp());
-            }
-        };
-
-        eraser = new EntityType("eraser", unit){
-            {
-                add(new MarkerComp.UseQuadTree());
-                add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
-                add(new TeamComp(1));
-
-                add(new HealthComp(16));
-                add(new HitboxComp(0.6f));
-
-                add(new MoveSpeedComp(1f / lfps));
-                add(new VelocityComp());
-                add(new MovementNextPathComp());
-
-                add(new PartTextureComp("u-eraser"));
+                add(new HitboxComp(1));
+                add(new CollideComp(CollideComp.FLOOR, true).setCollidesMask(CollideComp.ENTITY));
+                add(new TileComp());
             }
         };
 
@@ -104,20 +123,5 @@ public class Entities{
                 add(new HealthComp(-1));
             }
         };
-    }
-
-    public static EntityType getByName(String id){
-        for(EntityType type : types){
-            if(type.id.equals(id)){
-                return type;
-            }
-        }
-        return null;
-    }
-
-    public static void create(World world){
-        types.clear();
-        createUnit();
-        createBuilding();
     }
 }

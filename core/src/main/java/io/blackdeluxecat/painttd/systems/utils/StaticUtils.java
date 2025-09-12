@@ -16,6 +16,7 @@ public class StaticUtils extends BaseSystem{
     public ComponentMapper<TeamComp> teamMapper;
     public ComponentMapper<TileStainComp> tileStainMapper;
     public ComponentMapper<EntityTypeComp> entityTypeMapper;
+    public ComponentMapper<TileComp> tileMapper;
 
     public boolean isTeammate(int e1, int e2){
         return teamMapper.get(e1).team == teamMapper.get(e2).team;

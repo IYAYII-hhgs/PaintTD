@@ -95,7 +95,6 @@ public class Game{
         map.create(world, 30, 20, palette);
         Vars.hud.mapEditorTable.buildColorPalette();//重建调色盘ui
         flowField = new FlowField(map);
-        flowField.rebuild();
     }
 
     /**初始化染色瓦片*/
@@ -105,17 +104,24 @@ public class Game{
                 int e = Entities.tileStain.create().getId();
                 utils.setPosition(e, x, y);
                 map.putEntity(e, "tileStain", x, y);
+
+                int tile = Entities.tile.create().getId();
+                utils.setPosition(tile, x, y);
+                map.putEntity(tile, "tile", x, y);
             }
         }
     }
 
     public static void rebindTileStain(){
-        var ids = groups.getEntityIds("tileStain");
+        var ids = groups.getEntityIds("tile");
         for(int i = 0; i < ids.size(); i++){
             PositionComp pos = utils.positionMapper.get(ids.get(i));
-            if(map.getTileStain(pos.tileX(), pos.tileY()) != -1){
-                Gdx.app.log("ERROR", "TileStain at " + pos.tileX() + ", " + pos.tileY() + " is not -1");
-            }
+            map.putEntity(ids.get(i), "tile", pos.tileX(), pos.tileY());
+        }
+
+        ids = groups.getEntityIds("tileStain");
+        for(int i = 0; i < ids.size(); i++){
+            PositionComp pos = utils.positionMapper.get(ids.get(i));
             map.putEntity(ids.get(i), "tileStain", pos.tileX(), pos.tileY());
         }
     }

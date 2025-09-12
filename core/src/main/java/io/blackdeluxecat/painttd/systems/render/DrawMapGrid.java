@@ -1,20 +1,25 @@
 package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 
 public class DrawMapGrid extends BaseSystem{
+    @Wire
+    public ComponentMapper<TileComp> tileMapper;
 
     @Override
     protected void processSystem(){
         shaper.begin(ShapeRenderer.ShapeType.Line);
         for(int x = 0; x < Game.map.width; x++){
             for(int y = 0; y < Game.map.height; y++){
-                if(Game.map.get(x, y).isWall){
+                int tile = Game.map.getTile(x, y);
+                if(tile != -1 && tileMapper.get(tile).isWall){
                     shaper.setColor(Color.WHITE);
                     shaper.rect(x - 0.4f, y - 0.4f, 0.8f, 0.8f);
                 }

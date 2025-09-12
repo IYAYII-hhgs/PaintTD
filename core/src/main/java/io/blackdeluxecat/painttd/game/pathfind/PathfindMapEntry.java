@@ -1,19 +1,23 @@
 package io.blackdeluxecat.painttd.game.pathfind;
 
-import io.blackdeluxecat.painttd.game.*;
+import com.badlogic.gdx.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.game.Game;
 
 public interface PathfindMapEntry{
     default boolean isValid(int x, int y){
-        var tile = Game.map.get(x, y);
-        return tile != null;
+        int tile = Game.map.getTile(x, y);
+        return tile != -1;
     }
 
     default float cost(int x, int y){
+        if(!isValid(x, y)) return 114514f;
         int e = Game.map.getTileStain(x, y);
         if(e != -1 && Game.utils.tileStainMapper.get(e).isCore && Game.utils.healthMapper.get(e).health > 0){
             return 0;
         }
-        var tile = Game.map.get(x, y);
-        return isValid(x, y) && !tile.isWall ? tile.layer : 114514f;
+        int tile = Game.map.getTile(x, y);
+        TileComp tc = Game.utils.tileMapper.get(tile);
+        return tc.isWall ? 114514f : tc.layer;
     }
 }

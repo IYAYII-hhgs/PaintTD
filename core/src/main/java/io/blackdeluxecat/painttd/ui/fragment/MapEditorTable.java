@@ -66,7 +66,12 @@ public class MapEditorTable extends Table{
     public Hud.MapEditBrush drawWall = new Hud.MapEditBrush("地形墙"){
         @Override
         public void draw(float wx, float wy){
-            Game.map.get(Math.round(wx), Math.round(wy)).setWall(true);
+            int x = Math.round(wx);
+            int y = Math.round(wy);
+            int tile = Game.map.getTile(x, y);
+            if(tile == -1) return;
+            var tileComp = utils.tileMapper.get(tile);
+            tileComp.isWall = !tileComp.isWall;
         }
     }, drawStainCore = new Hud.MapEditBrush("核心"){
         @Override
@@ -76,7 +81,7 @@ public class MapEditorTable extends Table{
             var mapper = world.getMapper(TileStainComp.class);
             if(!mapper.has(e)) return;
             var stain = mapper.get(e);
-            stain.isCore = true;
+            stain.isCore = !stain.isCore;
         }
     }, drawStainColor = new Hud.MapEditBrush("地形染色"){
         @Override

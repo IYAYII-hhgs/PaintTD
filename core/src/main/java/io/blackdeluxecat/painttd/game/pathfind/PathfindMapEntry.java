@@ -17,6 +17,6 @@ public interface PathfindMapEntry{
         }
         int tile = Game.map.getTile(x, y);
         TileComp tc = Game.utils.tileMapper.get(tile);
-        return tc.isWall ? 114514f : tc.layer;
+        return tc.isWall ? 114514f : 1f;
     }
 }

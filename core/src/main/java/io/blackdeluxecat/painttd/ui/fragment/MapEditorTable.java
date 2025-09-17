@@ -55,10 +55,10 @@ public class MapEditorTable extends Table{
     public void buildColorPalette(){
         colorTable.clear();
         colorTable.defaults().size(Styles.buttonSize);
-        for(int i = 0; i < Game.map.colorPalette.colors.size; i++){
+        for(int i = 0; i < rules.colorPalette.colors.size; i++){
             int finalI = i;
             colorTable.add(new ActorUtils<>(new Button(sTextB)).with(b -> {
-                b.add(new Image(Styles.whited)).grow().pad(2f).getActor().setColor(Vars.c1.set(Game.map.colorPalette.getColor(finalI)));
+                b.add(new Image(Styles.whited)).grow().pad(2f).getActor().setColor(Vars.c1.set(rules.colorPalette.getColor(finalI)));
             }).click(b -> selectColorIndex = finalI).actor);
         }
     }

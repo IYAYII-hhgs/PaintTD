@@ -26,7 +26,7 @@ public class DrawTileStain extends BaseSystem{
                 var stain = tileStainMapper.get(e);
 
                 if(health.health > 0){
-                    var color = map.colorPalette.getColor(MathUtils.ceil(health.health) - 1);
+                    var color = rules.colorPalette.getColor(MathUtils.ceil(health.health) - 1);
                     shaper.setColor(Vars.c1.set(color));
                     shaper.begin(ShapeRenderer.ShapeType.Filled);
                     shaper.rect(x - 0.5f, y - 0.5f, 1, 1);

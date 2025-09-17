@@ -13,14 +13,14 @@ public class SaveHandler{
     public static FileHandle path = Core.gameDataFolder.child("save");
 
     public static void save(String save){
-        SaveFileFormat format = new SaveFileFormat();
+        SaveFormat format = new SaveFormat(250916, 0);
         format.entities = Game.utils.allEntitiesSub.getEntities();
         Game.worldSerializationManager.save(getSaveOutput(save), format);
     }
 
     public static void load(String save){
         Game.setupWorld();
-        SaveFileFormat format = Game.worldSerializationManager.load(getLoadInput(save), SaveFileFormat.class);
+        SaveFormat format = Game.worldSerializationManager.load(getLoadInput(save), SaveFormat.class);
         Gdx.app.log("SaveHandler", "Loaded " + format.entities.size() + " entities");
 
         // 读取实体类型并重建完整实体

@@ -6,35 +6,30 @@ import com.badlogic.gdx.utils.*;
 import java.util.*;
 
 /**
+ * 技术性工具类.
  * 基于坐标的瓦片索引.
  */
 public class Map{
     public int width, height;
 
-    /**
-     * entity id映射表, 绑定瓦片与实体.
-     */
-    public ObjectMap<String, int[]> tileToEntity;
-    public IntIntMap entityToTile;
-    /**
-     * tileStain映射表的引用, 勿直接修改.
-     */
-    public int[] tiles;
-    public int[] stains;
+    //技术性
+    /**entity id映射表, 绑定瓦片与实体.*/
+    public transient ObjectMap<String, int[]> tileToEntity;
+    public transient IntIntMap entityToTile;
 
-    public ColorPalette colorPalette;
+    /**勿直接修改*/
+    public transient int[] tiles;
+    public transient int[] stains;
 
-    World world;
+    transient World world;
 
-    public void create(World world, int width, int height, ColorPalette colorPalette){
+    public void create(World world, int width, int height){
         this.world = world;
         this.width = width;
         this.height = height;
         tiles = new int[width * height];
         entityToTile = new IntIntMap();
         tileToEntity = new ObjectMap<>();
-
-        this.colorPalette = colorPalette;
 
         tiles = getTileToEntityMap("tile");
         stains = getTileToEntityMap("tileStain");

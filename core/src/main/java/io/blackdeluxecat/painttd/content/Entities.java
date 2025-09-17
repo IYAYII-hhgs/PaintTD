@@ -15,10 +15,11 @@ public class Entities{
 
     public static EntityType
         //enemies
-        unit, eraser, tileStain,
-    //turrets
-    building, pencil, brush,
-    tile;
+        unit, eraser,
+
+        //turrets
+        building, pencil, brush,
+        tile, tileStain, spawner;
 
     public static EntityType getByName(String id){
         for(EntityType type : types){
@@ -121,6 +122,12 @@ public class Entities{
 
                 add(new TeamComp(0));
                 add(new HealthComp(-1));
+            }
+        };
+
+        spawner = new EntityType("spawner", building){
+            {
+                addGroup("spawner");
             }
         };
     }

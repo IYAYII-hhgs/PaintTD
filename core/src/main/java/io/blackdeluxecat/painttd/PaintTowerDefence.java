@@ -29,8 +29,6 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
         InputProcessors.create();
         Game.create();
-
-        gameDataFolder.child("save.txt").writeString("11", false);
     }
 
     @Override

@@ -12,6 +12,7 @@ import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.game.pathfind.*;
 import io.blackdeluxecat.painttd.game.request.*;
+import io.blackdeluxecat.painttd.io.*;
 import io.blackdeluxecat.painttd.map.*;
 import io.blackdeluxecat.painttd.systems.*;
 import io.blackdeluxecat.painttd.systems.render.*;
@@ -20,9 +21,12 @@ import io.blackdeluxecat.painttd.systems.utils.*;
 import io.blackdeluxecat.painttd.utils.*;
 
 public class Game{
+    public static Map map;
+    public static Rule rules;
+
+    //技术性
     public static float lfps = 60f;
     public static World world;
-    public static Map map = new Map();
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
     public static GroupManager groups;
     public static WorldSerializationManager worldSerializationManager;
@@ -37,7 +41,7 @@ public class Game{
     public static CollideQueue collideQueue = new CollideQueue();
     public static DamageQueue damageQueue = new DamageQueue();
 
-    public static StaticUtils utils = new StaticUtils();
+    public static StaticUtils utils;
 
     /**初始化Game类及系统*/
     public static void create(){
@@ -66,10 +70,8 @@ public class Game{
 
         //systems
         groups = new GroupManager();
-        builder.with(groups);
-        worldSerializationManager = new WorldSerializationManager();
-        builder.with(worldSerializationManager);
         entityLinkManager = new EntityLinkManager();
+        builder.with(groups);
         builder.with(entityLinkManager);
         lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
 
@@ -81,19 +83,22 @@ public class Game{
 
         Entities.create(world);
 
-        ColorPalette palette = new ColorPalette();
+        rules = new Rule();
+        rules.colorPalette = new ColorPalette();
         int l = 6;
 
-        Color color = Vars.c1.set(Color.ROYAL);
+        Color color = Vars.c1.set(Color.CYAN);
 
         for(int i = 0; i < l; i++){
             color.lerp(Color.YELLOW, i / (float)l);
-            palette.addColor(color.toIntBits());
+            rules.colorPalette.addColor(color.toIntBits());
         }
 
-        map.create(world, 30, 20, palette);
+        map = new Map();
+        map.create(world, 30, 20);
         Vars.hud.mapEditorTable.buildColorPalette();//重建调色盘ui
         flowField = new FlowField(map);
+        flowField.rebuild();
     }
 
     /**初始化染色瓦片*/
@@ -144,6 +149,7 @@ public class Game{
      * 循环系统层级, z越小, 越早执行
      */
     public static LayerManager.Layer<BaseSystem>
+        backend = lm.lm.registerLayer("backend", -10000),
         logicPre = lm.lm.registerLayer("logicFirstWork", 0),
         logicCollide = lm.lm.registerLayer("logicCollide", 100),
         logicShootAI = lm.lm.registerLayer("logicShootAI", 200),
@@ -152,8 +158,11 @@ public class Game{
         render = lm.lm.registerLayer("render", 10000);
 
     public static void createSystems(){
+        backend.with(l -> {
+            l.add(utils = new StaticUtils());
+            l.add(worldSerializationManager = new WorldSerializationManager());
+        });
         logicPre.with(l -> {
-            l.add(utils);
             l.add(new FlowFieldCoreChangeDetect());
             l.add(new FlowFieldUpdate());
             l.add(new RebuildQuadTree());
@@ -208,6 +217,7 @@ public class Game{
             });
 
             //使用了ShapeRenderer的系统
+            l.add(new DrawFlowFieldDebug());
             l.add(new DrawTileStain());
             l.add(new DrawTile());
             //l.add(new DrawUnitHitbox());

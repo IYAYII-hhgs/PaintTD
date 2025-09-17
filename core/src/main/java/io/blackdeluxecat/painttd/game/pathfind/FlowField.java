@@ -4,7 +4,6 @@ import com.artemis.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
-import io.blackdeluxecat.painttd.map.*;
 import io.blackdeluxecat.painttd.map.Map;
 
 import java.util.*;
@@ -86,7 +85,7 @@ public class FlowField{
             }
         }
 
-        if(needFlow) flow();
+        if(needFlow) generateFlowField();
     }
 
     public boolean updateNode(Node node){
@@ -125,8 +124,8 @@ public class FlowField{
      */
     public void change(int changedX, int changedY){
         Node changed = nodes[changedX][changedY];
+        changed.stackCost = 0;
         if(!openList.contains(changed)) openList.add(changed);
-        changed.stackCost = Float.MAX_VALUE;
         for(int i = 0; i < 4; i++){
             int nx = changedX + d4x[i];
             int ny = changedY + d4y[i];
@@ -139,7 +138,7 @@ public class FlowField{
     /**
      * 生成流场
      */
-    public void flow(){
+    public void generateFlowField(){
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
                 Node node = nodes[x][y];

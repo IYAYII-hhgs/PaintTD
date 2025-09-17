@@ -34,7 +34,6 @@ public class Hud{
         fill(t -> {
             t.left().top();
             t.defaults().left();
-            t.add(new Label("Paint Tower Defence", sLabel)).row();
             t.add(new Label("1", sLabel){
                 @Override
                 public void draw(Batch batch, float parentAlpha){
@@ -42,8 +41,6 @@ public class Hud{
                     super.draw(batch, parentAlpha);
                 }
             }).row();
-            t.add(new ActorUtils<>(new Label("", sLabel)).update(l -> l.setText("G|Unit: " + groups.getEntities("unit").size())).actor).row();
-            t.add(new ActorUtils<>(new Label("", sLabel)).update(l -> l.setText("G|Building: " + groups.getEntities("building").size())).actor);
         });
 
         //Placement

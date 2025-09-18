@@ -59,6 +59,7 @@ public class Game{
 
     /**创建一张全新的地图*/
     public static void createNewMap(){
+        endMap();
         rules = new Rule();
         rules.width = 30;
         rules.height = 20;

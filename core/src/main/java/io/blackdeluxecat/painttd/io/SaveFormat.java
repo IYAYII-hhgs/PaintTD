@@ -1,8 +1,10 @@
 package io.blackdeluxecat.painttd.io;
 
 import com.artemis.io.*;
+import io.blackdeluxecat.painttd.map.*;
 
 public class SaveFormat extends SaveFileFormat{
+    public Rule rules;
     public SaveFormat(){
     }
 

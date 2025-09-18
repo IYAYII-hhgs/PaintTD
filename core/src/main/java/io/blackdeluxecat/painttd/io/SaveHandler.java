@@ -1,11 +1,11 @@
 package io.blackdeluxecat.painttd.io;
 
-import com.artemis.io.*;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.files.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.game.Game;
+import io.blackdeluxecat.painttd.game.pathfind.*;
 
 import java.io.*;
 
@@ -15,13 +15,19 @@ public class SaveHandler{
     public static void save(String save){
         SaveFormat format = new SaveFormat(250916, 0);
         format.entities = Game.utils.allEntitiesSub.getEntities();
+        format.rules = Game.rules;
         Game.worldSerializationManager.save(getSaveOutput(save), format);
     }
 
     public static void load(String save){
-        Game.setupWorld();
+        // 重置世界状态
+        Game.endMap();
+
+        // 读档, 包括反序列化实体, 反序列化rules
         SaveFormat format = Game.worldSerializationManager.load(getLoadInput(save), SaveFormat.class);
-        Gdx.app.log("SaveHandler", "Loaded " + format.entities.size() + " entities");
+        Game.rules = format.rules;
+        Game.map.createMap(Game.rules.width, Game.rules.height);
+        Game.flowField = new FlowField(Game.map);
 
         // 读取实体类型并重建完整实体
         var entities = format.entities;
@@ -30,7 +36,8 @@ public class SaveHandler{
             Entities.getByName(Game.utils.entityTypeMapper.get(e).type).refill(e);
         }
 
-        Game.rebindTileStain();
+        // 重建地图瓦片映射
+        Game.map.shouldRebindTile = true;
     }
 
     public static OutputStream getSaveOutput(String fileNameNoExtension){

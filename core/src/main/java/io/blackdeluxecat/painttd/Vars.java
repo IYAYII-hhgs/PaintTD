@@ -9,9 +9,9 @@ public class Vars{
     public static ScreenViewport worldViewport = new ScreenViewport();
     public static float zoom = 64f, lerpZoom = zoom;
 
-    public boolean pause;
-    public boolean inGame, inMenu;
+    public static boolean pause, inGame, inMenu = true;
 
+    public static Menu menu = new Menu();
     public static Hud hud = new Hud();
 
     public static Vector2 v1 = new Vector2(), v2 = new Vector2(), v3 = new Vector2();

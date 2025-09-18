@@ -17,7 +17,7 @@ public class DrawUnitHitbox extends IteratingSystem{
     public ComponentMapper<HealthComp> hm;
 
     public DrawUnitHitbox(){
-        super(Aspect.all(PositionComp.class));
+        super(Aspect.all(PositionComp.class).exclude(TileComp.class, TileStainComp.class));
     }
 
     @Override

@@ -8,11 +8,9 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
-import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.game.pathfind.*;
 import io.blackdeluxecat.painttd.game.request.*;
-import io.blackdeluxecat.painttd.io.*;
 import io.blackdeluxecat.painttd.map.*;
 import io.blackdeluxecat.painttd.systems.*;
 import io.blackdeluxecat.painttd.systems.render.*;
@@ -21,13 +19,13 @@ import io.blackdeluxecat.painttd.systems.utils.*;
 import io.blackdeluxecat.painttd.utils.*;
 
 public class Game{
-    public static Map map;
     public static Rule rules;
 
     //技术性
     public static float lfps = 60f;
     public static World world;
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
+    public static MapManager map;
     public static GroupManager groups;
     public static WorldSerializationManager worldSerializationManager;
     public static EntityLinkManager entityLinkManager;
@@ -47,43 +45,23 @@ public class Game{
     public static void create(){
         createSystems();
 
-        // 创建测试用地图
-        setupNewMap();
-    }
-
-    /**创建一张全新的地图*/
-    public static void setupNewMap(){
-        setupWorld();
-        setupTileStain();
-    }
-
-    /**
-     * 初始化World和Map.
-     */
-    public static void setupWorld(){
-        collideQueue.clear();
-        damageQueue.clear();
-
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-
         builder.register(lm);
-
-        //systems
-        groups = new GroupManager();
-        entityLinkManager = new EntityLinkManager();
-        builder.with(groups);
-        builder.with(entityLinkManager);
         lm.lm.layers.forEach(layer -> layer.objects.forEach(builder::with));
-
         if(world != null) world.dispose();
         world = new World(builder.build());
 
         worldSerializationManager.setSerializer(new JsonArtemisSerializer(world));
+
         createLinks();
-
         Entities.create(world);
+    }
 
+    /**创建一张全新的地图*/
+    public static void createNewMap(){
         rules = new Rule();
+        rules.width = 30;
+        rules.height = 20;
         rules.colorPalette = new ColorPalette();
         int l = 6;
 
@@ -93,16 +71,11 @@ public class Game{
             color.lerp(Color.YELLOW, i / (float)l);
             rules.colorPalette.addColor(color.toIntBits());
         }
-
-        map = new Map();
-        map.create(world, 30, 20);
         Vars.hud.mapEditorTable.buildColorPalette();//重建调色盘ui
-        flowField = new FlowField(map);
-        flowField.rebuild();
-    }
 
-    /**初始化染色瓦片*/
-    public static void setupTileStain(){
+        endMap();
+        map.createMap(rules.width, rules.height);
+        flowField = new FlowField(map);
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
                 int e = Entities.tileStain.create().getId();
@@ -114,20 +87,22 @@ public class Game{
                 map.putEntity(tile, "tile", x, y);
             }
         }
+        map.rebindTileAndStains();
     }
 
-    public static void rebindTileStain(){
-        var ids = groups.getEntityIds("tile");
-        for(int i = 0; i < ids.size(); i++){
-            PositionComp pos = utils.positionMapper.get(ids.get(i));
-            map.putEntity(ids.get(i), "tile", pos.tileX(), pos.tileY());
-        }
+    /**移除所有实体, 清空世界状态*/
+    public static void endMap(){
+        collideQueue.clear();
+        damageQueue.clear();
 
-        ids = groups.getEntityIds("tileStain");
-        for(int i = 0; i < ids.size(); i++){
-            PositionComp pos = utils.positionMapper.get(ids.get(i));
-            map.putEntity(ids.get(i), "tileStain", pos.tileX(), pos.tileY());
+        var oldBag = utils.allEntitiesSub.getEntities();
+        for(int i = 0; i < oldBag.size(); i++){
+            world.delete(oldBag.get(i));
         }
+    }
+
+    public static void dispose(){
+        world.dispose();
     }
 
     /**
@@ -159,11 +134,14 @@ public class Game{
 
     public static void createSystems(){
         backend.with(l -> {
+            l.add(groups = new GroupManager());
+            l.add(entityLinkManager = new EntityLinkManager());
             l.add(utils = new StaticUtils());
             l.add(worldSerializationManager = new WorldSerializationManager());
+            l.add(map = new MapManager());
         });
         logicPre.with(l -> {
-            l.add(new FlowFieldCoreChangeDetect());
+            //l.add(new FlowFieldCoreChangeDetect());
             l.add(new FlowFieldUpdate());
             l.add(new RebuildQuadTree());
         });
@@ -202,7 +180,6 @@ public class Game{
             l.add(new BaseSystem(){
                 @Override
                 protected void processSystem(){
-                    ScreenUtils.clear(0, 0, 0, 1);
                     Core.batch.begin();
                 }
             });
@@ -220,7 +197,7 @@ public class Game{
             l.add(new DrawFlowFieldDebug());
             l.add(new DrawTileStain());
             l.add(new DrawTile());
-            //l.add(new DrawUnitHitbox());
+            l.add(new DrawUnitHitbox());
             l.add(new DrawTarget());
         });
     }

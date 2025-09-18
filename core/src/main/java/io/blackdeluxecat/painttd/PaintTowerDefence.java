@@ -1,7 +1,9 @@
 package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.*;
 
@@ -24,8 +26,9 @@ public class PaintTowerDefence extends ApplicationAdapter{
         assets.finishLoading();
         Styles.load();
 
-        Vars.hud.create();
-        stage.addActor(Vars.hud.group);
+        stage.setDebugAll(true);
+        menu.create();
+        hud.create();
 
         InputProcessors.create();
         Game.create();
@@ -33,12 +36,13 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void render(){
+        ScreenUtils.clear(Color.CLEAR);
         lerpZoom = MathUtils.lerp(lerpZoom, zoom, 0.1f);
         worldViewport.setUnitsPerPixel(1f / lerpZoom);
         worldViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         shaper.setProjectionMatrix(worldViewport.getCamera().combined);
         batch.setProjectionMatrix(worldViewport.getCamera().combined);
-        world.process();
+        if(inGame) world.process();
 
         stage.getViewport().apply(true);
         stage.act();
@@ -58,7 +62,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void dispose(){
-        world.dispose();
+        Game.dispose();
         Core.atlas.dispose();
         Core.assets.dispose();
     }

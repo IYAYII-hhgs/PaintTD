@@ -3,6 +3,7 @@ package io.blackdeluxecat.painttd.ui;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
@@ -16,18 +17,17 @@ import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 import static io.blackdeluxecat.painttd.ui.Styles.*;
 
-public class Hud{
+public class Hud extends WidgetGroup{
     public MapEditBrush current;
 
-    public WidgetGroup group;
     public Table buttons = new Table();
     public MapEditorTable mapEditorTable;
 
     public void create(){
-        group = new WidgetGroup();
-        group.setFillParent(true);
-        stage.addActor(group);
-        stage.setDebugAll(true);
+        clear();
+        setFillParent(true);
+        ActorUtils.setVisible(this, g -> Vars.inGame);
+        stage.addActor(this);
 
         mapEditorTable = new MapEditorTable();
 
@@ -100,17 +100,11 @@ public class Hud{
 
             t.add(new ActorUtils<>(new Table()).with(rt -> {
                 rt.add(ActorUtils.wrapper
-                           .set(new TextButton("读档?", sTextB))
-                           .click(b -> {
-                               SaveHandler.load("save0");
-                           }).actor).width(4 * buttonSize).growY();
-            }).actor).fill();
-
-            t.add(new ActorUtils<>(new Table()).with(rt -> {
-                rt.add(ActorUtils.wrapper
                            .set(new TextButton("退出", sTextB))
                            .click(b -> {
-                               Gdx.app.exit();
+                               Vars.inGame = false;
+                               Vars.inMenu = true;
+                               Game.endMap();
                            }).actor).width(4 * buttonSize).growY();
             }).actor).fill();
         }).bottom().left();
@@ -120,7 +114,7 @@ public class Hud{
         Table table = new Table();
         table.setFillParent(true);
         cons.accept(table);
-        group.addActor(table);
+        this.addActor(table);
         return table;
     }
 

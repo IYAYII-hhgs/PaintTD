@@ -32,6 +32,11 @@ public class ActorUtils<T extends Actor>{
         return this;
     }
 
+    public ActorUtils<T> visible(Boolf<T> visible){
+        ActorUtils.setVisible(actor, visible);
+        return this;
+    }
+
     public ActorUtils<T> click(Cons<T> clicked){
         ActorUtils.clicked(actor, clicked);
         return this;
@@ -45,6 +50,15 @@ public class ActorUtils<T extends Actor>{
     public static <T extends Actor> void updater(T actor, Cons<T> updater){
         RunnableAction run = new RunnableAction();
         run.setRunnable(() -> updater.get(actor));
+        RepeatAction repeat = new RepeatAction();
+        repeat.setCount(RepeatAction.FOREVER);
+        repeat.setAction(run);
+        actor.addAction(repeat);
+    }
+
+    public static <T extends Actor> void setVisible(T actor, Boolf<T> visible){
+        RunnableAction run = new RunnableAction();
+        run.setRunnable(() -> actor.setVisible(visible.get(actor)));
         RepeatAction repeat = new RepeatAction();
         repeat.setCount(RepeatAction.FOREVER);
         repeat.setAction(run);

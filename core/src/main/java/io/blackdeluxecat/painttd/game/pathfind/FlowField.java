@@ -4,6 +4,7 @@ import com.artemis.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.map.*;
 import io.blackdeluxecat.painttd.map.Map;
 
 import java.util.*;
@@ -11,7 +12,7 @@ import java.util.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 public class FlowField{
-    public Map map;
+    public MapManager map;
 
     public Node[][] nodes;
 
@@ -24,10 +25,16 @@ public class FlowField{
     private final int[] d4y = {0, 1, 0, -1};
 
 
-    public FlowField(Map map){
+    public FlowField(MapManager map){
         this.map = map;
         nodes = new Node[map.width][map.height];
         openList = new PriorityQueue<>(comparator);
+
+        for(int x = 0; x < map.width; x++){
+            for(int y = 0; y < map.height; y++){
+                if(nodes[x][y] != null) Node.pool.free(nodes[x][y]);
+            }
+        }
     }
 
     /**

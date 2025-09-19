@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
-import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.io.*;
 import io.blackdeluxecat.painttd.ui.fragment.*;
@@ -17,7 +16,7 @@ import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 import static io.blackdeluxecat.painttd.ui.Styles.*;
 
-public class Hud extends WidgetGroup{
+public class HudGroup extends WidgetGroup{
     public MapEditBrush current;
 
     public Table buttons = new Table();

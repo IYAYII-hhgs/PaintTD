@@ -7,7 +7,7 @@ import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.io.*;
 
-public class Menu extends Table{
+public class MenuGroup extends Table{
     public Table title;
     public VerticalGroup buttons;
 
@@ -54,9 +54,9 @@ public class Menu extends Table{
                              .actor);
 
         buttons.addActor(ActorUtils.wrapper
-                             .set(new TextButton("[选项", Styles.sTextB))
+                             .set(new TextButton("选项", Styles.sTextB))
                              .click(b -> {
-
+                                 Vars.settingsDialog.show();
                              })
                              .actor);
 

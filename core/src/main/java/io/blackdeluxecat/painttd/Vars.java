@@ -11,8 +11,9 @@ public class Vars{
 
     public static boolean pause, inGame, inMenu = true;
 
-    public static Menu menu = new Menu();
-    public static Hud hud = new Hud();
+    public static MenuGroup menu = new MenuGroup();
+    public static HudGroup hud = new HudGroup();
+    public static SettingsDialog settingsDialog = new SettingsDialog();
 
     public static Vector2 v1 = new Vector2(), v2 = new Vector2(), v3 = new Vector2();
     public static Rectangle r1 = new Rectangle(), r2 = new Rectangle(), r3 = new Rectangle();

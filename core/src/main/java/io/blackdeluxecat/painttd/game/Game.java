@@ -5,7 +5,6 @@ import com.artemis.io.*;
 import com.artemis.link.*;
 import com.artemis.managers.*;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
@@ -25,21 +24,20 @@ public class Game{
     public static float lfps = 60f;
     public static World world;
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
+
     public static MapManager map;
     public static GroupManager groups;
     public static WorldSerializationManager worldSerializationManager;
     public static EntityLinkManager entityLinkManager;
+    public static StaticUtils utils;
 
-    /**
-     * 每帧开始时重建树, 需自行检查在当前帧中失效的单位.
-     */
+    //每帧开始时重建树, 需自行检查在当前帧中失效的单位.
     public static QuadTree entities = new QuadTree();
     public static FlowField flowField;
 
     public static CollideQueue collideQueue = new CollideQueue();
     public static DamageQueue damageQueue = new DamageQueue();
 
-    public static StaticUtils utils;
 
     /**初始化Game类及系统*/
     public static void create(){

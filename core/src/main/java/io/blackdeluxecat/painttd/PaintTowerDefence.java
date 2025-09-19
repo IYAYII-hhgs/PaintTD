@@ -24,7 +24,10 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
         Fonts.load();
         assets.finishLoading();
+
         Styles.load();
+
+        prefs.load();
 
         stage.setDebugAll(true);
         menu.create();
@@ -36,12 +39,16 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void render(){
+        prefs.save();
+
         ScreenUtils.clear(Color.CLEAR);
+
         lerpZoom = MathUtils.lerp(lerpZoom, zoom, 0.1f);
         worldViewport.setUnitsPerPixel(1f / lerpZoom);
         worldViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         shaper.setProjectionMatrix(worldViewport.getCamera().combined);
         batch.setProjectionMatrix(worldViewport.getCamera().combined);
+
         if(inGame) world.process();
 
         stage.getViewport().apply(true);

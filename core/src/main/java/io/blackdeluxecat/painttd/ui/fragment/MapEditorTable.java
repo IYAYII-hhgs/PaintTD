@@ -53,12 +53,12 @@ public class MapEditorTable extends Table{
         for(int i = 0; i < rules.colorPalette.colors.size; i++){
             int finalI = i;
             colorTable.add(new ActorUtils<>(new Button(sTextB)).with(b -> {
-                b.add(new Image(Styles.whited)).grow().pad(2f).getActor().setColor(Vars.c1.set(rules.colorPalette.getColor(finalI)));
+                b.add(new Image(Styles.white)).grow().pad(2f).getActor().setColor(Vars.c1.set(rules.colorPalette.getColor(finalI)));
             }).click(b -> selectColorIndex = finalI).actor);
         }
     }
 
-    public Hud.MapEditBrush drawWall = new Hud.MapEditBrush("地形墙"){
+    public HudGroup.MapEditBrush drawWall = new HudGroup.MapEditBrush("地形墙"){
         @Override
         public void draw(float wx, float wy){
             int x = Math.round(wx);
@@ -68,7 +68,7 @@ public class MapEditorTable extends Table{
             var tileComp = utils.tileMapper.get(tile);
             tileComp.isWall = !tileComp.isWall;
         }
-    }, drawStainCore = new Hud.MapEditBrush("核心"){
+    }, drawStainCore = new HudGroup.MapEditBrush("核心"){
         @Override
         public void draw(float wx, float wy){
             var e = Game.map.getTileStain(Math.round(wx), Math.round(wy));
@@ -78,7 +78,7 @@ public class MapEditorTable extends Table{
             var stain = mapper.get(e);
             stain.isCore = !stain.isCore;
         }
-    }, drawStainColor = new Hud.MapEditBrush("地形染色"){
+    }, drawStainColor = new HudGroup.MapEditBrush("地形染色"){
         @Override
         public void draw(float worldX, float worldY){
             var e = Game.map.getTileStain(Math.round(worldX), Math.round(worldY));

@@ -3,11 +3,11 @@ package io.blackdeluxecat.painttd.render;
 import com.badlogic.gdx.math.*;
 
 import static io.blackdeluxecat.painttd.Core.batch;
-import static io.blackdeluxecat.painttd.ui.Styles.white;
+import static io.blackdeluxecat.painttd.ui.Styles.whiteRegion;
 
 public class Shapes{
     public static void rect(float x, float y, float width, float height){
-        batch.draw(white, x, y, width, height);
+        batch.draw(whiteRegion, x, y, width, height);
     }
 
     public static void circle(float x, float y, float radius, int segments){
@@ -23,7 +23,7 @@ public class Shapes{
             cx = cos * cx - sin * cy;
             cy = sin * temp + cos * cy;
 
-            batch.draw(white,
+            batch.draw(whiteRegion,
                 x + cx, y + cy,
                 2, 2);
         }

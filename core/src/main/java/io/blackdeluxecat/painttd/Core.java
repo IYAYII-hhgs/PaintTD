@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.viewport.*;
+import io.blackdeluxecat.painttd.io.*;
 
 public class Core{
     public static AssetManager assets = new AssetManager();
@@ -21,4 +22,6 @@ public class Core{
     public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
     public static FileHandle gameDataFolder = Gdx.files.external("AppData\\Roaming\\PaintTD");
+
+    public static PrefMgr prefs = new PrefMgr();
 }

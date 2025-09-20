@@ -19,6 +19,7 @@ public class Styles{
 
     public static TextureRegionDrawable white;
     public static Drawable black, black3, black5, black8;
+    public static NinePatchDrawable ninePatch;
 
     public static void load(){
         whiteRegion = Core.atlas.findRegion("white");
@@ -28,10 +29,12 @@ public class Styles{
         black5 = white.tint(new Color(0f, 0f, 0f, 0.5f));
         black8 = white.tint(new Color(0f, 0f, 0f, 0.8f));
 
-        sTextB = new TextButton.TextButtonStyle(null, null, null, standard);
-        sLabel = new Label.LabelStyle(standard, Color.WHITE);
-        sTextF = new TextField.TextFieldStyle(standard, Color.WHITE, null, null, null);
+        ninePatch = new NinePatchDrawable(Core.atlas.createPatch("ui-button"));
 
-        sWindow = new Window.WindowStyle(standard, new Color(0.1f, 0.2f, 1f, 1f), black5);
+        sTextB = new TextButton.TextButtonStyle(ninePatch, ninePatch, ninePatch, standard);
+        sLabel = new Label.LabelStyle(standard, Color.WHITE);
+        sTextF = new TextField.TextFieldStyle(standard, Color.WHITE, null, null, ninePatch);
+
+        sWindow = new Window.WindowStyle(standard, new Color(0.1f, 0.2f, 1f, 1f), ninePatch);
     }
 }

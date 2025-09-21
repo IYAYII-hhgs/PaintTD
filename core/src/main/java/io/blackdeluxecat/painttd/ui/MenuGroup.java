@@ -56,7 +56,7 @@ public class MenuGroup extends Table{
         buttons.addActor(ActorUtils.wrapper
                              .set(new TextButton("选项", Styles.sTextB))
                              .click(b -> {
-                                 Vars.settingsDialog.show();
+                                 Vars.preferenceDialog.show();
                              })
                              .actor);
 

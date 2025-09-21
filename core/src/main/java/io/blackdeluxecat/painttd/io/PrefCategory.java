@@ -35,7 +35,7 @@ public class PrefCategory{
         elems.add(elem);
     }
 
-    public PrefElem get(String name){
+    public PrefElem find(String name){
         String full = name + prefix;
         for(PrefElem elem : elems){
             if(elem.name.equals(full)){
@@ -45,20 +45,20 @@ public class PrefCategory{
         return null;
     }
 
-    public void boolPref(String name, String description, boolean def){
-        add(new BoolElem(name, description, def));
+    public void boolPref(String name, String description, boolean def, @Null Boolc changed){
+        add(new BoolElem(name, description, def, changed));
     }
 
-    public void intPref(String name, String description, int def){
-        add(new IntElem(name, description, def));
+    public void intPref(String name, String description, int def, @Null Intc changed){
+        add(new IntElem(name, description, def, changed));
     }
 
-    public void floatPref(String name, String description, float def){
-        add(new FloatElem(name, description, def));
+    public void floatPref(String name, String description, float def, @Null Floatc changed){
+        add(new FloatElem(name, description, def, changed));
     }
 
-    public void stringPref(String name, String description, String def){
-        add(new StringElem(name, description, def));
+    public void stringPref(String name, String description, String def, @Null Cons<String> changed){
+        add(new StringElem(name, description, def, changed));
     }
 
 
@@ -77,9 +77,11 @@ public class PrefCategory{
 
     public static class BoolElem extends PrefElem{
         public boolean value;
-        public BoolElem(String name, String description, boolean def){
+        @Null public Boolc changed;
+        public BoolElem(String name, String description, boolean def, @Null Boolc changed){
             super(name, description);
             prefs.putBoolean(name, def);
+            this.changed = changed;
         }
 
         @Override
@@ -90,9 +92,11 @@ public class PrefCategory{
 
     public static class IntElem extends PrefElem{
         public int value;
-        public IntElem(String name, String description, int def){
+        @Null public Intc changed;
+        public IntElem(String name, String description, int def, @Null Intc changed){
             super(name, description);
             prefs.putInt(name, def);
+            this.changed = changed;
         }
 
         @Override
@@ -103,9 +107,11 @@ public class PrefCategory{
 
     public static class FloatElem extends PrefElem{
         public float value;
-        public FloatElem(String name, String description, float def){
+        @Null public Floatc changed;
+        public FloatElem(String name, String description, float def, @Null Floatc changed){
             super(name, description);
             prefs.putFloat(name, def);
+            this.changed = changed;
         }
 
         @Override
@@ -116,9 +122,11 @@ public class PrefCategory{
 
     public static class StringElem extends PrefElem{
         public String value;
-        public StringElem(String name, String description, String def){
+        @Null public Cons<String> changed;
+        public StringElem(String name, String description, String def, @Null Cons<String> changed){
             super(name, description);
             prefs.put(name, def);
+            this.changed = changed;
         }
 
         @Override
@@ -130,9 +138,11 @@ public class PrefCategory{
     // Long and Double settings are useless, but I'll keep them for now
     public static class LongElem extends PrefElem{
         public long value;
-        public LongElem(String name, String description, long def){
+        @Null public Cons<Long> changed;
+        public LongElem(String name, String description, long def, @Null Cons<Long> changed){
             super(name, description);
             prefs.putLong(name, def);
+            this.changed = changed;
         }
 
         @Override
@@ -143,9 +153,11 @@ public class PrefCategory{
 
     public static class DoubleElem extends PrefElem{
         public double value;
-        public DoubleElem(String name, String description, double def){
+        @Null public Cons<Double> changed;
+        public DoubleElem(String name, String description, double def, @Null Cons<Double> changed){
             super(name, description);
             prefs.putDouble(name, def);
+            this.changed = changed;
         }
 
         @Override

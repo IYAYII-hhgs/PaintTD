@@ -26,6 +26,7 @@ public class SaveHandler{
         // 读档, 包括反序列化实体, 反序列化rules
         SaveFormat format = Game.worldSerializationManager.load(getLoadInput(save), SaveFormat.class);
         Game.rules = format.rules;
+        Vars.hud.mapEditorTable.buildColorPalette();
         Game.map.createMap(Game.rules.width, Game.rules.height);
         Game.flowField = new FlowField(Game.map);
 

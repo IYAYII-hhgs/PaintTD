@@ -10,8 +10,17 @@ import static io.blackdeluxecat.painttd.Core.shaper;
 import static io.blackdeluxecat.painttd.game.Game.flowField;
 
 public class DrawFlowFieldDebug extends BaseSystem{
+    public static boolean pref;
+
+    @Override
+    protected void initialize(){
+        super.initialize();
+        pref = Core.prefs.getBoolean("流场寻路箭头");
+    }
+
     @Override
     protected void processSystem(){
+        if(!pref) return;
         shaper.begin(ShapeRenderer.ShapeType.Line);
         shaper.getColor().set(Color.GREEN, 0.4f);
         for(int x = 0; x < Game.map.width; x++){

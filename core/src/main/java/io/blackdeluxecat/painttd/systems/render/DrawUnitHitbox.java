@@ -12,12 +12,20 @@ import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import static io.blackdeluxecat.painttd.Core.*;
 
 public class DrawUnitHitbox extends IteratingSystem{
+    public static boolean pref = false;
+
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<HitboxComp> hbm;
     public ComponentMapper<HealthComp> hm;
 
     public DrawUnitHitbox(){
         super(Aspect.all(PositionComp.class).exclude(TileComp.class, TileStainComp.class));
+    }
+
+    @Override
+    protected void initialize(){
+        super.initialize();
+        pref = Core.prefs.getBoolean("实体碰撞箱");
     }
 
     @Override

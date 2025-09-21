@@ -70,7 +70,7 @@ public class Game{
             color.lerp(Color.YELLOW, i / (float)l);
             rules.colorPalette.addColor(color.toIntBits());
         }
-        Vars.hud.mapEditorTable.buildColorPalette();//重建调色盘ui
+        Vars.hud.mapEditorTable.buildColorPalette();
 
         endMap();
         map.createMap(rules.width, rules.height);

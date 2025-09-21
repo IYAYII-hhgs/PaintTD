@@ -44,7 +44,7 @@ public class HudGroup extends WidgetGroup{
 
         //Placement
         fill(t -> {
-            buttons.defaults().height(buttonSize * 2).pad(2).minWidth(buttonSize);
+            buttons.defaults().height(buttonSize * 2f).pad(2).minWidth(buttonSize);
 
             buttons.add(new ActorUtils<>(new Table()).with(line1 -> {
                 Label label = new Label("", sLabel);
@@ -82,29 +82,29 @@ public class HudGroup extends WidgetGroup{
             t.add(buttons).growX();
 
             t.add(new ActorUtils<>(new Table()).with(rt -> {
+
+                rt.defaults().growY().width(4 * buttonSize);
+
                 rt.add(ActorUtils.wrapper
                            .set(new TextButton("取消", sTextB))
                            .click(b -> {
                                current = null;
-                           }).update(b -> b.setVisible(current != null)).actor).width(4 * buttonSize).growY();
-            }).actor).fill();
+                           }).update(b -> b.setVisible(current != null)).actor);
 
-            t.add(new ActorUtils<>(new Table()).with(rt -> {
                 rt.add(ActorUtils.wrapper
                            .set(new TextButton("存档?", sTextB))
                            .click(b -> {
                                SaveHandler.save("save0");
-                           }).actor).width(4 * buttonSize).growY();
-            }).actor).fill();
+                           }).actor);
 
-            t.add(new ActorUtils<>(new Table()).with(rt -> {
                 rt.add(ActorUtils.wrapper
                            .set(new TextButton("退出", sTextB))
                            .click(b -> {
                                Vars.inGame = false;
                                Vars.inMenu = true;
                                Game.endMap();
-                           }).actor).width(4 * buttonSize).growY();
+                           }).actor);
+
             }).actor).fill();
         }).bottom().left();
     }

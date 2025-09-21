@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.io.*;
+import io.blackdeluxecat.painttd.systems.render.*;
 
 public class PreferenceDialog extends BaseDialog{
     public Array<PrefCategory> categories = new Array<>();
@@ -19,10 +20,20 @@ public class PreferenceDialog extends BaseDialog{
         setBackground(Styles.black8);
         addCloseButton();
 
+        cateTab.setBackground(Styles.ninePatch);
+        prefTab.setBackground(Styles.black5);
+
         var render = new PrefCategory("渲染", new TextureRegionDrawable(Core.atlas.findRegion("u-eraser")));
         addCategory(render);
 
-        render.boolPref("test", null, true);
+        var game = new PrefCategory("游戏", new TextureRegionDrawable(Core.atlas.findRegion("b-pencil")));
+        addCategory(game);
+
+        var debug = new PrefCategory("Debug", new TextureRegionDrawable(Core.atlas.findRegion("u-eraser")));
+        addCategory(debug);
+
+        debug.boolPref("实体碰撞箱", null, true, b -> DrawUnitHitbox.pref = b);
+        debug.boolPref("流场寻路箭头", null, false, b -> DrawFlowFieldDebug.pref = b);
 
         rebuild();
     }
@@ -42,18 +53,9 @@ public class PreferenceDialog extends BaseDialog{
 
     public void rebuild(){
         cont.clear();
-        ActorUtils.updater(cont, t -> {
-            var hit = t.hit(Gdx.input.getX(), Gdx.input.getY(), false);
-            if(hit != null && hit.isDescendantOf(cateTab)){
-                cateTab.toFront();
-                cateTab.setWidth(400f);
-            }else{
-                cateTab.toBack();
-                cateTab.setWidth(Styles.buttonSize);
-            }
-        });
 
         cateTab.clear();
+        cateTab.top();
 
         for(int i = 0; i < categories.size; i++){
             int fi = i;
@@ -73,9 +75,20 @@ public class PreferenceDialog extends BaseDialog{
 
         rebuildPrefTab();
 
-        cont.pad(20f, 100f, 20f, 100f);
-        cont.add(cateTab);
-        cont.add(prefTab).grow();
+        cont.pad(100f, 100f, 20f, 100f);
+        var cateScroller = cont.add(new ScrollPane(cateTab)).growY().getActor();
+
+        ActorUtils.updater(cateScroller, t -> {
+            var stageHit = t.getStage().hit(Gdx.input.getX(), Gdx.input.getY(), false);
+            if(stageHit != null && stageHit.isDescendantOf(cateScroller)){
+                cateScroller.setWidth(400f);
+                cateScroller.toFront();
+            }else{
+                cateScroller.setWidth(200f);
+                cateScroller.toBack();
+            }
+        });
+        cont.add(new ScrollPane(prefTab)).grow();
     }
 
     public void rebuildPrefTab(){
@@ -96,7 +109,10 @@ public class PreferenceDialog extends BaseDialog{
                                                  .update(l -> l.setColor(be.value ? Color.GREEN : Color.RED))
                                                  .actor).growX()
                           )
-                          .click(tt -> Core.prefs.putBoolean(be.name, be.value = !be.value))
+                          .click(tt -> {
+                              Core.prefs.putBoolean(be.name, be.value = !be.value);
+                              if(be.changed != null) be.changed.get(be.value);
+                          })
                           .actor);
             });
         }
@@ -108,7 +124,7 @@ public class PreferenceDialog extends BaseDialog{
                 if(builder != null){
                     var t = new Table();
                     builder.get(elem, t);
-                    table.add(t).growX().minHeight(Styles.buttonSize * 2).pad(8f);
+                    table.add(t).growX().minHeight(Styles.buttonSize * 2).pad(8f).row();
                 }
             }
         }

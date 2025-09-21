@@ -13,6 +13,7 @@ public class MenuGroup extends Table{
 
     public void create(){
         clear();
+        setBackground(Styles.menu);
         Core.stage.addActor(this);
         setFillParent(true);
         ActorUtils.setVisible(this, t -> Vars.inMenu);

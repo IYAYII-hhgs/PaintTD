@@ -1,5 +1,6 @@
 package io.blackdeluxecat.painttd.map;
 
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 
@@ -14,16 +15,16 @@ public class ColorPalette{
         return colors.size;
     }
 
-    public void addColor(int color){
-        colors.add(color);
+    public void addColor(Color color){
+        colors.add(Color.rgba8888(color));
     }
 
-    public boolean setColor(int index, int color){
+    public boolean setColor(int index, Color color){
         if(index < 0 || index >= colors.size){
             return false;
         }
 
-        colors.set(index, color);
+        colors.set(index, Color.rgba8888(color));
         return true;
     }
 
@@ -31,7 +32,7 @@ public class ColorPalette{
         return colors.get(index);
     }
 
-    public int getColor(int index){
-        return unsafeGetColor(MathUtils.clamp(index, 0, colors.size - 1));
+    public Color getColor(Color out, int index){
+        return out.set(unsafeGetColor(MathUtils.clamp(index, 0, colors.size - 1)));
     }
 }

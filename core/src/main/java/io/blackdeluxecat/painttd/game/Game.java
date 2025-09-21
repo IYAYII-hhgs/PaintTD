@@ -68,7 +68,7 @@ public class Game{
 
         for(int i = 0; i < l; i++){
             color.lerp(Color.YELLOW, i / (float)l);
-            rules.colorPalette.addColor(color.toIntBits());
+            rules.colorPalette.addColor(color);
         }
         Vars.hud.mapEditorTable.buildColorPalette();
 
@@ -86,7 +86,7 @@ public class Game{
                 map.putEntity(tile, "tile", x, y);
             }
         }
-        map.rebindTileAndStains();
+        map.shouldRebindTile = true;
     }
 
     /**移除所有实体, 清空世界状态*/

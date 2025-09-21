@@ -48,6 +48,13 @@ public class DamageQueue extends RequestQueue<DamageQueue.DamageRequest>{
             this.type = type;
             return this;
         }
+
+        @Override
+        public void reset(){
+            super.reset();
+            sourceId = targetId = -1;
+            amount = 0;
+        }
     }
 
 

@@ -12,14 +12,13 @@ import static io.blackdeluxecat.painttd.game.Game.*;
 
 public class Entities{
     public static Array<EntityType> types = new Array<>();
+    public static ObjectMap<String, Array<EntityType>> typeByCategory = new ObjectMap<>();
+    static Array<EntityType> tmp = new Array<>();
 
-    public static EntityType
-        //enemies
-        unit, eraser,
-
-        //turrets
-        building, pencil, brush,
-        tile, tileStain, spawner;
+    public static void register(EntityType type){
+        types.add(type);
+        typeByCategory.get(type.category, new Array<>()).add(type);
+    }
 
     public static EntityType getByName(String id){
         for(EntityType type : types){
@@ -30,16 +29,32 @@ public class Entities{
         return null;
     }
 
+    public static Array<EntityType> getByCategory(String category){
+        tmp.clear();
+        tmp.addAll(typeByCategory.get(category, new Array<>()));
+        return tmp;
+    }
+
+    public static EntityType
+        //enemies
+        unit, eraser,
+
+        //turrets
+        building, pencil, brush,
+
+        //tiles
+        tile, tileStain, spawner;
+
     public static void create(World world){
         types.clear();
-        unit = new EntityType("unit"){
+        unit = new EntityType("unit", cHide){
             {
                 addGroup("unit");
                 add(new PositionComp());
             }
         };
 
-        eraser = new EntityType("eraser", unit){
+        eraser = new EntityType("eraser", unit, cUnit){
             {
                 add(new MarkerComp.UseQuadTree());
                 add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
@@ -56,7 +71,7 @@ public class Entities{
             }
         };
 
-        building = new EntityType("building"){
+        building = new EntityType("building", cHide){
             {
                 addGroup("building");
                 add(new MarkerComp.PlaceSnapGrid());
@@ -65,7 +80,7 @@ public class Entities{
             }
         };
 
-        pencil = new EntityType("pencil", building){
+        pencil = new EntityType("pencil", building, cBuilding){
             {
                 add(new MarkerComp.UseQuadTree());
                 add(new TeamComp(0));
@@ -84,7 +99,7 @@ public class Entities{
             }
         };
 
-        brush = new EntityType("brush", building){
+        brush = new EntityType("brush", building, cBuilding){
             {
                 add(new MarkerComp.UseQuadTree());
                 add(new TeamComp(0));
@@ -103,7 +118,7 @@ public class Entities{
             }
         };
 
-        tile = new EntityType("tile"){
+        tile = new EntityType("tile", cHide){
             {
                 addGroup("tile");
                 add(new PositionComp());
@@ -113,7 +128,7 @@ public class Entities{
             }
         };
 
-        tileStain = new EntityType("tileStain", unit){
+        tileStain = new EntityType("tileStain", unit, cHide){
             {
                 addGroup("tileStain");
                 add(new TileStainComp());
@@ -125,10 +140,12 @@ public class Entities{
             }
         };
 
-        spawner = new EntityType("spawner", building){
+        spawner = new EntityType("spawner", building, cEditor){
             {
                 addGroup("spawner");
             }
         };
     }
+
+    public static String cBuilding = "building", cUnit = "unit", cHide = "hide", cEditor = "editor";
 }

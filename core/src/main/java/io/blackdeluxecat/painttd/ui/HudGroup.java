@@ -18,6 +18,7 @@ import static io.blackdeluxecat.painttd.ui.Styles.*;
 
 public class HudGroup extends WidgetGroup{
     public MapEditBrush current;
+    public Table placement, colorPalette, mapEditor;
 
     public Table buttons = new Table();
     public MapEditorTable mapEditorTable;

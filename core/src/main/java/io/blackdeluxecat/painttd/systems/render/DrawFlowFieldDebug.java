@@ -15,7 +15,7 @@ public class DrawFlowFieldDebug extends BaseSystem{
     @Override
     protected void initialize(){
         super.initialize();
-        pref = Core.prefs.getBoolean("流场寻路箭头");
+        pref = Core.prefs.getBoolean("drawFlowField");
     }
 
     @Override

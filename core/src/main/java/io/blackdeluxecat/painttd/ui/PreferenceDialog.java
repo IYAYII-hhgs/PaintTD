@@ -23,17 +23,17 @@ public class PreferenceDialog extends BaseDialog{
         cateTab.setBackground(Styles.ninePatch);
         prefTab.setBackground(Styles.black5);
 
-        var render = new PrefCategory("渲染", new TextureRegionDrawable(Core.atlas.findRegion("u-eraser")));
+        var render = new PrefCategory("pref.cate.render", new TextureRegionDrawable(Core.atlas.findRegion("u-eraser")));
         addCategory(render);
 
-        var game = new PrefCategory("游戏", new TextureRegionDrawable(Core.atlas.findRegion("b-pencil")));
+        var game = new PrefCategory("pref.cate.gameplay", new TextureRegionDrawable(Core.atlas.findRegion("b-pencil")));
         addCategory(game);
 
-        var debug = new PrefCategory("Debug", new TextureRegionDrawable(Core.atlas.findRegion("u-eraser")));
+        var debug = new PrefCategory("pref.cate.debug", new TextureRegionDrawable(Core.atlas.findRegion("u-eraser")), "");
         addCategory(debug);
 
-        debug.boolPref("实体碰撞箱", null, true, b -> DrawUnitHitbox.pref = b);
-        debug.boolPref("流场寻路箭头", null, false, b -> DrawFlowFieldDebug.pref = b);
+        debug.boolPref("drawUnitHitbox", null, true, b -> DrawUnitHitbox.pref = b);
+        debug.boolPref("drawFlowField", null, false, b -> DrawFlowFieldDebug.pref = b);
 
         rebuild();
     }
@@ -63,7 +63,7 @@ public class PreferenceDialog extends BaseDialog{
             cateTab.add(new ActorUtils<>(new Button(Styles.sTextB))
                             .with(t -> {
                                 if(category.icon != null) t.add(new Image(category.icon)).size(Styles.buttonSize);
-                                t.add(new Label(category.name, Styles.sLabel)).growX();
+                                t.add(new Label(Core.i18n.get(category.name), Styles.sLabel)).growX();
                             })
                             .click(b -> {
                                 cateIndex = fi;
@@ -105,7 +105,7 @@ public class PreferenceDialog extends BaseDialog{
                 be.updateValue();
                 t.add(new ActorUtils<>(new Table())
                           .with(tt -> tt.add(ActorUtils.wrapper
-                                                 .set(new Label(be.name, Styles.sLabel))
+                                                 .set(new Label(Core.i18n.get("pref." + be.name), Styles.sLabel))
                                                  .update(l -> l.setColor(be.value ? Color.GREEN : Color.RED))
                                                  .actor).growX()
                           )

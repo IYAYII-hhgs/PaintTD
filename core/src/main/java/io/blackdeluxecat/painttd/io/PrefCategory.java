@@ -8,7 +8,8 @@ import io.blackdeluxecat.painttd.utils.func.*;
 import static io.blackdeluxecat.painttd.Core.prefs;
 
 /**
- * 选项类别. 有自己的ui文本和图标, 维护一组选项. 可自动为选项字段添加前缀.
+ * 选项类别. 有自己的ui文本和图标, 维护一组选项.
+ * 自动为持有选项字段添加前缀, 前缀在使用时.添加号.
  * */
 public class PrefCategory{
     public static Array<PrefCategory> categories = new Array<>();
@@ -31,8 +32,11 @@ public class PrefCategory{
     }
 
     public void add(PrefElem elem){
-        elem.name = prefix + elem.name;
         elems.add(elem);
+    }
+
+    public String prefix(String name){
+        return (prefix.isEmpty() ? "" : (prefix + ".")) + name;
     }
 
     public PrefElem find(String name){
@@ -46,19 +50,19 @@ public class PrefCategory{
     }
 
     public void boolPref(String name, String description, boolean def, @Null Boolc changed){
-        add(new BoolElem(name, description, def, changed));
+        add(new BoolElem(prefix(name), description, def, changed));
     }
 
     public void intPref(String name, String description, int def, @Null Intc changed){
-        add(new IntElem(name, description, def, changed));
+        add(new IntElem(prefix(name), description, def, changed));
     }
 
     public void floatPref(String name, String description, float def, @Null Floatc changed){
-        add(new FloatElem(name, description, def, changed));
+        add(new FloatElem(prefix(name), description, def, changed));
     }
 
     public void stringPref(String name, String description, String def, @Null Cons<String> changed){
-        add(new StringElem(name, description, def, changed));
+        add(new StringElem(prefix(name), description, def, changed));
     }
 
 

@@ -25,7 +25,7 @@ public class DrawUnitHitbox extends IteratingSystem{
     @Override
     protected void initialize(){
         super.initialize();
-        pref = Core.prefs.getBoolean("实体碰撞箱");
+        pref = Core.prefs.getBoolean("drawUnitHitbox");
     }
 
     @Override

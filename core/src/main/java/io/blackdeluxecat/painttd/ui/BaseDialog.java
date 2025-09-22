@@ -35,7 +35,7 @@ public class BaseDialog extends Table{
 
     public void addCloseButton(){
         buttons.add(ActorUtils.wrapper
-                           .set(new TextButton("关闭", Styles.sTextB))
+                           .set(new TextButton(Core.i18n.get("button.back"), Styles.sTextB))
                            .click(b -> {
                                this.hide();
                            })

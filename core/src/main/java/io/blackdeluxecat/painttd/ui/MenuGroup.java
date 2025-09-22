@@ -30,7 +30,7 @@ public class MenuGroup extends Table{
         buttons.space(10);
         buttons.pad(20);
         buttons.addActor(ActorUtils.wrapper
-                             .set(new TextButton("开新地图", Styles.sTextB))
+                             .set(new TextButton(Core.i18n.get("menu.new"), Styles.sTextB))
                              .click(b -> {
                                  Vars.inGame = true;
                                  Vars.inMenu = false;
@@ -39,14 +39,14 @@ public class MenuGroup extends Table{
                              .actor);
 
         buttons.addActor(ActorUtils.wrapper
-                             .set(new TextButton("[自定义地图", Styles.sTextB))
+                             .set(new TextButton(Core.i18n.get("menu.custom"), Styles.sTextB))
                              .click(b -> {
 
                              })
                              .actor);
 
         buttons.addActor(ActorUtils.wrapper
-                             .set(new TextButton("载入存档", Styles.sTextB))
+                             .set(new TextButton(Core.i18n.get("menu.load"), Styles.sTextB))
                              .click(b -> {
                                  Vars.inGame = true;
                                  Vars.inMenu = false;
@@ -55,14 +55,14 @@ public class MenuGroup extends Table{
                              .actor);
 
         buttons.addActor(ActorUtils.wrapper
-                             .set(new TextButton("选项", Styles.sTextB))
+                             .set(new TextButton(Core.i18n.get("menu.pref"), Styles.sTextB))
                              .click(b -> {
                                  Vars.preferenceDialog.show();
                              })
                              .actor);
 
         buttons.addActor(ActorUtils.wrapper
-                             .set(new TextButton("退出", Styles.sTextB))
+                             .set(new TextButton(Core.i18n.get("menu.exit"), Styles.sTextB))
                              .click(b -> {
                                  Gdx.app.exit();
                              })

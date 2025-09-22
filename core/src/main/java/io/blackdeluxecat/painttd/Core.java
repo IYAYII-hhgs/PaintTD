@@ -35,13 +35,16 @@ public class Core{
         i18nFile = Gdx.files.internal("i18n/bundle");
         try{
             if(prefs.get("i18n") == null){
+                //系统默认语言
                 i18n = I18NBundle.createBundle(i18nFile);
             }else{
+                //设置项语言
                 i18n = I18NBundle.createBundle(i18nFile, prefs.getString("i18n", "zh_CN"));
             }
         }catch(Exception e){
             Gdx.app.error("I18N", "Load failed", e);
         }
+        I18NBundle.setExceptionOnMissingKey(false);
 
     }
 }

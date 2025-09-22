@@ -17,10 +17,13 @@ public class Entities{
 
     public static void register(EntityType type){
         types.add(type);
-        typeByCategory.get(type.category, new Array<>()).add(type);
+
+        var arr = typeByCategory.get(type.category);
+        if(arr == null) typeByCategory.put(type.category, arr = new Array<>());
+        arr.add(type);
     }
 
-    public static EntityType getByName(String id){
+    public static EntityType getById(String id){
         for(EntityType type : types){
             if(type.id.equals(id)){
                 return type;
@@ -31,7 +34,7 @@ public class Entities{
 
     public static Array<EntityType> getByCategory(String category){
         tmp.clear();
-        tmp.addAll(typeByCategory.get(category, new Array<>()));
+        tmp.addAll(typeByCategory.get(category, tmp));
         return tmp;
     }
 

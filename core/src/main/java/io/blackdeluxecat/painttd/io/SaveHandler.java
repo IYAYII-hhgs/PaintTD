@@ -25,7 +25,7 @@ public class SaveHandler{
         // 读档, 包括反序列化实体, 反序列化rules
         SaveFormat format = Game.worldSerializationManager.load(getLoadInput(save), SaveFormat.class);
         Game.rules = format.rules;
-        Vars.hud.mapEditorTable.buildColorPalette();
+        Vars.hud.rebuild();
         Game.map.createMap(Game.rules.width, Game.rules.height);
         Game.flowField = new FlowField(Game.map);
 
@@ -33,7 +33,7 @@ public class SaveHandler{
         var entities = format.entities;
         for(int i = 0; i < entities.size(); i++){
             var e = Game.world.getEntity(entities.get(i));
-            Entities.getByName(Game.utils.entityTypeMapper.get(e).type).refill(e);
+            Entities.getById(Game.utils.entityTypeMapper.get(e).type).refill(e);
         }
 
         // 重建地图瓦片映射

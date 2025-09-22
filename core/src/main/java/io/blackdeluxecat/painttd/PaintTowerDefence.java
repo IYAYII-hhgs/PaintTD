@@ -31,7 +31,6 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
         stage.setDebugUnderMouse(true);
         menu.create();
-        hud.create();
 
         InputProcessors.create();
         Game.create();

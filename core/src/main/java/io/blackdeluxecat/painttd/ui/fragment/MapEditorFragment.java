@@ -9,16 +9,9 @@ import io.blackdeluxecat.painttd.ui.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 import static io.blackdeluxecat.painttd.ui.Styles.*;
 
-public class MapEditorTable extends Table{
-    public int selectColorIndex = 0;
-
-    public Table colorTable = new Table();
-
-    public MapEditorTable(){
-        create();
-    }
-
-    public void create(){
+public class MapEditorFragment extends Table{
+    public void rebuild(){
+        clear();
         add(new ActorUtils<>(new Table()).with(t1 -> {
             t1.add(ActorUtils.wrapper
                        .set(new TextButton("设置核心", sTextB))
@@ -41,19 +34,7 @@ public class MapEditorTable extends Table{
                        })
                        .actor);
 
-            t1.add(colorTable);
         }).actor).growX();
-    }
-
-    public void buildColorPalette(){
-        colorTable.clear();
-        colorTable.defaults().size(Styles.buttonSize);
-        for(int i = 0; i < rules.colorPalette.colors.size; i++){
-            int finalI = i;
-            colorTable.add(new ActorUtils<>(new Button(sTextBEmpty)).with(b -> {
-                b.add(new Image(Styles.white)).grow().pad(2f).getActor().setColor(rules.colorPalette.getColor(Vars.c1, finalI));
-            }).click(b -> selectColorIndex = finalI).actor);
-        }
     }
 
     public HudGroup.MapEditBrush drawWall = new HudGroup.MapEditBrush("地形墙"){
@@ -84,7 +65,7 @@ public class MapEditorTable extends Table{
             var mapper = world.getMapper(HealthComp.class);
             if(!mapper.has(e)) return;
             var hp = mapper.get(e);
-            hp.health = selectColorIndex + 1;
+            hp.health = Vars.hud.colors.selectColorIndex + 1;
         }
     };
 }

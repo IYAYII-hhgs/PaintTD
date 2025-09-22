@@ -9,30 +9,37 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.io.*;
 import io.blackdeluxecat.painttd.ui.fragment.*;
-
-import java.util.function.*;
+import io.blackdeluxecat.painttd.utils.func.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 import static io.blackdeluxecat.painttd.ui.Styles.*;
 
 public class HudGroup extends WidgetGroup{
+    //placement brush
     public MapEditBrush current;
-    public Table placement, colorPalette, mapEditor;
 
-    public Table buttons = new Table();
-    public MapEditorTable mapEditorTable;
+    public PlacementFragment placement;
+    public ColorFragment colors;
 
-    public void create(){
+    public MapEditorFragment mapEditorTable;
+
+    public HudGroup(){
+        placement = new PlacementFragment();
+        colors = new ColorFragment();
+
+        mapEditorTable = new MapEditorFragment();
+    }
+
+    public void rebuild(){
         clear();
         setFillParent(true);
         ActorUtils.setVisible(this, g -> Vars.inGame);
         stage.addActor(this);
 
-        mapEditorTable = new MapEditorTable();
-
         fill(t -> {
-            t.left().top();
+            t.setName("info");
+            t.right().top();
             t.defaults().left();
             t.add(new Label("1", sLabel){
                 @Override
@@ -45,75 +52,54 @@ public class HudGroup extends WidgetGroup{
 
         //Placement
         fill(t -> {
-            buttons.defaults().height(buttonSize * 2f).pad(2).minWidth(buttonSize);
+            t.setName("placement");
+            t.left();
+            placement.rebuild();
+            t.add(placement).growY();
+        });
 
-            buttons.add(new ActorUtils<>(new Table()).with(line1 -> {
-                Label label = new Label("", sLabel);
-                ActorUtils.wrapper.set(label).update(l -> ((Label)l).setText("选择建筑: " + (current == null ? "" : current.name)));
-                line1.add(label);
+        //Color, Menu
+        fill(t -> {
+            t.setName("color and menu");
+            t.bottom();
+            t.defaults().bottom();
+            colors.rebuild();
+            t.add(colors).growX().bottom();
 
-                line1.add(new ActorUtils<>(new Table()).with(t1 -> {
-                    t1.add(ActorUtils.wrapper
-                               .set(new TextButton(bEnemy.name, sTextB))
-                               .click(b -> {
-                                   current = bEnemy;
-                               })
-                               .actor);
+            mapEditorTable.rebuild();
+            t.add(mapEditorTable);
 
-                    t1.add(ActorUtils.wrapper
-                               .set(new TextButton(bPencil.name, sTextB))
-                               .click(b -> {
-                                   current = bPencil;
-                               })
-                               .actor);
+            Table menu = new Table();
+            menu.setName("menu");
+            t.add(menu).fill();
+            menu.defaults().growY().width(3 * buttonSize);
 
-                    t1.add(ActorUtils.wrapper
-                               .set(new TextButton(bBrush.name, sTextB))
-                               .click(b -> {
-                                   current = bBrush;
-                               })
-                               .actor);
+            menu.add(ActorUtils.wrapper
+                         .set(new TextButton("取消", sTextB))
+                         .click(b -> {
+                             current = null;
+                         }).update(b -> b.setVisible(current != null)).actor);
 
-                }).actor).growX();
+            menu.add(ActorUtils.wrapper
+                         .set(new TextButton("存档?", sTextB))
+                         .click(b -> {
+                             SaveHandler.save("save0");
+                         }).actor);
 
-            }).actor).growX().row();
-
-            buttons.add(mapEditorTable).growX().row();
-
-            t.add(buttons).growX();
-
-            t.add(new ActorUtils<>(new Table()).with(rt -> {
-
-                rt.defaults().growY().width(4 * buttonSize);
-
-                rt.add(ActorUtils.wrapper
-                           .set(new TextButton("取消", sTextB))
-                           .click(b -> {
-                               current = null;
-                           }).update(b -> b.setVisible(current != null)).actor);
-
-                rt.add(ActorUtils.wrapper
-                           .set(new TextButton("存档?", sTextB))
-                           .click(b -> {
-                               SaveHandler.save("save0");
-                           }).actor);
-
-                rt.add(ActorUtils.wrapper
-                           .set(new TextButton("退出", sTextB))
-                           .click(b -> {
-                               Vars.inGame = false;
-                               Vars.inMenu = true;
-                               Game.endMap();
-                           }).actor);
-
-            }).actor).fill();
+            menu.add(ActorUtils.wrapper
+                         .set(new TextButton("退出", sTextB))
+                         .click(b -> {
+                             Vars.inGame = false;
+                             Vars.inMenu = true;
+                             Game.endMap();
+                         }).actor);
         }).bottom().left();
     }
 
-    public Table fill(Consumer<Table> cons){
+    public Table fill(Cons<Table> cons){
         Table table = new Table();
         table.setFillParent(true);
-        cons.accept(table);
+        cons.get(table);
         this.addActor(table);
         return table;
     }
@@ -148,25 +134,4 @@ public class HudGroup extends WidgetGroup{
             Game.utils.setPosition(e.getId(), worldX, worldY);
         }
     }
-
-    public EntityBrush bEnemy = new EntityBrush("敌人"){
-        @Override
-        public void getType(){
-            type = Entities.eraser;
-        }
-    },
-
-    bPencil = new EntityBrush("铅笔"){
-        @Override
-        public void getType(){
-            type = Entities.pencil;
-        }
-    },
-
-    bBrush = new EntityBrush("笔刷"){
-        @Override
-        public void getType(){
-            type = Entities.brush;
-        }
-    };
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.*;
 import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.viewport.*;
 import io.blackdeluxecat.painttd.io.*;
 
@@ -21,7 +22,26 @@ public class Core{
      */
     public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
-    public static FileHandle gameDataFolder = Gdx.files.external("AppData\\Roaming\\PaintTD");
+    public static FileHandle gameDataFolder = Gdx.files.external("AppData/Roaming/PaintTD");
 
     public static PrefMgr prefs = new PrefMgr();
+
+    public static I18NBundle i18n;
+    public static FileHandle i18nFile;
+
+    public static void load(){
+        prefs.load();
+
+        i18nFile = Gdx.files.internal("i18n/bundle");
+        try{
+            if(prefs.get("i18n") == null){
+                i18n = I18NBundle.createBundle(i18nFile);
+            }else{
+                i18n = I18NBundle.createBundle(i18nFile, prefs.getString("i18n", "zh_CN"));
+            }
+        }catch(Exception e){
+            Gdx.app.error("I18N", "Load failed", e);
+        }
+
+    }
 }

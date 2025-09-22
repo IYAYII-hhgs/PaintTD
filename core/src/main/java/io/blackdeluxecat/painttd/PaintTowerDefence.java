@@ -19,15 +19,12 @@ public class PaintTowerDefence extends ApplicationAdapter{
     @Override
     public void create(){
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        Core.load();
         Fonts.load();
         assets.finishLoading();
-
         Styles.load();
-
-        prefs.load();
 
         stage.setDebugUnderMouse(true);
         menu.create();

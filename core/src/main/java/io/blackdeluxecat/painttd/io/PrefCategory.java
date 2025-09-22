@@ -80,7 +80,7 @@ public class PrefCategory{
         @Null public Boolc changed;
         public BoolElem(String name, String description, boolean def, @Null Boolc changed){
             super(name, description);
-            prefs.putBoolean(name, def);
+            prefs.setDefBool(name, def);
             this.changed = changed;
         }
 
@@ -95,7 +95,7 @@ public class PrefCategory{
         @Null public Intc changed;
         public IntElem(String name, String description, int def, @Null Intc changed){
             super(name, description);
-            prefs.putInt(name, def);
+            prefs.setDefInt(name, def);
             this.changed = changed;
         }
 
@@ -110,7 +110,7 @@ public class PrefCategory{
         @Null public Floatc changed;
         public FloatElem(String name, String description, float def, @Null Floatc changed){
             super(name, description);
-            prefs.putFloat(name, def);
+            prefs.setDefFloat(name, def);
             this.changed = changed;
         }
 
@@ -125,7 +125,7 @@ public class PrefCategory{
         @Null public Cons<String> changed;
         public StringElem(String name, String description, String def, @Null Cons<String> changed){
             super(name, description);
-            prefs.put(name, def);
+            prefs.setDefString(name, def);
             this.changed = changed;
         }
 
@@ -141,7 +141,7 @@ public class PrefCategory{
         @Null public Cons<Long> changed;
         public LongElem(String name, String description, long def, @Null Cons<Long> changed){
             super(name, description);
-            prefs.putLong(name, def);
+            prefs.setDefLong(name, def);
             this.changed = changed;
         }
 
@@ -156,7 +156,7 @@ public class PrefCategory{
         @Null public Cons<Double> changed;
         public DoubleElem(String name, String description, double def, @Null Cons<Double> changed){
             super(name, description);
-            prefs.putDouble(name, def);
+            prefs.setDefDouble(name, def);
             this.changed = changed;
         }
 

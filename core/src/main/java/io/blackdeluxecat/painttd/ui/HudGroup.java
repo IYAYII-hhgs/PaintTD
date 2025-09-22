@@ -75,19 +75,19 @@ public class HudGroup extends WidgetGroup{
             menu.defaults().growY().width(3 * buttonSize);
 
             menu.add(ActorUtils.wrapper
-                         .set(new TextButton("取消", sTextB))
+                         .set(new TextButton(i18n.get("button.cancel"), sTextB))
                          .click(b -> {
                              current = null;
                          }).update(b -> b.setVisible(current != null)).actor);
 
             menu.add(ActorUtils.wrapper
-                         .set(new TextButton("存档?", sTextB))
+                         .set(new TextButton(i18n.get("button.save"), sTextB))
                          .click(b -> {
                              SaveHandler.save("save0");
                          }).actor);
 
             menu.add(ActorUtils.wrapper
-                         .set(new TextButton("退出", sTextB))
+                         .set(new TextButton(i18n.get("button.exit"), sTextB))
                          .click(b -> {
                              Vars.inGame = false;
                              Vars.inMenu = true;

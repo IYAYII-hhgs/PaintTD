@@ -14,7 +14,7 @@ public class PrefMgr{
     public FileHandle file = Core.gameDataFolder.child("prefs.json");
 
     public ObjectMap<String, Object> prefs;
-    public ObjectMap<String, Object> defaults;
+    public ObjectMap<String, Object> defaults = new ObjectMap<>();
 
     public boolean changed;
 

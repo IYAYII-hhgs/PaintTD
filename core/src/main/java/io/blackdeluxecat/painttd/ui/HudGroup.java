@@ -20,15 +20,17 @@ public class HudGroup extends WidgetGroup{
     public MapEditBrush current;
 
     public PlacementFragment placement;
-    public ColorFragment colors;
 
+    public HoveredTable hoveredTable;
+
+    public ColorFragment colors;
     public MapEditorFragment mapEditorTable;
 
     public HudGroup(){
         placement = new PlacementFragment();
         colors = new ColorFragment();
-
         mapEditorTable = new MapEditorFragment();
+        hoveredTable = new HoveredTable();
     }
 
     public void rebuild(){
@@ -56,6 +58,14 @@ public class HudGroup extends WidgetGroup{
             t.left();
             placement.rebuild();
             t.add(placement).growY();
+        });
+
+        fill(t -> {
+            t.setName("hovered");
+            t.padBottom(80f);
+            t.bottom();
+
+            t.add(hoveredTable);
         });
 
         //Color, Menu

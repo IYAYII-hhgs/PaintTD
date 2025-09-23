@@ -40,7 +40,7 @@ public class Entities{
 
     public static EntityType
         //enemies
-        unit, eraser,
+        eraser,
 
         //turrets
         building, pencil, brush,
@@ -50,20 +50,16 @@ public class Entities{
 
     public static void create(World world){
         types.clear();
-        unit = new EntityType("unit", cHide){
-            {
-                addGroup("unit");
-                add(new PositionComp());
-            }
-        };
 
-        eraser = new EntityType("eraser", unit, cUnit){
+        eraser = new EntityType("eraser", cUnit){
             {
                 add(new MarkerComp.UseQuadTree());
+                add(new MarkerComp.Hoverable());
                 add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
                 add(new TeamComp(1));
 
                 add(new HealthComp(16));
+                add(new PositionComp());
                 add(new HitboxComp(0.6f));
 
                 add(new MoveSpeedComp(1f / lfps));
@@ -78,6 +74,7 @@ public class Entities{
             {
                 addGroup("building");
                 add(new MarkerComp.PlaceSnapGrid());
+                add(new MarkerComp.Hoverable());
                 add(new PositionComp());
                 add(new HitboxComp(1));
             }
@@ -131,10 +128,11 @@ public class Entities{
             }
         };
 
-        tileStain = new EntityType("tileStain", unit, cHide){
+        tileStain = new EntityType("tileStain", cHide){
             {
                 addGroup("tileStain");
                 add(new TileStainComp());
+                add(new PositionComp());
                 add(new HitboxComp(1));
                 add(new CollideComp(CollideComp.OVERLAY, true).setCollidesMask(CollideComp.ENTITY));
 

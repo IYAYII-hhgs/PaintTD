@@ -176,6 +176,8 @@ public class Game{
         });
 
         render.with(l -> {
+            l.add(new HoverListener());
+
             l.add(new BaseSystem(){
                 @Override
                 protected void processSystem(){

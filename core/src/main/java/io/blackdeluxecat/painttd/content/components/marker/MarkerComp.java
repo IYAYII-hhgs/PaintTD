@@ -17,20 +17,27 @@ public class MarkerComp extends CopyableComponent{
     protected void reset(){
     }
 
-    /**该组件标记的实体视为已失效*/
+    /**标记的实体视为已失效*/
     public static class Dead extends MarkerComp{
         public Dead(){
         }
     }
 
-    /**该组件标记的实体被自动插入四叉树*/
+    /**标记的实体被自动插入四叉树*/
     @Transient
     public static class UseQuadTree extends MarkerComp{
         public UseQuadTree(){
         }
     }
 
-    /**该组件标记的实体在放置时自动对齐网格*/
+    /**标记的实体响应光标悬浮*/
+    @Transient
+    public static class Hoverable extends MarkerComp{
+        public Hoverable(){
+        }
+    }
+
+    /**标记的实体在放置时自动对齐网格*/
     @Transient
     public static class PlaceSnapGrid extends MarkerComp{
         public PlaceSnapGrid(){

@@ -10,7 +10,7 @@ import io.blackdeluxecat.painttd.content.components.render.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
-public class Entities{
+public class EntityTypes{
     public static Array<EntityType> types = new Array<>();
     public static ObjectMap<String, Array<EntityType>> typeByCategory = new ObjectMap<>();
     static Array<EntityType> tmp = new Array<>();

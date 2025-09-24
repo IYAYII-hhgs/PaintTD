@@ -19,15 +19,15 @@ public class PlacementFragment extends VerticalGroup{
         space(8);
 
         tmp.clear();
-        tmp.addAll(Entities.getByCategory(Entities.cBuilding));
+        tmp.addAll(EntityTypes.getByCategory(EntityTypes.cBuilding));
         //debug
-        tmp.addAll(Entities.getByCategory(Entities.cUnit));
+        tmp.addAll(EntityTypes.getByCategory(EntityTypes.cUnit));
 
         for(var ttype : tmp){
             HudGroup.EntityBrush brush = new HudGroup.EntityBrush(ttype.id){
                 @Override
                 public void getType(){
-                    type = Entities.getById(ttype.id);
+                    type = EntityTypes.getById(ttype.id);
                 }
             };
 

@@ -38,7 +38,7 @@ public class HoverListener extends BaseSystem{
         }
         if(lastHovered != hovered){
             lastHovered = hovered;
-            Vars.hud.hoveredTable.build(hovered);
+            //Vars.hud.hoveredTable.build(hovered);
         }
 
     }

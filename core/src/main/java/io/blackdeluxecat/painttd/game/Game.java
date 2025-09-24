@@ -25,11 +25,13 @@ public class Game{
     public static World world;
     public static LayerInvocationStrategy lm = new LayerInvocationStrategy();
 
+    //Systems
     public static MapManager map;
     public static GroupManager groups;
     public static WorldSerializationManager worldSerializationManager;
     public static EntityLinkManager entityLinkManager;
     public static StaticUtils utils;
+    public static HoverListener hovered;
 
     //每帧开始时重建树, 需自行检查在当前帧中失效的单位.
     public static QuadTree entities = new QuadTree();
@@ -52,7 +54,7 @@ public class Game{
         worldSerializationManager.setSerializer(new JsonArtemisSerializer(world));
 
         createLinks();
-        Entities.create(world);
+        EntityTypes.create(world);
     }
 
     /**创建一张全新的地图*/
@@ -77,11 +79,11 @@ public class Game{
         flowField = new FlowField(map);
         for(int x = 0; x < map.width; x++){
             for(int y = 0; y < map.height; y++){
-                int e = Entities.tileStain.create().getId();
+                int e = EntityTypes.tileStain.create().getId();
                 utils.setPosition(e, x, y);
                 map.putEntity(e, "tileStain", x, y);
 
-                int tile = Entities.tile.create().getId();
+                int tile = EntityTypes.tile.create().getId();
                 utils.setPosition(tile, x, y);
                 map.putEntity(tile, "tile", x, y);
             }
@@ -138,6 +140,7 @@ public class Game{
             l.add(utils = new StaticUtils());
             l.add(worldSerializationManager = new WorldSerializationManager());
             l.add(map = new MapManager());
+            l.add(hovered = new HoverListener());
         });
         logicPre.with(l -> {
             //l.add(new FlowFieldCoreChangeDetect());
@@ -176,8 +179,6 @@ public class Game{
         });
 
         render.with(l -> {
-            l.add(new HoverListener());
-
             l.add(new BaseSystem(){
                 @Override
                 protected void processSystem(){

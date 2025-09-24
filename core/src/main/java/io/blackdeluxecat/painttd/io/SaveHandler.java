@@ -33,7 +33,7 @@ public class SaveHandler{
         var entities = format.entities;
         for(int i = 0; i < entities.size(); i++){
             var e = Game.world.getEntity(entities.get(i));
-            Entities.getById(Game.utils.entityTypeMapper.get(e).type).refill(e);
+            EntityTypes.getById(Game.utils.entityTypeMapper.get(e).type).refill(e);
         }
 
         // 重建地图瓦片映射

@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.map;
+package io.blackdeluxecat.painttd.systems.utils;
 
 import com.artemis.*;
 import com.artemis.annotations.*;

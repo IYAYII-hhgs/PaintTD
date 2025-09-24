@@ -23,7 +23,7 @@ public class EntityType{
         this.id = id;
         this.category = category;
         add(new EntityTypeComp(id));
-        Entities.register(this);
+        EntityTypes.register(this);
     }
 
     public EntityType(String id, EntityType superType, String category){

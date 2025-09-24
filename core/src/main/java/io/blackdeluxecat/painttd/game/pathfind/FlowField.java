@@ -4,8 +4,7 @@ import com.artemis.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
-import io.blackdeluxecat.painttd.map.*;
-import io.blackdeluxecat.painttd.map.Map;
+import io.blackdeluxecat.painttd.systems.utils.*;
 
 import java.util.*;
 

@@ -60,6 +60,10 @@ public class HoveredTable extends Table{
     public void build(int e){
         clear();
         if(e == -1) return;
+        ActorUtils.wrapper.set(this).update(t -> {
+            if(!Game.world.getEntityManager().isActive(e)) build(-1);
+        });
+
         tmpBag.clear();
         Game.world.getComponentManager().getComponentsFor(e, tmpBag);
         tmpBag.sort(Comparator.comparingInt(o -> componentOrder.indexOf(o.getClass(), true)));

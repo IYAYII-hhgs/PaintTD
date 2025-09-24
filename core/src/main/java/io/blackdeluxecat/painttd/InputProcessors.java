@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
+import io.blackdeluxecat.painttd.systems.utils.*;
 import io.blackdeluxecat.painttd.utils.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
@@ -15,8 +16,9 @@ public class InputProcessors{
     //layers, z层级低的优先级高
     public static LayerManager.Layer<InputProcessor>
         stage = inputProcessors.registerLayer("stage", 0),
-        placement = inputProcessors.registerLayer("placement", 1),
-        camera = inputProcessors.registerLayer("camera", 2);
+        placement = inputProcessors.registerLayer("placement", 10),
+        select = inputProcessors.registerLayer("select", 50),
+        camera = inputProcessors.registerLayer("camera", 30);
 
     public static InputAdapter placementInput = new InputAdapter(){
         @Override
@@ -31,9 +33,9 @@ public class InputProcessors{
             }
             return false;
         }
-    };
+    },
 
-    public static InputAdapter cameraZoom = new InputAdapter(){
+    cameraZoom = new InputAdapter(){
         @Override
         public boolean scrolled(float amountX, float amountY){
             Vars.zoom = MathUtils.clamp(Vars.zoom - amountY * 5, 1f, 200);
@@ -65,13 +67,26 @@ public class InputProcessors{
             }
             return false;
         }
-    };
+    },
+
+    selectBuilding = new InputAdapter(){
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button){
+            if(button == Input.Buttons.LEFT){
+                int e = Game.hovered.hovered;
+                hud.hoveredTable.build(e);
+            }
+            return false;
+        }
+    }
+    ;
 
     public static void create(){
         stage.add(Core.stage);
         placement.add(placementInput);
         camera.add(cameraZoom);
         camera.add(cameraMove);
+        select.add(selectBuilding);
         sort();
     }
 

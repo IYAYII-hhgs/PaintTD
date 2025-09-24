@@ -4,6 +4,7 @@ import com.artemis.*;
 import com.artemis.utils.*;
 import com.artemis.utils.Sort;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.systems.*;
 import io.blackdeluxecat.painttd.utils.*;
 
@@ -18,13 +19,14 @@ public class LayerInvocationStrategy extends InvocationStrategy{
     public LayerManager<BaseSystem> lm = new LayerManager<>();
 
     public boolean frameLogicProcess;
-    long time, lastTime, stackTime = 0;
+    public long time, lastTime, stackTime = 0;
 
     public LayerInvocationStrategy(){
     }
 
     @Override
     protected void process(){
+
 
         time = TimeUtils.millis();
         stackTime += time - lastTime;
@@ -37,7 +39,7 @@ public class LayerInvocationStrategy extends InvocationStrategy{
         BaseSystem[] systemsData = systems.getData();
         for(int i = 0, s = systems.size(); s > i; i++){
             if(disabled.get(i)) continue;
-            if(frameLogicProcess || systemsData[i].getClass().getAnnotation(IsLogicProcess.class) == null){
+            if((frameLogicProcess && !Vars.pause) || systemsData[i].getClass().getAnnotation(IsLogicProcess.class) == null){
                 updateEntityStates();
                 systemsData[i].process();
             }

@@ -47,6 +47,86 @@ public class HoveredTable extends Table{
                       .update(a -> ((Label)a).setText("HP: " + Format.fixedBuilder(comp.health, 1)))
                       .actor);
         });
+
+        register(SpawnGroupComp.class, (comp, t) -> {
+            TextField field;
+            TextField.TextFieldFilter filter = new TextField.TextFieldFilter.DigitsOnlyFilter();
+
+            t.defaults().minWidth(80f);
+
+            t.add(new Label("起始数量", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.amtStart), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.amtStart = Float.parseFloat(f.getText());
+                }
+            });
+
+            t.add(new Label("增量数量", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.amtDelta), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.amtDelta = Float.parseFloat(f.getText());
+                }
+            });
+
+            t.add(new Label("最大数量", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.amtMax), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.amtMax = Integer.parseInt(f.getText());
+                }
+            });
+
+            t.add(new Label("起始血量", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.healthStart), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.healthStart = Float.parseFloat(f.getText());
+                }
+            });
+
+            t.add(new Label("增量血量", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.healthDelta), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.healthDelta = Float.parseFloat(f.getText());
+                }
+            });
+
+            t.add(new Label("生成间隔(tick)", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.spawnDelta), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.spawnDelta = Integer.parseInt(f.getText());
+                }
+            });
+
+            t.add(new Label("起始波数", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.waveStart), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.waveStart = Integer.parseInt(f.getText());
+                }
+            });
+
+            t.add(new Label("波次间隔", sLabel));
+            t.add(field = new TextField(String.valueOf(comp.waveDelta), sTextF)).row();
+            field.setTextFieldFilter(filter);
+            ActorUtils.updater(field, f -> {
+                if(!f.getText().isEmpty()){
+                    comp.waveDelta = Integer.parseInt(f.getText());
+                }
+            });
+
+        });
     }
 
     Bag<Component> tmpBag = new Bag<>();

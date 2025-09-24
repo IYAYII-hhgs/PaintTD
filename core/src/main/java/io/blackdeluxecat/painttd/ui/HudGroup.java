@@ -100,6 +100,12 @@ public class HudGroup extends WidgetGroup{
                          }).update(b -> b.setVisible(current != null)).actor);
 
             menu.add(ActorUtils.wrapper
+                         .set(new TextButton("", sTextB))
+                         .update(b -> ((TextButton)b).getLabel().setText(Vars.pause ? "||" : "▶"))
+                         .click(b -> Vars.pause = !Vars.pause)
+                         .actor);
+
+            menu.add(ActorUtils.wrapper
                          .set(new TextButton(i18n.get("button.save"), sTextB))
                          .click(b -> {
                              SaveHandler.save("save0");

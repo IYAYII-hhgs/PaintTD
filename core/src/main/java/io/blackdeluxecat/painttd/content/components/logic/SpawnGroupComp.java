@@ -7,8 +7,8 @@ public class SpawnGroupComp extends CopyableComponent{
     public int waveDelta = 1;
 
     public float amtStart = 1;
-    public float amtDelta = 0;
-    public int max = 20;
+    public float amtDelta = 1;
+    public int amtMax = 20;
 
     public float healthStart = 10;
     public float healthDelta = 2;
@@ -37,7 +37,7 @@ public class SpawnGroupComp extends CopyableComponent{
         waveDelta = o.waveDelta;
         amtStart = o.amtStart;
         amtDelta = o.amtDelta;
-        max = o.max;
+        amtMax = o.amtMax;
         spawnDelta = o.spawnDelta;
         healthStart = o.healthStart;
         healthDelta = o.healthDelta;

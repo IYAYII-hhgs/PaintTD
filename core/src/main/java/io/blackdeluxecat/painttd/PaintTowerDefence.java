@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.ui.*;
+import io.blackdeluxecat.painttd.utils.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
 import static io.blackdeluxecat.painttd.Vars.*;
@@ -35,6 +36,7 @@ public class PaintTowerDefence extends ApplicationAdapter{
 
     @Override
     public void render(){
+        Time.update();
         prefs.save();
 
         ScreenUtils.clear(Color.CLEAR);
@@ -45,7 +47,12 @@ public class PaintTowerDefence extends ApplicationAdapter{
         shaper.setProjectionMatrix(worldViewport.getCamera().combined);
         batch.setProjectionMatrix(worldViewport.getCamera().combined);
 
-        if(inGame) world.process();
+        //world的现实时间增量
+        //多数时候, world使用帧为时间单位
+        if(inGame){
+            world.setDelta(Time.delta((long)world.getDelta()));
+            world.process();
+        }
 
         stage.getViewport().apply(true);
         stage.act();

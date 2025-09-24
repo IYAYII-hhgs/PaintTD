@@ -141,9 +141,11 @@ public class EntityTypes{
             }
         };
 
+
         spawner = new EntityType("spawner", building, cEditor){
             {
                 addGroup("spawner");
+                add(new SpawnGroupComp());
             }
         };
     }

@@ -9,6 +9,7 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.io.*;
 import io.blackdeluxecat.painttd.ui.fragment.*;
+import io.blackdeluxecat.painttd.utils.*;
 import io.blackdeluxecat.painttd.utils.func.*;
 
 import static io.blackdeluxecat.painttd.Core.*;
@@ -42,14 +43,22 @@ public class HudGroup extends WidgetGroup{
         fill(t -> {
             t.setName("info");
             t.right().top();
-            t.defaults().left();
-            t.add(new Label("1", sLabel){
-                @Override
-                public void draw(Batch batch, float parentAlpha){
-                    this.setText("FPS: " + Gdx.graphics.getFramesPerSecond() + ", RAM: " + (int)(Gdx.app.getJavaHeap() / 1000000f) + "MB");
-                    super.draw(batch, parentAlpha);
-                }
-            }).row();
+            t.defaults().right();
+            t.add(ActorUtils.wrapper.set(new Label("", sLabel))
+                      .update(a -> {
+                          var l = (Label)a;
+                          l.setText("FPS: " + Gdx.graphics.getFramesPerSecond() + ", RAM: " + (int)(Gdx.app.getJavaHeap() / 1000000f) + "MB");
+                      })
+                      .actor);
+
+            t.row();
+
+            t.add(ActorUtils.wrapper.set(new Label("", sLabel))
+                      .update(a -> {
+                          var l = (Label)a;
+                          l.setText("Wave " + rules.wave + "(" + Format.fixedBuilder(rules.waveTimer / lfps, 0) + ")");
+                      })
+                      .actor);
         });
 
         //Placement

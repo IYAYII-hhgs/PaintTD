@@ -137,12 +137,15 @@ public class Game{
         backend.with(l -> {
             l.add(groups = new GroupManager());
             l.add(entityLinkManager = new EntityLinkManager());
+            l.add(new TickTimer());
             l.add(utils = new StaticUtils());
             l.add(worldSerializationManager = new WorldSerializationManager());
             l.add(map = new MapManager());
             l.add(hovered = new HoverListener());
         });
         logicPre.with(l -> {
+            l.add(new WaveTimer());
+            l.add(new SpawnerSpawn());
             //l.add(new FlowFieldCoreChangeDetect());
             l.add(new FlowFieldUpdate());
             l.add(new RebuildQuadTree());

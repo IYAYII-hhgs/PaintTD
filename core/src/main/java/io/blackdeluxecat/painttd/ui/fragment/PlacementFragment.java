@@ -22,6 +22,7 @@ public class PlacementFragment extends VerticalGroup{
         tmp.addAll(EntityTypes.getByCategory(EntityTypes.cBuilding));
         //debug
         tmp.addAll(EntityTypes.getByCategory(EntityTypes.cUnit));
+        tmp.addAll(EntityTypes.getByCategory(EntityTypes.cEditor));
 
         for(var ttype : tmp){
             HudGroup.EntityBrush brush = new HudGroup.EntityBrush(ttype.id){

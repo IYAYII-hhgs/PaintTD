@@ -8,7 +8,6 @@ import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.*;
 
-@Wire
 @IsLogicProcess
 public class SpawnerSpawn extends IteratingSystem{
     public ComponentMapper<SpawnGroupComp> spawnGroupMapper;

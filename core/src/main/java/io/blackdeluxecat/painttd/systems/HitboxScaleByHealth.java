@@ -1,16 +1,11 @@
 package io.blackdeluxecat.painttd.systems;
 
 import com.artemis.*;
-import com.artemis.annotations.*;
 import com.artemis.systems.*;
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.math.*;
-import com.github.tommyettinger.digital.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 
-@Wire
 @IsLogicProcess
 public class HitboxScaleByHealth extends IteratingSystem{
     ComponentMapper<HitboxComp> hitboxMapper;

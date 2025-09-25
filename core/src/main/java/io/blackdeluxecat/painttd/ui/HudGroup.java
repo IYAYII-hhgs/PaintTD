@@ -131,6 +131,7 @@ public class HudGroup extends WidgetGroup{
 
     public abstract static class MapEditBrush{
         public String name;
+        public boolean longPress;
 
         public MapEditBrush(String name){
             this.name = name;

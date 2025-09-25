@@ -2,6 +2,7 @@ package io.blackdeluxecat.painttd;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.game.Game;
 import io.blackdeluxecat.painttd.systems.utils.*;
@@ -21,6 +22,8 @@ public class InputProcessors{
         camera = inputProcessors.registerLayer("camera", 30);
 
     public static InputAdapter placementInput = new InputAdapter(){
+        boolean drawing;
+        long pressed;
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button){
             if(Vars.hud.current != null && button == Input.Buttons.LEFT){
@@ -29,9 +32,17 @@ public class InputProcessors{
                 if(!Game.map.validPos(Math.round(v.x), Math.round(v.y))) return false;
                 Vars.hud.current.draw(v.x, v.y);
 
+                pressed = TimeUtils.millis();
+                drawing = true;
                 return true;
             }
+            drawing = false;
             return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer){
+            return drawing && hud.current != null && hud.current.longPress && TimeUtils.millis() - pressed > 100 ? touchDown(screenX, screenY, pointer, Input.Buttons.LEFT) : super.touchDragged(screenX, screenY, pointer);
         }
     },
 

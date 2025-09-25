@@ -46,5 +46,7 @@ public class SpawnGroupComp extends CopyableComponent{
 
     @Override
     protected void reset(){
+        amt = 0;
+        health = 0;
     }
 }

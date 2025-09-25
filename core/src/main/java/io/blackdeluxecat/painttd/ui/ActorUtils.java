@@ -72,10 +72,6 @@ public class ActorUtils<T extends Actor>{
                 clicked.get(actor);
                 return super.touchDown(event, x, y, pointer, button);
             }
-
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-            }
         });
     }
 }

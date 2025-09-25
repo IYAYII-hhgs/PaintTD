@@ -13,12 +13,12 @@ import static io.blackdeluxecat.painttd.game.Game.*;
 public class EntityType{
     public String id;
 
-    /**默认组件包。默认组件使用构造函数创建，不需要池化管理。由{@link #create()}创建的实体将拷贝一份受到池化管理的组件包*/
+    /** 默认组件包。默认组件使用构造函数创建，不需要池化管理。由{@link #create()}创建的实体将拷贝一份受到池化管理的组件包 */
     public OrderedMap<Class<? extends CopyableComponent>, CopyableComponent> def = new OrderedMap<>();
     public Bag<String> groups = new Bag<>();
     public String category;
 
-    /**推荐在匿名构造函数编辑默认组件包*/
+    /** 推荐在匿名构造函数编辑默认组件包 */
     public EntityType(String id, String category){
         this.id = id;
         this.category = category;
@@ -44,7 +44,7 @@ public class EntityType{
         return groups.contains(group);
     }
 
-    /**返回旧的组件, 如果有.*/
+    /** 返回旧的组件, 如果有. */
     public CopyableComponent add(CopyableComponent component){
         return def.put(component.getClass(), component);
     }
@@ -61,9 +61,7 @@ public class EntityType{
         return def.remove(clazz);
     }
 
-    /**
-     * 创建新实例. 新实例的组件使用池化管理
-     */
+    /** 创建新实例. 新实例的组件使用池化管理 */
     public Entity create(){
         Entity e = world.createEntity();
         for(CopyableComponent component : def.values()){
@@ -76,7 +74,7 @@ public class EntityType{
         return e;
     }
 
-    /**补足反序列化后的实体中缺少的组件*/
+    /** 补足反序列化后的实体中缺少的组件 */
     public void refill(Entity e){
         for(CopyableComponent def : def.values()){
             var comp = e.getComponent(def.getClass());
@@ -85,7 +83,7 @@ public class EntityType{
         }
     }
 
-    /**拷贝基类的默认组件包到该子类*/
+    /** 拷贝基类的默认组件包到该子类 */
     public void copyType(EntityType superType){
         for(CopyableComponent component : superType.def.values()){
             try{

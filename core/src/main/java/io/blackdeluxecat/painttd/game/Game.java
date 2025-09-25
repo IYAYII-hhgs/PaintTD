@@ -41,7 +41,7 @@ public class Game{
     public static DamageQueue damageQueue = new DamageQueue();
 
 
-    /**初始化Game类及系统*/
+    /** 初始化Game类及系统 */
     public static void create(){
         createSystems();
 
@@ -57,7 +57,7 @@ public class Game{
         EntityTypes.create(world);
     }
 
-    /**创建一张全新的地图*/
+    /** 创建一张全新的地图 */
     public static void createNewMap(){
         endMap();
         rules = new Rule();
@@ -91,7 +91,7 @@ public class Game{
         map.shouldRebindTile = true;
     }
 
-    /**移除所有实体, 清空世界状态*/
+    /** 移除所有实体, 清空世界状态 */
     public static void endMap(){
         collideQueue.clear();
         damageQueue.clear();

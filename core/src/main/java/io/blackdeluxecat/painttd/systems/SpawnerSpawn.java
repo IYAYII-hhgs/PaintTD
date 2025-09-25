@@ -13,6 +13,7 @@ import io.blackdeluxecat.painttd.game.*;
 public class SpawnerSpawn extends IteratingSystem{
     public ComponentMapper<SpawnGroupComp> spawnGroupMapper;
     public ComponentMapper<PositionComp> positionMapper;
+    public ComponentMapper<HealthComp> healthMapper;
 
     public SpawnerSpawn(){
         super(Aspect.all(SpawnGroupComp.class));
@@ -27,6 +28,8 @@ public class SpawnerSpawn extends IteratingSystem{
             var spawnerPos = positionMapper.get(entityId);
             var ePos = positionMapper.get(e);
             ePos.copy(spawnerPos);
+            var health = healthMapper.get(e);
+            health.health = sg.health;
         }
     }
 }

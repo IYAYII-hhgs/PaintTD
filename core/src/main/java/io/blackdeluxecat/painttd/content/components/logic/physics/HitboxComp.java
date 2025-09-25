@@ -21,6 +21,14 @@ public class HitboxComp extends CopyableComponent implements Json.Serializable{
         this.height = size;
     }
 
+    public float getWidth(){
+        return width * scale;
+    }
+
+    public float getHeight(){
+        return height * scale;
+    }
+
     @Override
     public HitboxComp copy(CopyableComponent other){
         HitboxComp hitboxComp = (HitboxComp)other;

@@ -29,8 +29,8 @@ public class DrawPartTexture extends IteratingSystem{
         HitboxComp hitboxComp = hitboxMapper.get(entityId);
 
         boolean hasSize = hitboxComp != null;
-        float w = hasSize ? hitboxComp.width : 1;
-        float h = hasSize ? hitboxComp.height : 1;
+        float w = hasSize ? hitboxComp.getWidth() : 1;
+        float h = hasSize ? hitboxComp.getHeight() : 1;
 
         batch.setColor(Color.WHITE);
         //渲染宽高比非1的实体可能出问题

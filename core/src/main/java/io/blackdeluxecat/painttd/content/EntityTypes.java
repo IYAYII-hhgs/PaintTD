@@ -55,6 +55,7 @@ public class EntityTypes{
             {
                 add(new MarkerComp.UseQuadTree());
                 add(new MarkerComp.Hoverable());
+                add(new MarkerComp.HitboxScaleByHealth());
                 add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
                 add(new TeamComp(1));
 

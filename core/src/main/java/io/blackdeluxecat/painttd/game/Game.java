@@ -148,6 +148,7 @@ public class Game{
             l.add(new SpawnerSpawn());
             //l.add(new FlowFieldCoreChangeDetect());
             l.add(new FlowFieldUpdate());
+            l.add(new HitboxScaleByHealth());
             l.add(new RebuildQuadTree());
         });
 

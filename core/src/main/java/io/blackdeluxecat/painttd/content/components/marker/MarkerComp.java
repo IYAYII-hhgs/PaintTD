@@ -43,4 +43,10 @@ public class MarkerComp extends CopyableComponent{
         public PlaceSnapGrid(){
         }
     }
+
+    @Transient
+    public static class HitboxScaleByHealth extends MarkerComp{
+        public HitboxScaleByHealth(){
+        }
+    }
 }

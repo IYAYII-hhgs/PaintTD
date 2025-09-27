@@ -26,9 +26,9 @@ public class EntityType{
         EntityTypes.register(this);
     }
 
-    public EntityType(String id, EntityType superType, String category){
+    public EntityType(String id, EntityType prototype, String category){
         this(id, category);
-        copyType(superType);
+        copyType(prototype);
         get(EntityTypeComp.class).type = id;
     }
 

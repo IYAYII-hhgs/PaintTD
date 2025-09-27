@@ -2,6 +2,7 @@ package io.blackdeluxecat.painttd.content;
 
 import com.artemis.*;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.content.components.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
@@ -147,6 +148,7 @@ public class EntityTypes{
             {
                 addGroup("spawner");
                 add(new SpawnGroupComp());
+                add(new SpawnGroupCompsComp());
             }
         };
     }

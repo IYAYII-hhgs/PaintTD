@@ -22,4 +22,9 @@ public class StainSlashComp extends CopyableComponent{
     @Override
     protected void reset(){
     }
+
+    @Override
+    public void refill(CopyableComponent def){
+        copy(def);
+    }
 }

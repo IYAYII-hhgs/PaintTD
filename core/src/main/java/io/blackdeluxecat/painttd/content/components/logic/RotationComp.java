@@ -23,4 +23,9 @@ public class RotationComp extends CopyableComponent{
         rotation = rotationComp.rotation;
         return this;
     }
+
+    @Override
+    public void refill(CopyableComponent def){
+        copy(def);
+    }
 }

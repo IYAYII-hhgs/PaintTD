@@ -23,4 +23,9 @@ public class RangeComp extends CopyableComponent{
         range = rangeComp.range;
         return this;
     }
+
+    @Override
+    public void refill(CopyableComponent def){
+        copy(def);
+    }
 }

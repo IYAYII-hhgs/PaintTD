@@ -7,7 +7,7 @@ import io.blackdeluxecat.painttd.content.components.*;
 /**
  * 能量系统的储量组件。
  */
-public class EnergyComp extends CopyableComponent implements Json.Serializable{
+public class EnergyComp extends CopyableComponent{
     public float energy, maxEnergy;
 
     public EnergyComp(){
@@ -30,16 +30,6 @@ public class EnergyComp extends CopyableComponent implements Json.Serializable{
     protected void reset(){
         energy = 0;
         maxEnergy = 0;
-    }
-
-    @Override
-    public void write(Json json){
-        json.writeValue("energy", energy);
-    }
-
-    @Override
-    public void read(Json json, JsonValue jsonData){
-        energy = jsonData.getFloat("energy");
     }
 
     @Override

@@ -1,9 +1,7 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
-import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-@Transient
 public class DamageComp extends CopyableComponent{
     public float damage;
 

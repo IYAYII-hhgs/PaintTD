@@ -1,9 +1,8 @@
 package io.blackdeluxecat.painttd.content.components.logic;
 
-import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class CooldownComp extends CopyableComponent implements Json.Serializable{
+public class CooldownComp extends CopyableComponent{
     public float cooldown;
     public float currentCooldown;
     public int shootCount;
@@ -28,17 +27,6 @@ public class CooldownComp extends CopyableComponent implements Json.Serializable
     @Override
     protected void reset(){
         currentCooldown = 0;
-    }
-
-    @Override
-    public void write(Json json){
-        json.writeValue("currentCooldown", currentCooldown);
-    }
-
-    @Override
-    public void read(Json json, JsonValue jsonData){
-        currentCooldown = jsonData.getFloat("currentCooldown");
-        shootCount = 0;// looks weird
     }
 
     @Override

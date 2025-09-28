@@ -33,13 +33,9 @@ public class SpawnerSpawn extends IteratingSystem{
 
             var sgc = spawnGroupCompsMapper.get(entityId);
             if(sgc != null){
-                try{
-                    for(int i = 0; i < sgc.comps.size; i++){
-                        var comp = sgc.comps.get(i);
-                        e.edit().add(ClassReflection.newInstance(comp.getClass()).copy(comp));
-                    }
-                }catch(ReflectionException ex){
-                    throw new RuntimeException(ex);
+                for(int i = 0; i < sgc.comps.size; i++){
+                    var comp = sgc.comps.get(i);
+                    e.edit().create(comp.getClass()).copy(comp);
                 }
             }
         }

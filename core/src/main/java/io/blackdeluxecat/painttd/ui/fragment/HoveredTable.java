@@ -11,6 +11,7 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
 import io.blackdeluxecat.painttd.ui.*;
 import io.blackdeluxecat.painttd.utils.*;
+import io.blackdeluxecat.painttd.utils.func.*;
 
 import java.util.*;
 
@@ -21,114 +22,6 @@ import static io.blackdeluxecat.painttd.ui.Styles.*;
  */
 //TODO基于Aspect的多组件UI
 public class HoveredTable extends Table{
-    public static ObjectMap<Class<? extends CopyableComponent>, ComponentInfoBuilder> builders = new ObjectMap<>();
-    public static Array<Class<? extends Component>> componentOrder = new Array<>();
-
-    public static <T extends CopyableComponent> void register(Class<T> clazz, ComponentInfoBuilder<T> builder){
-        builders.put(clazz, builder);
-        componentOrder.add(clazz);
-    }
-
-    static{
-        register(EntityTypeComp.class, (comp, t) -> {
-            t.add(ActorUtils.wrapper.set(new Label(comp.type, sLabel))
-                      .actor);
-        });
-
-        register(PositionComp.class, (comp, t) -> {
-            t.add(ActorUtils.wrapper.set(new Label(null, sLabel))
-                      .with(l -> l.setColor(Color.GRAY))
-                      .update(a -> ((Label)a).setText(comp.tileX() + ", " + comp.tileY()))
-                      .actor);
-        });
-
-        register(HealthComp.class, (comp, t) -> {
-            t.add(ActorUtils.wrapper.set(new Label(null, sLabel))
-                      .update(a -> ((Label)a).setText("HP: " + Format.fixedBuilder(comp.health, 1)))
-                      .actor);
-        });
-
-        register(SpawnGroupComp.class, (comp, t) -> {
-            TextField field;
-            TextField.TextFieldFilter filter = new TextField.TextFieldFilter.DigitsOnlyFilter();
-
-            t.defaults().minWidth(80f);
-
-            t.add(new Label("起始数量", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.amtStart), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.amtStart = Float.parseFloat(f.getText());
-                }
-            });
-
-            t.add(new Label("增量数量", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.amtDelta), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.amtDelta = Float.parseFloat(f.getText());
-                }
-            });
-
-            t.add(new Label("最大数量", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.amtMax), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.amtMax = Integer.parseInt(f.getText());
-                }
-            });
-
-            t.add(new Label("起始血量", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.healthStart), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.healthStart = Float.parseFloat(f.getText());
-                }
-            });
-
-            t.add(new Label("增量血量", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.healthDelta), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.healthDelta = Float.parseFloat(f.getText());
-                }
-            });
-
-            t.add(new Label("生成间隔(tick)", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.spawnDelta), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.spawnDelta = Integer.parseInt(f.getText());
-                }
-            });
-
-            t.add(new Label("起始波数", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.waveStart), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.waveStart = Integer.parseInt(f.getText());
-                }
-            });
-
-            t.add(new Label("波次间隔", sLabel));
-            t.add(field = new TextField(String.valueOf(comp.waveDelta), sTextF)).row();
-            field.setTextFieldFilter(filter);
-            ActorUtils.updater(field, f -> {
-                if(!f.getText().isEmpty()){
-                    comp.waveDelta = Integer.parseInt(f.getText());
-                }
-            });
-
-        });
-    }
-
     Bag<Component> tmpBag = new Bag<>();
 
     public HoveredTable(){
@@ -149,18 +42,79 @@ public class HoveredTable extends Table{
         tmpBag.sort(Comparator.comparingInt(o -> componentOrder.indexOf(o.getClass(), true)));
         for(Component comp : tmpBag){
             if(comp instanceof CopyableComponent cc){
-                var builder = builders.get(cc.getClass());
-                if(builder != null){
-                    var cont = new Table();
-                    builder.build(cc, cont);
-                    add(cont).row();
-                }
+                var cont = new Table();
+                buildStrategy.buildObj(cc, cont);
+                add(cont).row();
             }
         }
     }
 
+    public static Array<Class<? extends Component>> componentOrder = new Array<>();
 
-    public interface ComponentInfoBuilder<T extends CopyableComponent>{
-        void build(T comp, Table table);
-    }
+    public final static ObjBuildStrategy<CopyableComponent, Table> buildStrategy = new ObjBuildStrategy<>() {
+        {
+            register(EntityTypeComp.class, (comp, t) -> {
+                t.add(ActorUtils.wrapper.set(new Label(comp.type, sLabel))
+                          .actor);
+            });
+
+            register(PositionComp.class, (comp, t) -> {
+                t.add(ActorUtils.wrapper.set(new Label(null, sLabel))
+                          .with(l -> l.setColor(Color.GRAY))
+                          .update(a -> ((Label)a).setText(comp.tileX() + ", " + comp.tileY()))
+                          .actor);
+            });
+
+            register(HealthComp.class, (comp, t) -> {
+                t.add(ActorUtils.wrapper.set(new Label(null, sLabel))
+                          .update(a -> ((Label)a).setText("HP: " + Format.fixedBuilder(comp.health, 1)))
+                          .actor);
+            });
+
+            register(SpawnGroupCompsComp.class, (comp, t) -> {
+                t.defaults().minWidth(80f);
+                for(CopyableComponent c : comp.comps){
+
+                }
+            });
+
+            register(SpawnGroupComp.class, (comp, t) -> {
+                t.defaults().minWidth(80f);
+
+                Cons4<String, Prov<String>, Cons<String>, TextField.TextFieldFilter> fieldp = (txt, prov, cons, filter1) -> {
+                    t.add(new Label(txt, sLabel));
+                    TextField field1 = new TextField(prov.get(), sTextF);
+                    t.add(field1).row();
+                    field1.setTextFieldFilter(filter1);
+                    ActorUtils.updater(field1, f -> {
+                        if(!f.getText().isEmpty()){
+                            cons.get(f.getText());
+                        }
+                    });
+                };
+
+                fieldp.get("起始数量", () -> String.valueOf(comp.amtStart), s -> comp.amtStart = Float.parseFloat(s), ActorUtils.floatOnly);
+
+                fieldp.get("增量数量", () -> String.valueOf(comp.amtDelta), s -> comp.amtDelta = Float.parseFloat(s), ActorUtils.floatOnly);
+
+                fieldp.get("最大数量", () -> String.valueOf(comp.amtMax), s -> comp.amtMax = Integer.parseInt(s), ActorUtils.digitOnly);
+
+                fieldp.get("起始血量", () -> String.valueOf(comp.healthStart), s -> comp.healthStart = Float.parseFloat(s), ActorUtils.floatOnly);
+
+                fieldp.get("增量血量", () -> String.valueOf(comp.healthDelta), s -> comp.healthDelta = Float.parseFloat(s), ActorUtils.floatOnly);
+
+                fieldp.get("生成间隔(tick)", () -> String.valueOf(comp.spawnDelta), s -> comp.spawnDelta = Integer.parseInt(s), ActorUtils.digitOnly);
+
+                fieldp.get("起始波数", () -> String.valueOf(comp.waveStart), s -> comp.waveStart = Integer.parseInt(s), ActorUtils.digitOnly);
+
+                fieldp.get("波次间隔", () -> String.valueOf(comp.waveDelta), s -> comp.waveDelta = Integer.parseInt(s), ActorUtils.digitOnly);
+            });
+        }
+
+        @Override
+        public <T extends CopyableComponent> void register(Class<T> clazz, ObjBuilder<T, Table> cons){
+            super.register(clazz, cons);
+            componentOrder.add(clazz);
+        }
+    };
 }

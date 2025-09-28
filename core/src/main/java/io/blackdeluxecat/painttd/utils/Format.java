@@ -39,4 +39,13 @@ public class Format{
         }
         return result;
     }
+
+    public static boolean canParseFloat(String s){
+        try{
+            Float.parseFloat(s);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        }
+    }
 }

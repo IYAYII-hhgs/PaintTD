@@ -95,10 +95,14 @@ public class PreferenceDialog extends BaseDialog{
         prefTab.clear();
         prefTab.top();
         PrefCategory category = categories.get(cateIndex);
-        builder.build(category, prefTab);
+        for(PrefCategory.PrefElem elem : category.elems){
+            var t = new Table();
+            buildStrategy.buildObj(elem, t);
+            prefTab.add(t).growX().minHeight(Styles.buttonSize * 2).pad(8f).row();
+        }
     }
 
-    public PrefCategory.PrefCateElemBuilder builder = new PrefCategory.PrefCateElemBuilder(){
+    public final static ObjBuildStrategy<PrefCategory.PrefElem, Table> buildStrategy = new ObjBuildStrategy<>() {
         {
             register(PrefCategory.BoolElem.class, (pe, t) -> {
                 PrefCategory.BoolElem be = (PrefCategory.BoolElem)pe;
@@ -115,18 +119,6 @@ public class PreferenceDialog extends BaseDialog{
                           })
                           .actor);
             });
-        }
-
-        @Override
-        public void build(PrefCategory category, Table table){
-            for(PrefCategory.PrefElem elem : category.elems){
-                var builder = builders.get(elem.getClass());
-                if(builder != null){
-                    var t = new Table();
-                    builder.get(elem, t);
-                    table.add(t).growX().minHeight(Styles.buttonSize * 2).pad(8f).row();
-                }
-            }
         }
     };
 }

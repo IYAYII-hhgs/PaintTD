@@ -2,6 +2,7 @@ package io.blackdeluxecat.painttd.ui;
 
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import io.blackdeluxecat.painttd.utils.func.*;
 
@@ -74,4 +75,8 @@ public class ActorUtils<T extends Actor>{
             }
         });
     }
+
+    public static TextField.TextFieldFilter
+        digitOnly = new TextField.TextFieldFilter.DigitsOnlyFilter(),
+        floatOnly = (textField, c) -> Character.isDigit(c) || (textField.getText().contains(".") && c == '.');
 }

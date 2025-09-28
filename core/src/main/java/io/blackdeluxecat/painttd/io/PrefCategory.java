@@ -3,6 +3,7 @@ package io.blackdeluxecat.painttd.io;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.ui.*;
 import io.blackdeluxecat.painttd.utils.func.*;
 
 import static io.blackdeluxecat.painttd.Core.prefs;
@@ -167,18 +168,6 @@ public class PrefCategory{
         @Override
         public void updateValue(){
             value = prefs.getDouble(name);
-        }
-    }
-
-    public interface PrefCategoryBuilder{
-        void build(PrefCategory category, Table table);
-    }
-
-    public static abstract class PrefCateElemBuilder implements PrefCategoryBuilder{
-        public ObjectMap<Class<? extends PrefElem>, Cons2<PrefElem, Table>> builders = new ObjectMap<>();
-
-        public void register(Class<? extends PrefElem> clazz, @Null Cons2<PrefElem, Table> cons){
-            builders.put(clazz, cons);
         }
     }
 }

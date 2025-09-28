@@ -3,10 +3,10 @@ package io.blackdeluxecat.painttd.content.components.logic;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class HealthRegenComp extends CopyableComponent{
-    public float regenRate;
+    public float rate;
 
-    public HealthRegenComp(float regenRate){
-        this.regenRate = regenRate;
+    public HealthRegenComp(float rate){
+        this.rate = rate;
     }
 
     public HealthRegenComp(){
@@ -14,12 +14,12 @@ public class HealthRegenComp extends CopyableComponent{
 
     @Override
     public CopyableComponent copy(CopyableComponent other){
-        this.regenRate = ((HealthRegenComp)other).regenRate;
+        this.rate = ((HealthRegenComp)other).rate;
         return this;
     }
 
     @Override
     protected void reset(){
-        regenRate = 0;
+        rate = 0;
     }
 }

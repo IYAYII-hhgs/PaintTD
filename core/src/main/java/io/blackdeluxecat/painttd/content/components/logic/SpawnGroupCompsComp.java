@@ -1,7 +1,8 @@
-package io.blackdeluxecat.painttd.content.components;
+package io.blackdeluxecat.painttd.content.components.logic;
 
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.reflect.*;
+import io.blackdeluxecat.painttd.content.components.*;
 import io.blackdeluxecat.painttd.utils.*;
 
 public class SpawnGroupCompsComp extends CopyableComponent{

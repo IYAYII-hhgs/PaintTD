@@ -48,25 +48,29 @@ public class ActorUtils<T extends Actor>{
         return this;
     }
 
-    public static <T extends Actor> void updater(T actor, Cons<T> updater){
+    public static <T extends Actor> T updater(T actor, Cons<T> updater){
         RunnableAction run = new RunnableAction();
         run.setRunnable(() -> updater.get(actor));
         RepeatAction repeat = new RepeatAction();
         repeat.setCount(RepeatAction.FOREVER);
         repeat.setAction(run);
         actor.addAction(repeat);
+
+        return actor;
     }
 
-    public static <T extends Actor> void setVisible(T actor, Boolf<T> visible){
+    public static <T extends Actor> T setVisible(T actor, Boolf<T> visible){
         RunnableAction run = new RunnableAction();
         run.setRunnable(() -> actor.setVisible(visible.get(actor)));
         RepeatAction repeat = new RepeatAction();
         repeat.setCount(RepeatAction.FOREVER);
         repeat.setAction(run);
         actor.addAction(repeat);
+
+        return actor;
     }
 
-    public static <T extends Actor> void clicked(T actor, Cons<T> clicked){
+    public static <T extends Actor> T clicked(T actor, Cons<T> clicked){
         actor.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -74,6 +78,8 @@ public class ActorUtils<T extends Actor>{
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
+
+        return actor;
     }
 
     public static TextField.TextFieldFilter

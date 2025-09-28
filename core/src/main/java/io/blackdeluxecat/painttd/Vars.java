@@ -9,7 +9,7 @@ public class Vars{
     public static ScreenViewport worldViewport = new ScreenViewport();
     public static float zoom = 64f, lerpZoom = zoom;
 
-    public static boolean pause, inGame, inMenu = true;
+    public static boolean inGame, inMenu = true;
 
     public static MenuGroup menu = new MenuGroup();
     public static HudGroup hud = new HudGroup();

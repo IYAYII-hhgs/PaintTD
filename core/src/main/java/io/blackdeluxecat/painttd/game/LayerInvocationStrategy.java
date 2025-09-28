@@ -39,7 +39,7 @@ public class LayerInvocationStrategy extends InvocationStrategy{
         BaseSystem[] systemsData = systems.getData();
         for(int i = 0, s = systems.size(); s > i; i++){
             if(disabled.get(i)) continue;
-            if((frameLogicProcess && !Vars.pause) || systemsData[i].getClass().getAnnotation(IsLogicProcess.class) == null){
+            if((frameLogicProcess && !rules.isPause) || systemsData[i].getClass().getAnnotation(IsLogicProcess.class) == null){
                 updateEntityStates();
                 systemsData[i].process();
             }

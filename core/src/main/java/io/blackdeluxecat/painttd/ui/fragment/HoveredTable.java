@@ -125,12 +125,32 @@ public class HoveredTable extends Table{
     public final static ObjBuildStrategy<CopyableComponent, Table> buildEditorStrategy = new ObjBuildStrategy<>(){
         {
             register(SpawnGroupCompsComp.class, (comp, t) -> {
-                t.defaults().minWidth(80f);
+                t.defaults();
+                var addTable = new Table();
+
+                addTable.add(ActorUtils.wrapper.set(new TextButton("生命恢复", sTextB))
+                                 .click(b -> {
+                                     comp.add(new HealthRegenComp(1f / 45f));
+                                 })
+                                 .actor);
+
+                var scroll = new ScrollPane(addTable);
+                t.add(scroll).growX().colspan(2).row();
+
                 comp.comps.sort(orderComparator);
                 for(CopyableComponent c : comp.comps){
                     var tt = new Table();
-                    t.add(tt).row();
                     buildEditorStrategy.buildObj(c, tt);
+                    t.add(tt);
+
+                    t.add(ActorUtils.wrapper.set(new TextButton("x", sTextB))
+                              .click(b -> {
+                                  comp.comps.removeValue(c, true);
+                                  tt.remove();
+                                  b.remove();
+                              })
+                              .actor);
+                    t.row();
                 }
             });
 
@@ -142,7 +162,7 @@ public class HoveredTable extends Table{
                     TextField field1 = new TextField(prov.get(), sTextF);
                     t.add(field1).row();
                     field1.setTextFieldFilter(filter1);
-                    ActorUtils.updater(field1, f -> {
+                    field1.setTextFieldListener((f, c) -> {
                         if(!f.getText().isEmpty()){
                             cons.get(f.getText());
                         }
@@ -164,6 +184,19 @@ public class HoveredTable extends Table{
                 fieldp.get("增量血量", () -> String.valueOf(comp.healthDelta), s -> comp.healthDelta = Float.parseFloat(s), ActorUtils.floatOnly);
 
                 fieldp.get("生成间隔(tick)", () -> String.valueOf(comp.spawnDelta), s -> comp.spawnDelta = Integer.parseInt(s), ActorUtils.digitOnly);
+            });
+
+            register(HealthRegenComp.class, (comp, t) -> {
+                t.defaults().minWidth(80f);
+                t.add(new Label("生命恢复/s", sLabel));
+                TextField field1 = new TextField(String.valueOf(comp.rate), sTextF);
+                t.add(field1).row();
+                field1.setTextFieldFilter(ActorUtils.floatOnly);
+                field1.setTextFieldListener((f, c) -> {
+                    if(!f.getText().isEmpty()){
+                        comp.rate = Float.parseFloat(f.getText());
+                    }
+                });
             });
         }
     };

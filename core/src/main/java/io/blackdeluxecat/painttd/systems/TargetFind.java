@@ -39,6 +39,13 @@ public class TargetFind extends IteratingSystem{
         PositionComp pos = pm.get(entityId);
         RangeComp range = rm.get(entityId);
 
+        if(current.targetId != -1){
+            PositionComp epos = pm.get(current.targetId);
+            if(epos != null){
+                if(Vars.v1.set(epos.x, epos.y).dst(pos.x, pos.y) > range.range) current.targetId = -1;
+            }
+        }
+
         if(current.targetId == -1 || dm.has(current.targetId)){
             entityPos.set(pos.x, pos.y);
             current.targetId = Game.entities.closestCircle(pos.x, pos.y, range.range, i -> {

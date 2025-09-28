@@ -168,6 +168,7 @@ public class Game{
         });
 
         logic.with(l -> {
+            l.add(new HealthRegen());
             l.add(new MovementVelGenFlowField());
             l.add(new MovementVelPush());
 

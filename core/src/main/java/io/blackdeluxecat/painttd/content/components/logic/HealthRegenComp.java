@@ -5,8 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class HealthRegenComp extends CopyableComponent{
     public float rate;
 
-    public HealthRegenComp(float rate){
-        this.rate = rate;
+    public HealthRegenComp(float ratePerTick){
+        this.rate = ratePerTick;
     }
 
     public HealthRegenComp(){

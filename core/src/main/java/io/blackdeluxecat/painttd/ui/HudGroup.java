@@ -101,8 +101,8 @@ public class HudGroup extends WidgetGroup{
 
             menu.add(ActorUtils.wrapper
                          .set(new TextButton("", sTextB))
-                         .update(b -> ((TextButton)b).getLabel().setText(Vars.pause ? "||" : "▶"))
-                         .click(b -> Vars.pause = !Vars.pause)
+                         .update(b -> ((TextButton)b).getLabel().setText(rules.isPause ? "||" : "▶"))
+                         .click(b -> rules.isPause = !rules.isPause)
                          .actor);
 
             menu.add(ActorUtils.wrapper

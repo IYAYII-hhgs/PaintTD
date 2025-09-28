@@ -6,6 +6,12 @@ import io.blackdeluxecat.painttd.content.components.*;
 import io.blackdeluxecat.painttd.utils.*;
 
 public class SpawnGroupCompsComp extends CopyableComponent{
+    public static ObjectSet<Class<?>> availableComps = new ObjectSet<>();
+
+    static{
+        availableComps.addAll(HealthRegenComp.class, ArmorComp.class);
+    }
+
     public Array<CopyableComponent> comps = new Array<>();
 
     public SpawnGroupCompsComp(){

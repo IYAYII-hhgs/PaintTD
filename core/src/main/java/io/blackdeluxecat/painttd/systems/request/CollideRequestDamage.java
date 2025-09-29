@@ -1,6 +1,7 @@
 package io.blackdeluxecat.painttd.systems.request;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.request.*;
@@ -9,16 +10,10 @@ import io.blackdeluxecat.painttd.systems.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class CollideEnemyRequestDamage extends BaseSystem{
-    Aspect.Builder builder;
+public class CollideRequestDamage extends BaseSystem{
+    @All(value = {TeamComp.class, HealthComp.class})
+    @Exclude(MarkerComp.Dead.class)
     Aspect aspect;
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        builder = Aspect.all(TeamComp.class, HealthComp.class).exclude(MarkerComp.Dead.class);
-        aspect = builder.build(world);
-    }
 
     @Override
     protected void processSystem(){
@@ -31,7 +26,7 @@ public class CollideEnemyRequestDamage extends BaseSystem{
             if(aspect.isInterested(source) && aspect.isInterested(target)){
                 if(!utils.isTeammate(source.getId(), target.getId())){
                     damageQueue.add(req.e1, req.e2, 9999, DamageQueue.DamageRequestType.collide);
-                    req.handle();
+                    //req.handle();
                 }
             }
         }

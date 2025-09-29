@@ -5,6 +5,8 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 public class PositionComp extends CopyableComponent{
     public float x, y;
+    //用于z轴机制
+    public float z;
 
     public PositionComp(){
     }
@@ -12,6 +14,17 @@ public class PositionComp extends CopyableComponent{
     public PositionComp(float x, float y){
         this.x = x;
         this.y = y;
+    }
+
+    public PositionComp(float x, float y, float z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public PositionComp z(float z){
+        this.z = z;
+        return this;
     }
 
     public int tileX(){
@@ -30,6 +43,7 @@ public class PositionComp extends CopyableComponent{
     protected void reset(){
         x = 0;
         y = 0;
+        z = 0;
     }
 
     @Override

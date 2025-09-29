@@ -2,7 +2,7 @@ package io.blackdeluxecat.painttd.systems.request;
 
 import com.artemis.*;
 import com.artemis.systems.*;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.systems.*;
@@ -19,6 +19,8 @@ public class ShootSingleSlashStain extends IteratingSystem{
     public ComponentMapper<HealthComp> healthMapper;
     public ComponentMapper<TeamComp> teamMapper;
 
+    IntArray tmp = new IntArray();
+
     public ShootSingleSlashStain(){
         super(Aspect.all(CooldownComp.class, TargetSingleComp.class, StainSlashComp.class, ColorLevelComp.class));
     }
@@ -31,28 +33,14 @@ public class ShootSingleSlashStain extends IteratingSystem{
             if(targetSingle.targetId != -1){
                 PositionComp tgtPos = positionMapper.get(targetSingle.targetId);
                 StainSlashComp slash = stainSlashMapper.get(entityId);
-                ColorLevelComp colorLevel = colorLevelMapper.get(entityId);
 
                 int x = tgtPos.tileX(), y = tgtPos.tileY();
-                for(int dx = -slash.range; dx <= slash.range; dx++){
-                    for(int dy = -slash.range; dy <= slash.range; dy++){
-                        int tileStain = map.getTileStain(MathUtils.clamp(dx + x, 0, map.width - 1), MathUtils.clamp(dy + y, 0, map.height - 1));
-                        if(tileStain != -1){
-                            HealthComp health = healthMapper.get(tileStain);
-                            TeamComp stainTeam = teamMapper.get(tileStain);
-                            TeamComp entityTeam = teamMapper.get(entityId);
-                            float level = colorLevel.level;
-                            if(stainTeam.team != entityTeam.team){
-                                health.health -= level;
-                                if(health.health <= 0){
-                                    stainTeam.team = entityTeam.team;
-                                    health.health = -health.health;
-                                }
-                            }else{
-                                health.health = Math.max(health.health, level);
-                            }
-                        }
-                    }
+
+                tmp.clear();
+                map.queryCircle(map.stains, x, y, slash.range, tmp);
+                for(int i = 0; i < tmp.size; i++){
+                    int tileStain = tmp.get(i);
+                    utils.putTileStain(tileStain, teamMapper.get(entityId).team, slash.level);
                 }
             }
         }

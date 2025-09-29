@@ -16,6 +16,8 @@ public class MarkHealthDead extends IteratingSystem{
 
     @Override
     protected void process(int entityId){
-        if(hm.get(entityId).health <= 0) world.getEntity(entityId).edit().create(MarkerComp.Dead.class);
+        if(hm.get(entityId).health <= 0){
+            world.getEntity(entityId).edit().create(MarkerComp.Dead.class);
+        }
     }
 }

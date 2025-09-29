@@ -49,4 +49,16 @@ public class MarkerComp extends CopyableComponent{
         public HitboxScaleByHealth(){
         }
     }
+
+    @Transient
+    public static class Bullet extends MarkerComp{
+        public Bullet(){
+        }
+    }
+
+    @Transient
+    public static class BulletHoming extends MarkerComp{
+        public BulletHoming(){
+        }
+    }
 }

@@ -12,22 +12,27 @@ import io.blackdeluxecat.painttd.content.components.*;
 public class BulletTypeComp extends CopyableComponent{
     public EntityType type;
 
+    public int amt = 1;
+
     public BulletTypeComp(){
     }
 
-    public BulletTypeComp(EntityType type){
+    public BulletTypeComp(int amt, EntityType type){
         this.type = type;
+        this.amt = amt;
     }
 
     @Override
     protected void reset(){
         type = null;
+        amt = 1;
     }
 
     @Override
     public BulletTypeComp copy(CopyableComponent other){
         BulletTypeComp bulletTypeComp = (BulletTypeComp)other;
         this.type = bulletTypeComp.type;
+        this.amt = bulletTypeComp.amt;
         return this;
     }
 

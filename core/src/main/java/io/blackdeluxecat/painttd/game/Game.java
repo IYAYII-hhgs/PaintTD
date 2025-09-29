@@ -155,7 +155,9 @@ public class Game{
         logicCollide.with(l -> {
             l.add(new CollideQueueRemoveNoLongerOverlaps());
             l.add(new CollideDetect());
-            l.add(new CollideEnemyRequestDamage());
+            l.add(new CollideTileSlash());
+            l.add(new CollideRequestSlashDamage());
+            l.add(new CollideRequestDamage());
             l.add(new TileStainRequestDamage());
         });
 
@@ -165,11 +167,13 @@ public class Game{
             l.add(new ShootSingleRequestDamage());
             l.add(new ShootSingleSlashRequestDamage());
             l.add(new ShootSingleSlashStain());
+            l.add(new ShootSingleTargetBullet());
         });
 
         logic.with(l -> {
             l.add(new HealthRegen());
             l.add(new MovementVelGenFlowField());
+            l.add(new MovementVelGenSingleTgtBulletHoming());
             l.add(new MovementVelPush());
 
             l.add(new DamageTypeCollideApply());

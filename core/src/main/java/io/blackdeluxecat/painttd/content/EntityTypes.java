@@ -43,7 +43,10 @@ public class EntityTypes{
         eraser,
 
         //turrets
-        building, pencil, brush,
+        building, pencil, brush, airbrush,
+
+        //bullets
+        bullet, airbrushBullet,
 
         //tiles
         tile, tileStain, spawner;
@@ -68,6 +71,16 @@ public class EntityTypes{
                 add(new MovementNextPathComp());
 
                 add(new PartTextureComp("u-eraser"));
+            }
+        };
+
+        bullet = new EntityType("bullet", cHide){
+            {
+                add(new TeamComp(0));
+                add(new MarkerComp.UseQuadTree());
+                add(new MarkerComp.Bullet());
+                add(new PositionComp());
+                add(new HealthComp(1f));
             }
         };
 
@@ -108,16 +121,64 @@ public class EntityTypes{
                 add(new HealthComp(1));
 
                 add(new RangeComp(10));
-                add(new DamageSlashComp(1, 1));
-                add(new StainSlashComp(1));
+                //add(new DamageSlashComp(1, 1));
+                //add(new StainSlashComp(1));
                 add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
                 add(new TargetSingleComp());
-                add(new CooldownComp(180f));
+                add(new BulletTypeComp(1, new EntityType("brushBullet", bullet, cHide){
+                    {
+                        add(new PositionComp());
+                        add(new HitboxComp(0.2f));
+                        add(new VelocityComp());
+                        add(new MarkerComp.BulletHoming());
+                        add(new TargetSingleComp());
+                        add(new MoveSpeedComp(12f / lfps));
+                        add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ENTITY));
+
+                        add(new DamageComp(1));
+                        add(new DamageSlashComp(1, 1));
+
+                        add(new StainSlashComp(1));
+                    }
+                }));
+                add(new CooldownComp(150f));
                 add(new ColorLevelComp(1));
 
                 add(new PartTextureComp("b-brush"));
             }
         };
+//
+//        airbrush = new EntityType("airbrush", building, cBuilding){
+//            {
+//                add(new MarkerComp.UseQuadTree());
+//                add(new TeamComp(0));
+//
+//                add(new HealthComp(4));
+//
+//                add(new RangeComp(18));
+//                add(new BulletTypeComp(4, airbrushBullet = new EntityType("airbrushBullet", bullet, cHide){
+//                    {
+//                        add(new TeamComp(0));
+//                        add(new ColorLevelComp());
+//                        add(new PositionComp().z(1f));
+//                        add(new HitboxComp(0.2f));
+//                        add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ENTITY));
+//
+//                        add(new DamageComp(1));
+//                        add(new DamageSlashComp(1, 2));
+//
+//                        add(new StainSlashComp(2));
+//                        //add(new PartTextureComp("bullet-airbrush"));
+//                    }
+//                }));
+//                add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
+//                add(new TargetSingleComp());
+//                add(new CooldownComp(200f));
+//                add(new ColorLevelComp(1));
+//
+//                add(new PartTextureComp("b-airbrush"));
+//            }
+//        };
 
         tile = new EntityType("tile", cHide){
             {

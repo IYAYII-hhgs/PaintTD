@@ -5,6 +5,7 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 public class VelocityComp extends CopyableComponent{
     public float x, y;
+    public float z;
 
     public VelocityComp(){
     }
@@ -14,6 +15,12 @@ public class VelocityComp extends CopyableComponent{
         this.y = y;
     }
 
+    public VelocityComp(float x, float y, float z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
     public Vector2 get(Vector2 out){
         return out.set(x, y);
     }
@@ -21,6 +28,11 @@ public class VelocityComp extends CopyableComponent{
     public void set(Vector2 in){
         x = in.x;
         y = in.y;
+    }
+
+    public VelocityComp z(float z){
+        this.z = z;
+        return this;
     }
 
     @Override

@@ -89,6 +89,32 @@ public class MapManager extends BaseSystem{
         }
     }
 
+    public void queryRect(IntBag bag, int x, int y, int w, int h, IntArray out){
+        for(int dx = 0; dx < w; dx++){
+            for(int dy = 0; dy < h; dy++){
+                if(validPos(x + dx, y + dy)){
+                    int tile = bag.get(pos(x + dx, y + dy));
+                    if(tile != -1) out.add(tile);
+                }
+            }
+        }
+    }
+
+    public void queryRectCenter(IntBag bag, int x, int y, int w, int h, IntArray out){
+        queryRect(bag, x - w / 2, y - h / 2, w, h, out);
+    }
+
+    public void queryCircle(IntBag bag, int x, int y, int r, IntArray out){
+        for(int dx = -r; dx <= r; dx++){
+            for(int dy = -r; dy <= r; dy++){
+                if(validPos(x + dx, y + dy) && dx * dx + dy * dy <= r * r){
+                    int tile = bag.get(pos(x + dx, y + dy));
+                    if(tile != -1) out.add(tile);
+                }
+            }
+        }
+    }
+
     public int unsafeGet(int x, int y){
         return tiles.get(pos(x, y));
     }

@@ -29,10 +29,8 @@ public class ShootSingleTargetBullet extends IteratingSystem{
 
             TargetSingleComp targetSingle = targetSingleMapper.get(entityId);
             if(targetSingle.targetId != -1){
-                Gdx.app.log("", bulletTypeComp.amt + ", " + cooldown.shootCount);
                 for(int i = 0; i < cooldown.shootCount * bulletTypeComp.amt; i++){
                     var bullet = bulletTypeComp.type.create();
-                    Gdx.app.log("", "b" + bullet.getId());
                     PositionComp pos = positionMapper.get(entityId);
                     positionMapper.get(bullet).x = pos.x;
                     positionMapper.get(bullet).y = pos.y;
@@ -45,7 +43,7 @@ public class ShootSingleTargetBullet extends IteratingSystem{
                     }
 
                     if(colorLevelMapper.has(bullet)){
-                        stainSlashMapper.get(bullet).level = colorLevelMapper.get(entityId).level;
+                        stainSlashMapper.get(bullet).damage = colorLevelMapper.get(entityId).level;
                     }
                 }
             }

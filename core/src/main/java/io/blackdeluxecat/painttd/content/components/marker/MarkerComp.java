@@ -50,9 +50,17 @@ public class MarkerComp extends CopyableComponent{
         }
     }
 
+    /**标记的实体攻击方式为碰撞*/
     @Transient
-    public static class Bullet extends MarkerComp{
-        public Bullet(){
+    public static class CollideAttacker extends MarkerComp{
+        public CollideAttacker(){
+        }
+    }
+
+    /**标记的实体攻击方式为射击*/
+    @Transient
+    public static class ShootAttacker extends MarkerComp{
+        public ShootAttacker(){
         }
     }
 

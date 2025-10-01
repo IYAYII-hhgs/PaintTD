@@ -130,6 +130,7 @@ public class Game{
         logicCollide = lm.lm.registerLayer("logicCollide", 100),
         logicShootAI = lm.lm.registerLayer("logicShootAI", 200),
         logic = lm.lm.registerLayer("logic", 300),
+        logicDamage = lm.lm.registerLayer("logicDamage", 400),
         logicPost = lm.lm.registerLayer("logicLastWork", 9000),
         render = lm.lm.registerLayer("render", 10000);
 
@@ -156,17 +157,21 @@ public class Game{
             l.add(new CollideQueueRemoveNoLongerOverlaps());
             l.add(new CollideDetect());
             l.add(new CollideTileSlash());
-            l.add(new CollideRequestSlashDamage());
+            l.add(new CollideAtkRequestSlashDamage());
+            l.add(new CollideAtkRequestDirectDamage());
+            l.add(new CollideAtkRequestSlashTileStain());
             l.add(new CollideRequestDamage());
-            l.add(new TileStainRequestDamage());
+
+            //瓦片染色暂无四叉树管理, 单独检查碰撞
+            l.add(new TileStainRequestCollideDamage());
         });
 
         logicShootAI.with(l -> {
             l.add(new TargetFind());
             l.add(new CooldownShoot());
-            l.add(new ShootSingleRequestDamage());
-            l.add(new ShootSingleSlashRequestDamage());
-            l.add(new ShootSingleSlashStain());
+            l.add(new ShootAtkSingleRequestDirectDamage());
+            l.add(new ShootAtkSingleRequestSlashDamage());
+            l.add(new ShootAtkSingleRequestSlashTileStain());
             l.add(new ShootSingleTargetBullet());
         });
 
@@ -175,9 +180,15 @@ public class Game{
             l.add(new MovementVelGenFlowField());
             l.add(new MovementVelGenSingleTgtBulletHoming());
             l.add(new MovementVelPush());
+        });
 
-            l.add(new DamageTypeCollideApply());
-            l.add(new DamageTypeDirectApply());
+        logicDamage.with(l -> {
+            l.add(new DamageApplySlashTileStain());
+            l.add(new DamageApplyDirectTileStain());
+
+            l.add(new DamageApplySlashDamage());
+            l.add(new DamageApplyDirectDamage());
+            l.add(new DamageApplyCollideDamage());
         });
 
         logicPost.with(l -> {

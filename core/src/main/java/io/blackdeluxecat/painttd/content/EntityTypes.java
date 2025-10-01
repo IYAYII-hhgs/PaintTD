@@ -78,9 +78,7 @@ public class EntityTypes{
             {
                 add(new TeamComp(0));
                 add(new MarkerComp.UseQuadTree());
-                add(new MarkerComp.Bullet());
                 add(new PositionComp());
-                add(new HealthComp(1f));
             }
         };
 
@@ -102,6 +100,8 @@ public class EntityTypes{
                 add(new HealthComp(1));
 
                 add(new RangeComp(6));
+
+                add(new MarkerComp.ShootAttacker());
                 add(new DamageComp(1));
 
                 add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
@@ -127,17 +127,17 @@ public class EntityTypes{
                 add(new TargetSingleComp());
                 add(new BulletTypeComp(1, new EntityType("brushBullet", bullet, cHide){
                     {
+                        add(new HealthComp(0.01f));
                         add(new PositionComp());
                         add(new HitboxComp(0.2f));
                         add(new VelocityComp());
-                        add(new MarkerComp.BulletHoming());
-                        add(new TargetSingleComp());
                         add(new MoveSpeedComp(12f / lfps));
+
+                        add(new MarkerComp.BulletHoming());
+                        add(new MarkerComp.CollideAttacker());
                         add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ENTITY));
-
-                        add(new DamageComp(1));
+                        add(new TargetSingleComp());
                         add(new DamageSlashComp(1, 1));
-
                         add(new StainSlashComp(1));
                     }
                 }));

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at:
+ * You may newData a copy of the License at:
  * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -79,7 +79,7 @@ public class StartupHelper{
 // We also temporarily change the "user.name" property to one without any chars that would be invalid.
 // We revert our changes immediately after loading LWJGL3 natives.
                 String programData = System.getenv("ProgramData");
-                if(programData == null) programData = "C:\\Temp\\"; // if ProgramData isn't set, try some fallback.
+                if(programData == null) programData = "C:\\Temp\\"; // if ProgramData isn't dmg, try some fallback.
                 String prevTmpDir = System.getProperty("java.io.tmpdir", programData);
                 String prevUser = System.getProperty("user.name", "libGDX_User");
                 System.setProperty("java.io.tmpdir", programData + "/libGDX-temp");
@@ -128,7 +128,7 @@ public class StartupHelper{
 
         if(!(new File(javaExecPath)).exists()){
             System.err.println(
-                "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
+                "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to dmg the -XstartOnFirstThread argument manually!");
             return false;
         }
 

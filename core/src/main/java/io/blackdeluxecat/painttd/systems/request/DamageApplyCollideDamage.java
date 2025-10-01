@@ -7,24 +7,20 @@ import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
+/**
+ * 处理{@link DamageQueue.CollideDamageData}请求
+ */
+
 @IsLogicProcess
-public class DamageTypeCollideApply extends BaseSystem{
-    public DamageQueue.DamageRequestType type;
-
+public class DamageApplyCollideDamage extends BaseSystem{
     public ComponentMapper<HealthComp> healthMapper;
-
-    @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        type = DamageQueue.DamageRequestType.collide;
-    }
 
     @Override
     protected void processSystem(){
         damageQueue.clearHandled();
         for(int i = 0; i < damageQueue.queue.size; i++){
             DamageQueue.DamageRequest req = damageQueue.queue.get(i);
-            if(req.type == type){
+            if(req.data instanceof DamageQueue.CollideDamageData){
                 if(healthMapper.has(req.sourceId) && healthMapper.has(req.targetId)){
                     var sourceHealth = healthMapper.get(req.targetId);
                     var targetHealth = healthMapper.get(req.sourceId);

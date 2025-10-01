@@ -4,19 +4,20 @@ import com.artemis.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
+import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class ShootSingleRequestDamage extends IteratingSystem{
+public class ShootAtkSingleRequestDirectDamage extends IteratingSystem{
     public ComponentMapper<CooldownComp> cooldownMapper;
     public ComponentMapper<TargetSingleComp> targetSingleMapper;
     public ComponentMapper<DamageComp> damageMapper;
 
-    public ShootSingleRequestDamage(){
-        super(Aspect.all(CooldownComp.class, DamageComp.class, TargetSingleComp.class));
+    public ShootAtkSingleRequestDirectDamage(){
+        super(Aspect.all(CooldownComp.class, DamageComp.class, TargetSingleComp.class, MarkerComp.ShootAttacker.class));
     }
 
     @Override
@@ -26,8 +27,9 @@ public class ShootSingleRequestDamage extends IteratingSystem{
             TargetSingleComp targetSingle = targetSingleMapper.get(entityId);
             if(targetSingle.targetId != -1){
                 DamageComp damage = damageMapper.get(entityId);
+
                 for(int i = 0; i < cooldown.shootCount; i++){
-                    damageQueue.add(entityId, targetSingle.targetId, damage.damage, DamageQueue.DamageRequestType.direct);
+                    damageQueue.add(entityId, targetSingle.targetId, DamageQueue.newData(DamageQueue.DirectDamageData.class).dmg(damage.damage));
                 }
             }
         }

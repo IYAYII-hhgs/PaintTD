@@ -8,7 +8,8 @@ import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 
 public class StaticUtils extends BaseSystem{
-    @All public EntitySubscription allEntitiesSub;
+    @All
+    public EntitySubscription allEntitiesSub;
 
     public ComponentMapper<PositionComp> positionMapper;
     public ComponentMapper<HitboxComp> hitboxMapper;

@@ -11,8 +11,8 @@ import com.badlogic.gdx.utils.*;
  * 在重置世界时, 清理所有请求
  */
 public class DamageQueue extends RequestQueue<DamageQueue.DamageRequest>{
-    public void add(int sourceId, int targetId, float amount, DamageRequestType type){
-        queue.addLast(obtain().set(sourceId, targetId, amount, type));
+    public void add(int sourceId, int targetId, DamageData data){
+        queue.addLast(obtain().set(sourceId, targetId, data));
     }
 
     @Override
@@ -35,17 +35,15 @@ public class DamageQueue extends RequestQueue<DamageQueue.DamageRequest>{
     public static class DamageRequest extends RequestQueue.Request{
         public int sourceId;
         public int targetId;
-        public float amount;
-        public DamageRequestType type;
+        public DamageData data;
 
         public DamageRequest(){
         }
 
-        public DamageRequest set(int sourceId, int targetId, float amount, DamageRequestType type){
+        public DamageRequest set(int sourceId, int targetId, DamageData data){
             this.sourceId = sourceId;
             this.targetId = targetId;
-            this.amount = amount;
-            this.type = type;
+            this.data = data;
             return this;
         }
 
@@ -53,36 +51,125 @@ public class DamageQueue extends RequestQueue<DamageQueue.DamageRequest>{
         public void reset(){
             super.reset();
             sourceId = targetId = -1;
-            amount = 0;
+            freeData(data);
         }
     }
 
+    public static <T extends DamageData> T newData(Class<T> type){
+        return Pools.obtain(type);
+    }
+
+    public static void freeData(DamageData data){
+        Pools.free(data);
+    }
 
     /**
-     * 伤害请求类型, 以字符为唯一标识符
+     * 持有伤害的具体数据, 并作为伤害请求的类型标识符
      */
-    public static final class DamageRequestType{
-        private static final ObjectMap<String, DamageRequestType> types = new ObjectMap<>();
-
-        private final String name;
-
-        private DamageRequestType(String name){
-            this.name = name;
-        }
-
-        public static DamageRequestType get(String name){
-            if(types.containsKey(name)) return types.get(name);
-            var type = new DamageRequestType(name);
-            types.put(name, type);
-            return type;
-        }
-
-        public String name(){
-            return name;
-        }
-
-        public static final DamageRequestType collide = DamageRequestType.get("collide"),
-            direct = DamageRequestType.get("direct");
+    public static abstract class DamageData implements Pool.Poolable{
     }
 
+    public static class DirectDamageData extends DamageData{
+        public float damage;
+
+        public DirectDamageData(){
+        }
+
+        public DirectDamageData dmg(float damage){
+            this.damage = damage;
+            return this;
+        }
+
+        @Override
+        public void reset(){
+            damage = 0;
+        }
+    }
+
+    public static class CollideDamageData extends DamageData{
+        public CollideDamageData(){
+        }
+
+        @Override
+        public void reset(){
+        }
+    }
+
+    public static class SlashDamageData extends DamageData{
+        public float x, y;
+        public float damage;
+        public float range;
+
+        public SlashDamageData(){
+        }
+
+        public SlashDamageData pos(float x, float y){
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        public SlashDamageData dmg(float damage, float range){
+            this.damage = damage;
+            this.range = range;
+            return this;
+        }
+
+        @Override
+        public void reset(){
+            x = y = damage = range = 0;
+        }
+    }
+
+    public static class DirectTileStainData extends DamageData{
+        public int x, y;
+        public float damage;
+
+        public DirectTileStainData(){
+        }
+
+        public DirectTileStainData pos(int x, int y){
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        public DirectTileStainData dmg(float damage){
+            this.damage = damage;
+            return this;
+        }
+
+        @Override
+        public void reset(){
+            x = y = 0;
+            damage = 0;
+        }
+    }
+
+    public static class SlashTileStainData extends DamageData{
+        public int x, y;
+        public float damage;
+        public float range;
+
+        public SlashTileStainData(){
+        }
+
+        public SlashTileStainData pos(int x, int y){
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        public SlashTileStainData dmg(float damage, float range){
+            this.damage = damage;
+            this.range = range;
+            return this;
+        }
+
+        @Override
+        public void reset(){
+            x = y = 0;
+            damage = range = 0;
+        }
+    }
 }

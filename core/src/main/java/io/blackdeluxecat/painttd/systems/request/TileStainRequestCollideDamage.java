@@ -13,12 +13,12 @@ import io.blackdeluxecat.painttd.systems.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class TileStainRequestDamage extends IteratingSystem{
+public class TileStainRequestCollideDamage extends IteratingSystem{
     public ComponentMapper<CollideComp> collideMapper;
     public ComponentMapper<HitboxComp> hitboxMapper;
     public ComponentMapper<PositionComp> positionMapper;
 
-    public TileStainRequestDamage(){
+    public TileStainRequestCollideDamage(){
         super(Aspect.all(CollideComp.class, HealthComp.class, TeamComp.class, PositionComp.class).exclude(MarkerComp.Dead.class));
     }
 
@@ -37,7 +37,7 @@ public class TileStainRequestDamage extends IteratingSystem{
             for(int x = minx; x <= maxx; x++){
                 for(int y = miny; y <= maxy; y++){
                     if(Game.map.validPos(x, y)){
-                        damageQueue.add(entityId, Game.map.getTileStain(x, y), 9999, DamageQueue.DamageRequestType.collide);
+                        damageQueue.add(entityId, Game.map.getTileStain(x, y), DamageQueue.newData(DamageQueue.CollideDamageData.class));
                     }
                 }
             }

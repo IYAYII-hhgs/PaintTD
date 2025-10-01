@@ -1,0 +1,38 @@
+package io.blackdeluxecat.painttd.systems.request;
+
+import com.artemis.*;
+import com.artemis.annotations.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.marker.*;
+import io.blackdeluxecat.painttd.game.request.*;
+import io.blackdeluxecat.painttd.systems.*;
+
+import static io.blackdeluxecat.painttd.game.Game.*;
+
+@IsLogicProcess
+public class CollideAtkRequestDirectDamage extends BaseSystem{
+    @All(value = {DamageComp.class, MarkerComp.CollideAttacker.class})
+    Aspect sourceAspect;
+
+    public ComponentMapper<DamageComp> damageMapper;
+
+    @Override
+    protected void processSystem(){
+        for(int i = 0; i < collideQueue.queue.size; i++){
+            CollideQueue.CollideRequest req = collideQueue.queue.get(i);
+            if(req.handled) continue;
+
+            var e1 = world.getEntity(req.e1);
+            var e2 = world.getEntity(req.e2);
+
+            int source = sourceAspect.isInterested(e1) ? req.e1 : sourceAspect.isInterested(e2) ? req.e2 : -1;
+            if(source == -1) continue;
+            int target = source == req.e1 ? req.e2 : req.e1;
+
+            if(!utils.isTeammate(source, target)){
+                DamageComp dmg = damageMapper.get(source);
+                damageQueue.add(source, target, DamageQueue.newData(DamageQueue.DirectDamageData.class).dmg(dmg.damage));
+            }
+        }
+    }
+}

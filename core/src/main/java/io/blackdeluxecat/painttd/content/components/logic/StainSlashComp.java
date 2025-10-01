@@ -4,7 +4,7 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 public class StainSlashComp extends CopyableComponent{
     public int range;
-    public float level = 1;
+    public float damage = 1;
 
     public StainSlashComp(){
     }
@@ -17,13 +17,13 @@ public class StainSlashComp extends CopyableComponent{
     public StainSlashComp copy(CopyableComponent other){
         StainSlashComp otherComp = (StainSlashComp)other;
         this.range = otherComp.range;
-        this.level = otherComp.level;
+        this.damage = otherComp.damage;
         return this;
     }
 
     @Override
     protected void reset(){
         this.range = 0;
-        this.level = 1;
+        this.damage = 1;
     }
 }

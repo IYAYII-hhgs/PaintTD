@@ -4,21 +4,21 @@ import com.artemis.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
+import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.systems.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class ShootSingleSlashRequestDamage extends IteratingSystem{
+public class ShootAtkSingleRequestSlashDamage extends IteratingSystem{
     public ComponentMapper<CooldownComp> cooldownMapper;
     public ComponentMapper<TargetSingleComp> targetSingleMapper;
     public ComponentMapper<DamageSlashComp> damageSlashMapper;
     public ComponentMapper<PositionComp> positionMapper;
-    public ComponentMapper<TeamComp> teamMapper;
 
-    public ShootSingleSlashRequestDamage(){
-        super(Aspect.all(CooldownComp.class, DamageSlashComp.class, TargetSingleComp.class));
+    public ShootAtkSingleRequestSlashDamage(){
+        super(Aspect.all(CooldownComp.class, DamageSlashComp.class, TargetSingleComp.class, MarkerComp.ShootAttacker.class));
     }
 
     @Override
@@ -29,16 +29,10 @@ public class ShootSingleSlashRequestDamage extends IteratingSystem{
             if(targetSingle.targetId != -1){
                 PositionComp tgtPos = positionMapper.get(targetSingle.targetId);
                 DamageSlashComp slash = damageSlashMapper.get(entityId);
-                int teamSelf = teamMapper.get(entityId).team;
+
                 for(int i = 0; i < cooldown.shootCount; i++){
-                    entities.eachCircle(tgtPos.x, tgtPos.y, slash.range, null, e -> {
-                        if(teamMapper.get(e).team != teamSelf){
-                            damageQueue.add(entityId, e, slash.damage, DamageQueue.DamageRequestType.direct);
-                        }
-                    });
-
+                    damageQueue.add(entityId, targetSingle.targetId, DamageQueue.newData(DamageQueue.SlashDamageData.class).pos(tgtPos.x, tgtPos.y).dmg(slash.damage, slash.range));
                 }
-
             }
         }
     }

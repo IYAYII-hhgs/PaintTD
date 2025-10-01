@@ -12,7 +12,7 @@ import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
 public class CollideTileSlash extends BaseSystem{
-    @All(value = {MarkerComp.Bullet.class, StainSlashComp.class})
+    @All(value = {MarkerComp.CollideAttacker.class, StainSlashComp.class})
     Aspect slashAspect;
 
     public ComponentMapper<TileStainComp> stainMapper;
@@ -47,7 +47,7 @@ public class CollideTileSlash extends BaseSystem{
             map.queryCircle(map.stains, x, y, slash.range, tmp);
             for(int j = 0; j < tmp.size; j++){
                 int tileStain = tmp.get(j);
-                utils.putTileStain(tileStain, teamMapper.get(slasher).team, slash.level);
+                utils.putTileStain(tileStain, teamMapper.get(slasher).team, slash.damage);
             }
         }
     }

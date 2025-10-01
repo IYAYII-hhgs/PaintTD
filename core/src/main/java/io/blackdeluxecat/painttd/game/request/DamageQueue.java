@@ -95,21 +95,21 @@ public class DamageQueue extends RequestQueue<DamageQueue.DamageRequest>{
         }
     }
 
-    public static class SlashDamageData extends DamageData{
+    public static class SplashDamageData extends DamageData{
         public float x, y;
         public float damage;
         public float range;
 
-        public SlashDamageData(){
+        public SplashDamageData(){
         }
 
-        public SlashDamageData pos(float x, float y){
+        public SplashDamageData pos(float x, float y){
             this.x = x;
             this.y = y;
             return this;
         }
 
-        public SlashDamageData dmg(float damage, float range){
+        public SplashDamageData dmg(float damage, float range){
             this.damage = damage;
             this.range = range;
             return this;
@@ -146,21 +146,21 @@ public class DamageQueue extends RequestQueue<DamageQueue.DamageRequest>{
         }
     }
 
-    public static class SlashTileStainData extends DamageData{
+    public static class SplashTileStainData extends DamageData{
         public int x, y;
         public float damage;
         public float range;
 
-        public SlashTileStainData(){
+        public SplashTileStainData(){
         }
 
-        public SlashTileStainData pos(int x, int y){
+        public SplashTileStainData pos(int x, int y){
             this.x = x;
             this.y = y;
             return this;
         }
 
-        public SlashTileStainData dmg(float damage, float range){
+        public SplashTileStainData dmg(float damage, float range){
             this.damage = damage;
             this.range = range;
             return this;

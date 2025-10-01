@@ -121,8 +121,8 @@ public class EntityTypes{
                 add(new HealthComp(1));
 
                 add(new RangeComp(10));
-                //add(new DamageSlashComp(1, 1));
-                //add(new StainSlashComp(1));
+                //add(new DamageSplashComp(1, 1));
+                //add(new StainSplashComp(1));
                 add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
                 add(new TargetSingleComp());
                 add(new BulletTypeComp(1, new EntityType("brushBullet", bullet, cHide){
@@ -137,8 +137,8 @@ public class EntityTypes{
                         add(new MarkerComp.CollideAttacker());
                         add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ENTITY));
                         add(new TargetSingleComp());
-                        add(new DamageSlashComp(1, 1));
-                        add(new StainSlashComp(1));
+                        add(new DamageSplashComp(1, 1));
+                        add(new StainSplashComp(1));
                     }
                 }));
                 add(new CooldownComp(150f));
@@ -165,9 +165,9 @@ public class EntityTypes{
 //                        add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ENTITY));
 //
 //                        add(new DamageComp(1));
-//                        add(new DamageSlashComp(1, 2));
+//                        add(new DamageSplashComp(1, 2));
 //
-//                        add(new StainSlashComp(2));
+//                        add(new StainSplashComp(2));
 //                        //add(new PartTextureComp("bullet-airbrush"));
 //                    }
 //                }));

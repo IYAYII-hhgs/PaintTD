@@ -156,10 +156,10 @@ public class Game{
         logicCollide.with(l -> {
             l.add(new CollideQueueRemoveNoLongerOverlaps());
             l.add(new CollideDetect());
-            l.add(new CollideTileSlash());
-            l.add(new CollideAtkRequestSlashDamage());
+            l.add(new CollideTileSplash());
+            l.add(new CollideAtkRequestSplashDamage());
             l.add(new CollideAtkRequestDirectDamage());
-            l.add(new CollideAtkRequestSlashTileStain());
+            l.add(new CollideAtkRequestSplashTileStain());
             l.add(new CollideRequestDamage());
 
             //瓦片染色暂无四叉树管理, 单独检查碰撞
@@ -170,8 +170,8 @@ public class Game{
             l.add(new TargetFind());
             l.add(new CooldownShoot());
             l.add(new ShootAtkSingleRequestDirectDamage());
-            l.add(new ShootAtkSingleRequestSlashDamage());
-            l.add(new ShootAtkSingleRequestSlashTileStain());
+            l.add(new ShootAtkSingleRequestSplashDamage());
+            l.add(new ShootAtkSingleRequestSplashTileStain());
             l.add(new ShootSingleTargetBullet());
         });
 
@@ -183,10 +183,10 @@ public class Game{
         });
 
         logicDamage.with(l -> {
-            l.add(new DamageApplySlashTileStain());
+            l.add(new DamageApplySplashTileStain());
             l.add(new DamageApplyDirectTileStain());
 
-            l.add(new DamageApplySlashDamage());
+            l.add(new DamageApplySplashDamage());
             l.add(new DamageApplyDirectDamage());
             l.add(new DamageApplyCollideDamage());
         });

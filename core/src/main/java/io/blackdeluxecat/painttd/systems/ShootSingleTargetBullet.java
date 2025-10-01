@@ -14,7 +14,7 @@ public class ShootSingleTargetBullet extends IteratingSystem{
 
     ComponentMapper<TeamComp> teamMapper;
     ComponentMapper<ColorLevelComp> colorLevelMapper;
-    ComponentMapper<StainSlashComp> stainSlashMapper;
+    ComponentMapper<StainSplashComp> stainSplashMapper;
     ComponentMapper<TargetSingleComp> targetSingleMapper;
 
     public ShootSingleTargetBullet(){
@@ -43,7 +43,7 @@ public class ShootSingleTargetBullet extends IteratingSystem{
                     }
 
                     if(colorLevelMapper.has(bullet)){
-                        stainSlashMapper.get(bullet).damage = colorLevelMapper.get(entityId).level;
+                        stainSplashMapper.get(bullet).damage = colorLevelMapper.get(entityId).level;
                     }
                 }
             }

@@ -11,12 +11,12 @@ import io.blackdeluxecat.painttd.systems.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class CollideTileSlash extends BaseSystem{
-    @All(value = {MarkerComp.CollideAttacker.class, StainSlashComp.class})
-    Aspect slashAspect;
+public class CollideTileSplash extends BaseSystem{
+    @All(value = {MarkerComp.CollideAttacker.class, StainSplashComp.class})
+    Aspect splashAspect;
 
     public ComponentMapper<TileStainComp> stainMapper;
-    public ComponentMapper<StainSlashComp> stainSlashMapper;
+    public ComponentMapper<StainSplashComp> stainSplashMapper;
     public ComponentMapper<PositionComp> positionMapper;
     public ComponentMapper<TeamComp> teamMapper;
 
@@ -34,20 +34,20 @@ public class CollideTileSlash extends BaseSystem{
             if(utils.isTeammate(req.e1, req.e2)) continue;
 
             // 检查碰撞双方是否是染色子弹和染色地块
-            int slasher = slashAspect.isInterested(source) ? req.e1 : slashAspect.isInterested(target) ? req.e2 : -1;
-            if(slasher == -1) continue;
-            int tgt = slasher == req.e1 ? req.e2 : req.e1;
+            int splasher = splashAspect.isInterested(source) ? req.e1 : splashAspect.isInterested(target) ? req.e2 : -1;
+            if(splasher == -1) continue;
+            int tgt = splasher == req.e1 ? req.e2 : req.e1;
 
-            StainSlashComp slash = stainSlashMapper.get(slasher);
+            StainSplashComp splash = stainSplashMapper.get(splasher);
             PositionComp tgtPos = positionMapper.get(tgt);
 
             int x = tgtPos.tileX(), y = tgtPos.tileY();
 
             tmp.clear();
-            map.queryCircle(map.stains, x, y, slash.range, tmp);
+            map.queryCircle(map.stains, x, y, splash.range, tmp);
             for(int j = 0; j < tmp.size; j++){
                 int tileStain = tmp.get(j);
-                utils.putTileStain(tileStain, teamMapper.get(slasher).team, slash.damage);
+                utils.putTileStain(tileStain, teamMapper.get(splasher).team, splash.damage);
             }
         }
     }

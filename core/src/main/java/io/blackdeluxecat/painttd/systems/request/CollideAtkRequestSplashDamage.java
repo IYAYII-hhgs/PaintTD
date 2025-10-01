@@ -10,11 +10,11 @@ import io.blackdeluxecat.painttd.systems.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class CollideAtkRequestSlashDamage extends BaseSystem{
-    @All(value = {DamageSlashComp.class, MarkerComp.CollideAttacker.class})
+public class CollideAtkRequestSplashDamage extends BaseSystem{
+    @All(value = {DamageSplashComp.class, MarkerComp.CollideAttacker.class})
     Aspect sourceAspect;
 
-    public ComponentMapper<DamageSlashComp> damageSlashMapper;
+    public ComponentMapper<DamageSplashComp> damageSplashMapper;
     public ComponentMapper<PositionComp> positionMapper;
 
     @Override
@@ -31,9 +31,9 @@ public class CollideAtkRequestSlashDamage extends BaseSystem{
             int target = source == req.e1 ? req.e2 : req.e1;
 
             if(!utils.isTeammate(source, target)){
-                DamageSlashComp dmg = damageSlashMapper.get(source);
+                DamageSplashComp dmg = damageSplashMapper.get(source);
                 PositionComp tgtPos = positionMapper.get(target);
-                damageQueue.add(source, target, DamageQueue.newData(DamageQueue.SlashDamageData.class).pos(tgtPos.x, tgtPos.y).dmg(dmg.damage, dmg.range));
+                damageQueue.add(source, target, DamageQueue.newData(DamageQueue.SplashDamageData.class).pos(tgtPos.x, tgtPos.y).dmg(dmg.damage, dmg.range));
             }
         }
     }

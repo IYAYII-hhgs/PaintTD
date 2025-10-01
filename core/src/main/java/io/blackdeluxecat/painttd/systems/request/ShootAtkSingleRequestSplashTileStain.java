@@ -11,14 +11,14 @@ import io.blackdeluxecat.painttd.systems.*;
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class ShootAtkSingleRequestSlashDamage extends IteratingSystem{
+public class ShootAtkSingleRequestSplashTileStain extends IteratingSystem{
     public ComponentMapper<CooldownComp> cooldownMapper;
     public ComponentMapper<TargetSingleComp> targetSingleMapper;
-    public ComponentMapper<DamageSlashComp> damageSlashMapper;
     public ComponentMapper<PositionComp> positionMapper;
+    public ComponentMapper<StainSplashComp> stainSplashMapper;
 
-    public ShootAtkSingleRequestSlashDamage(){
-        super(Aspect.all(CooldownComp.class, DamageSlashComp.class, TargetSingleComp.class, MarkerComp.ShootAttacker.class));
+    public ShootAtkSingleRequestSplashTileStain(){
+        super(Aspect.all(CooldownComp.class, TargetSingleComp.class, StainSplashComp.class, MarkerComp.ShootAttacker.class));
     }
 
     @Override
@@ -28,12 +28,13 @@ public class ShootAtkSingleRequestSlashDamage extends IteratingSystem{
             TargetSingleComp targetSingle = targetSingleMapper.get(entityId);
             if(targetSingle.targetId != -1){
                 PositionComp tgtPos = positionMapper.get(targetSingle.targetId);
-                DamageSlashComp slash = damageSlashMapper.get(entityId);
+                StainSplashComp splash = stainSplashMapper.get(entityId);
 
                 for(int i = 0; i < cooldown.shootCount; i++){
-                    damageQueue.add(entityId, targetSingle.targetId, DamageQueue.newData(DamageQueue.SlashDamageData.class).pos(tgtPos.x, tgtPos.y).dmg(slash.damage, slash.range));
+                    damageQueue.add(entityId, targetSingle.targetId, DamageQueue.newData(DamageQueue.SplashTileStainData.class).pos(tgtPos.tileX(), tgtPos.tileY()).dmg(splash.damage, splash.range));
                 }
             }
         }
+
     }
 }

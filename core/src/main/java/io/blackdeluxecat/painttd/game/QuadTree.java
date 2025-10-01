@@ -47,8 +47,11 @@ public class QuadTree{
     public void queryRect(float x, float y, float width, float height, IntArray result, @Null IntBoolf filter){
         root.query(x, y, width, height, result);
         if(filter != null){
-            for(int i = result.size - 1; i >= 0; i--)
-                if(!filter.get(result.get(i))) result.removeIndex(i);
+            for(int i = result.size - 1; i >= 0; i--){
+                if(!filter.get(result.get(i))){
+                    result.removeIndex(i);
+                }
+            }
         }
     }
 
@@ -96,8 +99,13 @@ public class QuadTree{
         root.query(x - radius, y - radius, radius * 2, radius * 2, result);
         for(int i = result.size - 1; i >= 0; i--){
             pos(result.get(i));
-            if(v.sub(x, y).len2() > radius * radius) result.removeIndex(i);
-            if(filter != null && !filter.get(result.get(i))) result.removeIndex(i);
+            if(v.sub(x, y).len2() > radius * radius){
+                result.removeIndex(i);
+                continue;
+            }
+            if(filter != null && !filter.get(result.get(i))){
+                result.removeIndex(i);
+            }
         }
     }
 

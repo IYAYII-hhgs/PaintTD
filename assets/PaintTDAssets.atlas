@@ -4,23 +4,30 @@ size: 64, 64
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-b-brush
+b-airbrush
   rotate: false
   xy: 2, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-b-pencil
+b-brush
   rotate: false
   xy: 34, 40
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-u-eraser
+b-pencil
   rotate: false
   xy: 20, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+u-eraser
+  rotate: false
+  xy: 38, 22
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -29,7 +36,7 @@ ui-button
   rotate: false
   xy: 2, 26
   size: 30, 30
-  split: 13, 13, 13, 13
+  split: 7, 7, 7, 7
   orig: 30, 30
   offset: 0, 0
   index: -1

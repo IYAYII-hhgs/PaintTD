@@ -32,8 +32,11 @@ public class PreferenceDialog extends BaseDialog{
         var debug = new PrefCategory("pref.cate.debug", new TextureRegionDrawable(Core.atlas.findRegion("u-eraser")), "");
         addCategory(debug);
 
-        debug.boolPref("drawUnitHitbox", null, true, b -> DrawUnitHitbox.pref = b);
-        debug.boolPref("drawFlowField", null, false, b -> DrawFlowFieldDebug.pref = b);
+        render.boolPref("drawRange", "pref.drawRange", true, b -> DrawTarget.drawRange = b);
+        render.boolPref("drawTargetLine", "pref.drawTargetLine", true, b -> DrawTarget.drawTargetLine = b);
+
+        debug.boolPref("drawUnitHitbox", "pref.drawUnitHitbox", true, b -> DrawUnitHitbox.pref = b);
+        debug.boolPref("drawFlowField", "pref.drawFlowField", false, b -> DrawFlowFieldDebug.pref = b);
 
         rebuild();
     }

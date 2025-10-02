@@ -25,10 +25,11 @@ public class ShootSingleTargetBullet extends IteratingSystem{
     protected void process(int entityId){
         CooldownComp cooldown = cooldownMapper.get(entityId);
         if(cooldown.shootCount > 0){
-            BulletTypeComp bulletTypeComp = bulletTypeMapper.get(entityId);
-
             TargetSingleComp targetSingle = targetSingleMapper.get(entityId);
+
             if(targetSingle.targetId != -1){
+                BulletTypeComp bulletTypeComp = bulletTypeMapper.get(entityId);
+
                 for(int i = 0; i < cooldown.shootCount * bulletTypeComp.amt; i++){
                     var bullet = bulletTypeComp.type.create();
                     PositionComp pos = positionMapper.get(entityId);

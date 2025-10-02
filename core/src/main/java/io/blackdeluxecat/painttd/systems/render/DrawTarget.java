@@ -4,6 +4,8 @@ import com.artemis.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
+import com.badlogic.gdx.math.*;
+import com.github.tommyettinger.digital.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
@@ -12,7 +14,10 @@ import io.blackdeluxecat.painttd.content.components.marker.*;
 import static io.blackdeluxecat.painttd.Core.*;
 
 public class DrawTarget extends IteratingSystem{
+    public static boolean drawRange, drawTargetLine;
+
     public ComponentMapper<TargetSingleComp> tm;
+    public ComponentMapper<CooldownComp> cm;
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<RangeComp> rm;
 
@@ -21,23 +26,30 @@ public class DrawTarget extends IteratingSystem{
     }
 
     @Override
-    protected void setWorld(World world){
-        super.setWorld(world);
-        tm = world.getMapper(TargetSingleComp.class);
-        pm = world.getMapper(PositionComp.class);
-        rm = world.getMapper(RangeComp.class);
+    protected void initialize(){
+        super.initialize();
+        drawRange = Core.prefs.getBoolean("drawRange", true);
+        drawTargetLine = Core.prefs.getBoolean("drawTargetLine", true);
     }
 
     @Override
     protected void process(int entityId){
         TargetSingleComp target = tm.get(entityId);
         PositionComp pos = pm.get(entityId), targetPos;
+
         if(target.targetId != -1){
             targetPos = pm.get(target.targetId);
-            shaper.begin(ShapeRenderer.ShapeType.Line);
-            shaper.setColor(Color.RED);
-            shaper.line(Vars.v1.set(pos.x, pos.y), Vars.v2.set(targetPos.x, targetPos.y));
-            shaper.end();
+
+            CooldownComp cd = cm.get(entityId);
+            float a = cd == null ? 1f : (1 - cd.currentCooldown / cd.cooldown);
+            if(a > 0.5f){
+                shaper.begin(ShapeRenderer.ShapeType.Line);
+                shaper.getColor().set(Color.RED, a);
+
+                shaper.setColor(Color.RED);
+                shaper.line(Vars.v1.set(pos.x, pos.y), Vars.v2.set(targetPos.x, targetPos.y));
+                shaper.end();
+            }
         }
 
         RangeComp range = rm.get(entityId);

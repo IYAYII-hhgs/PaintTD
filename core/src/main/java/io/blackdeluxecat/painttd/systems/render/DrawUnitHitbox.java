@@ -12,7 +12,7 @@ import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import static io.blackdeluxecat.painttd.Core.*;
 
 public class DrawUnitHitbox extends IteratingSystem{
-    public static boolean pref = false;
+    public static boolean pref;
 
     public ComponentMapper<PositionComp> pm;
     public ComponentMapper<HitboxComp> hbm;

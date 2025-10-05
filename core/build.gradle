@@ -1,3 +1,5 @@
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
 
@@ -21,3 +23,19 @@ dependencies {
         implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
     }
 }
+
+project.ext.texturePacker = [ "assets-raw/", "assets/", "PaintTDAssets" ]
+
+tasks.register("texturePacker"){
+    inputs.dir("${project.rootDir}/assets-raw/")
+    outputs.dir("${project.rootDir}/assets/")
+
+    doLast {
+        if (project.ext.has('texturePacker')) {
+            logger.info "Calling TexturePacker: "+project.ext.texturePacker
+            TexturePacker.process(texturePacker[0], texturePacker[1], texturePacker[2])
+        }
+    }
+}
+
+processResources.dependsOn "texturePacker"

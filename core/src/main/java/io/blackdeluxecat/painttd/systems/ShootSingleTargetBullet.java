@@ -6,6 +6,8 @@ import com.badlogic.gdx.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 
+import static io.blackdeluxecat.painttd.game.Game.utils;
+
 @IsLogicProcess
 public class ShootSingleTargetBullet extends IteratingSystem{
     public ComponentMapper<CooldownComp> cooldownMapper;
@@ -32,16 +34,15 @@ public class ShootSingleTargetBullet extends IteratingSystem{
 
                 for(int i = 0; i < cooldown.shootCount * bulletTypeComp.amt; i++){
                     var bullet = bulletTypeComp.type.create();
+                    int bulletId = bullet.getId();
                     PositionComp pos = positionMapper.get(entityId);
-                    positionMapper.get(bullet).x = pos.x;
-                    positionMapper.get(bullet).y = pos.y;
+                    PositionComp bulletPos = positionMapper.get(bullet);
+                    bulletPos.x = pos.x;
+                    bulletPos.y = pos.y;
 
-                    if(targetSingleMapper.has(bullet)){
-                        targetSingleMapper.get(bullet).targetId = targetSingle.targetId;
-                    }
-                    if(teamMapper.has(bullet)){
-                        teamMapper.get(bullet).team = teamMapper.get(entityId).team;
-                    }
+                    utils.targetCompParser(entityId, bulletId);
+
+                    utils.setTeam(bulletId, teamMapper.get(entityId).team);
 
                     if(colorLevelMapper.has(bullet)){
                         stainSplashMapper.get(bullet).damage = colorLevelMapper.get(entityId).level;

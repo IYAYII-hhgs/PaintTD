@@ -15,7 +15,6 @@ public class CollideTileSplash extends BaseSystem{
     @All(value = {MarkerComp.CollideAttacker.class, StainSplashComp.class})
     Aspect splashAspect;
 
-    public ComponentMapper<TileStainComp> stainMapper;
     public ComponentMapper<StainSplashComp> stainSplashMapper;
     public ComponentMapper<PositionComp> positionMapper;
     public ComponentMapper<TeamComp> teamMapper;

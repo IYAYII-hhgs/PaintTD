@@ -26,14 +26,13 @@ public class CollideDetect extends IteratingSystem{
 
     @Override
     protected void process(int entityId){
-        entities.hitbox(entityId, r1);
         result.clear();
+        entities.hitbox(entityId, r1);
         entities.queryRect(r1.x - r1.width, r1.y - r1.height, r1.width * 3, r1.height * 3, result, null);
 
         for(int i = 0; i < result.size; i++){
             int otherId = result.get(i);
             if(otherId != entityId){
-                entities.hitbox(entityId, r1);
                 entities.hitbox(otherId, r2);
                 if(r1.overlaps(r2) && !collideQueue.isColliding(entityId, otherId)){
                     collideQueue.add(entityId, otherId);

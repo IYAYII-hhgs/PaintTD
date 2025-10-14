@@ -155,7 +155,7 @@ public class Game{
 
         logicCollide.with(l -> {
             l.add(new CollideQueueRemoveNoLongerOverlaps());
-            l.add(new CollideDetect());
+            l.add(new CollideDetectQuadTree());
             l.add(new CollideTileSplash());
             l.add(new CollideAtkRequestSplashDamage());
             l.add(new CollideAtkRequestDirectDamage());

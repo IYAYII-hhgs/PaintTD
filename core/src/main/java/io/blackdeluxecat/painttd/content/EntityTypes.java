@@ -59,7 +59,7 @@ public class EntityTypes{
                 add(new MarkerComp.UseQuadTree());
                 add(new MarkerComp.Hoverable());
                 add(new MarkerComp.HitboxScaleByHealth());
-                add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ALL));
+                add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.UNIT | CollideComp.BUILDING | CollideComp.FLOOR | CollideComp.OVERLAY));
                 add(new TeamComp(1));
 
                 add(new HealthComp(16));
@@ -78,7 +78,6 @@ public class EntityTypes{
             {
                 add(new TeamComp(0));
                 add(new MarkerComp.UseQuadTree());
-                add(new PositionComp());
             }
         };
 
@@ -87,6 +86,8 @@ public class EntityTypes{
                 addGroup("building");
                 add(new MarkerComp.PlaceSnapGrid());
                 add(new MarkerComp.Hoverable());
+                add(new CollideComp(CollideComp.BUILDING, false));
+                add(new TeamComp(1));
                 add(new PositionComp());
                 add(new HitboxComp(1));
             }
@@ -135,7 +136,7 @@ public class EntityTypes{
 
                         add(new MarkerComp.BulletHoming());
                         add(new MarkerComp.CollideAttacker());
-                        add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ENTITY));
+                        add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.UNIT));
                         add(new TargetSingleComp());
                         add(new DamageSplashComp(1, 1));
                         add(new StainSplashComp(1));
@@ -185,7 +186,7 @@ public class EntityTypes{
                 addGroup("tile");
                 add(new PositionComp());
                 add(new HitboxComp(1));
-                add(new CollideComp(CollideComp.FLOOR, true).setCollidesMask(CollideComp.ENTITY));
+                add(new CollideComp(CollideComp.FLOOR, true));
                 add(new TileComp());
             }
         };
@@ -196,7 +197,7 @@ public class EntityTypes{
                 add(new TileStainComp());
                 add(new PositionComp());
                 add(new HitboxComp(1));
-                add(new CollideComp(CollideComp.OVERLAY, true).setCollidesMask(CollideComp.ENTITY));
+                add(new CollideComp(CollideComp.OVERLAY, true));
 
                 add(new TeamComp(0));
                 add(new HealthComp(-1));

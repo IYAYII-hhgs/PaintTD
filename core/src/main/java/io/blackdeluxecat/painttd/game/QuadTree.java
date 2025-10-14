@@ -284,7 +284,7 @@ public class QuadTree{
     protected Rectangle hitbox(int entity){
         PositionComp pos = Game.utils.positionMapper.get(entity);
         HitboxComp hitbox = Game.utils.hitboxMapper.get(entity);
-        return re.setSize(hitbox.getWidth(), hitbox.getHeight()).setCenter(pos.x, pos.y);
+        return re.setSize(hitbox.x(), hitbox.y()).setCenter(pos.x, pos.y);
     }
 
     public Rectangle hitbox(int entity, Rectangle out){

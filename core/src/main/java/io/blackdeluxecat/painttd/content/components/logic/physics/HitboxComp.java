@@ -4,44 +4,49 @@ import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class HitboxComp extends CopyableComponent implements Json.Serializable{
-    public float width = 1;
-    public float height = 1;
+    public float x = 1, y = 1;
+    public float z = 1;
     public float scale = 1;
 
     public HitboxComp(){
     }
 
-    public HitboxComp(float width, float height){
-        this.width = width;
-        this.height = height;
+    public HitboxComp(float x, float y){
+        this.x = x;
+        this.y = y;
     }
 
     public HitboxComp(float size){
-        this.width = size;
-        this.height = size;
+        this.x = size;
+        this.y = size;
     }
 
-    public float getWidth(){
-        return width * scale;
+    public float x(){
+        return x * scale;
     }
 
-    public float getHeight(){
-        return height * scale;
+    public float y(){
+        return y * scale;
+    }
+
+    //as a 2.5d game, it is usually useless
+    public float z(){
+        return z * scale;
     }
 
     @Override
     public HitboxComp copy(CopyableComponent other){
         HitboxComp hitboxComp = (HitboxComp)other;
-        width = hitboxComp.width;
-        height = hitboxComp.height;
+        x = hitboxComp.x;
+        y = hitboxComp.y;
         scale = hitboxComp.scale;
         return this;
     }
 
     @Override
     protected void reset(){
-        width = 1;
-        height = 1;
+        x = 1;
+        y = 1;
         scale = 1;
     }
 
@@ -58,7 +63,7 @@ public class HitboxComp extends CopyableComponent implements Json.Serializable{
     @Override
     public void refill(CopyableComponent def){
         HitboxComp hitboxComp = (HitboxComp)def;
-        width = hitboxComp.width;
-        height = hitboxComp.height;
+        x = hitboxComp.x;
+        y = hitboxComp.y;
     }
 }

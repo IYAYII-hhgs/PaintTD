@@ -25,14 +25,14 @@ public class TileStainRequestCollideDamage extends IteratingSystem{
     @Override
     protected void process(int entityId){
         CollideComp collide = collideMapper.get(entityId);
-        if(collide.isCollideWith(CollideComp.OVERLAY)){
+        if(collide.canCollide(CollideComp.OVERLAY)){
             PositionComp positionComp = positionMapper.get(entityId);
             HitboxComp hitboxComp = hitboxMapper.get(entityId);
 
             int cx = positionComp.tileX(), cy = positionComp.tileY();
 
-            int minx = MathUtils.floor(cx - hitboxComp.getWidth() / 2f + 0.5f), maxx = MathUtils.ceil(cx + hitboxComp.getWidth() / 2f - 0.5f);
-            int miny = MathUtils.floor(cy - hitboxComp.getHeight() / 2f + 0.5f), maxy = MathUtils.ceil(cy + hitboxComp.getHeight() / 2f - 0.5f);
+            int minx = MathUtils.floor(cx - hitboxComp.x() / 2f + 0.5f), maxx = MathUtils.ceil(cx + hitboxComp.x() / 2f - 0.5f);
+            int miny = MathUtils.floor(cy - hitboxComp.y() / 2f + 0.5f), maxy = MathUtils.ceil(cy + hitboxComp.y() / 2f - 0.5f);
 
             for(int x = minx; x <= maxx; x++){
                 for(int y = miny; y <= maxy; y++){

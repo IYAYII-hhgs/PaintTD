@@ -30,7 +30,7 @@ public class HoverListener extends BaseSystem{
             int e = ids.get(i);
             PositionComp pos = posMapper.get(e);
             HitboxComp hitbox = hitboxMapper.get(e);
-            if(rect.setSize(hitbox.getWidth(), hitbox.getHeight()).setCenter(pos.x, pos.y)
+            if(rect.setSize(hitbox.x(), hitbox.y()).setCenter(pos.x, pos.y)
                    .contains(Vars.worldViewport.unproject(Vars.v1.set(Gdx.input.getX(), Gdx.input.getY()))
                    )){
                 hovered = e;

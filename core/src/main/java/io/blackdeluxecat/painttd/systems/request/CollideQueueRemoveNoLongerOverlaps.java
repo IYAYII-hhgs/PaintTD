@@ -16,14 +16,6 @@ public class CollideQueueRemoveNoLongerOverlaps extends BaseSystem{
 
     @Override
     protected void processSystem(){
-        int runs = collideQueue.queue.size;
-        for(int i = 0; i < runs; i++){
-            CollideQueue.CollideRequest req = collideQueue.queue.removeFirst();
-            if(world.getEntity(req.e1).isActive() && world.getEntity(req.e2).isActive() && entities.hitbox(req.e1, r1).overlaps(entities.hitbox(req.e2, r2))){
-                collideQueue.queue.addLast(req);
-            }else{
-                collideQueue.free(req);
-            }
-        }
+
     }
 }

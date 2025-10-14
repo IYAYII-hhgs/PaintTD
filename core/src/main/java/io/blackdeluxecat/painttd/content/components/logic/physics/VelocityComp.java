@@ -10,17 +10,6 @@ public class VelocityComp extends CopyableComponent{
     public VelocityComp(){
     }
 
-    public VelocityComp(float x, float y){
-        this.x = x;
-        this.y = y;
-    }
-
-    public VelocityComp(float x, float y, float z){
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
     public Vector2 get(Vector2 out){
         return out.set(x, y);
     }

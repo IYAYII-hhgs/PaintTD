@@ -23,12 +23,12 @@ public class CollideAtkRequestSplashDamage extends BaseSystem{
             CollideQueue.CollideRequest req = collideQueue.queue.get(i);
             if(req.handled) continue;
 
-            var e1 = world.getEntity(req.e1);
-            var e2 = world.getEntity(req.e2);
+            var e1 = world.getEntity(req.source);
+            var e2 = world.getEntity(req.target);
 
-            int source = sourceAspect.isInterested(e1) ? req.e1 : sourceAspect.isInterested(e2) ? req.e2 : -1;
+            int source = sourceAspect.isInterested(e1) ? req.source : sourceAspect.isInterested(e2) ? req.target : -1;
             if(source == -1) continue;
-            int target = source == req.e1 ? req.e2 : req.e1;
+            int target = source == req.source ? req.target : req.source;
 
             if(!utils.isTeammate(source, target)){
                 DamageSplashComp dmg = damageSplashMapper.get(source);

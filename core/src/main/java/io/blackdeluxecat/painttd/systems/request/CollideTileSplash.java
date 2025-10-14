@@ -27,15 +27,15 @@ public class CollideTileSplash extends BaseSystem{
             CollideQueue.CollideRequest req = collideQueue.queue.get(i);
             if(req.handled) continue;
 
-            var source = world.getEntity(req.e1);
-            var target = world.getEntity(req.e2);
+            var source = world.getEntity(req.source);
+            var target = world.getEntity(req.target);
 
-            if(utils.isTeammate(req.e1, req.e2)) continue;
+            if(utils.isTeammate(req.source, req.target)) continue;
 
             // 检查碰撞双方是否是染色子弹和染色地块
-            int splasher = splashAspect.isInterested(source) ? req.e1 : splashAspect.isInterested(target) ? req.e2 : -1;
+            int splasher = splashAspect.isInterested(source) ? req.source : splashAspect.isInterested(target) ? req.target : -1;
             if(splasher == -1) continue;
-            int tgt = splasher == req.e1 ? req.e2 : req.e1;
+            int tgt = splasher == req.source ? req.target : req.source;
 
             StainSplashComp splash = stainSplashMapper.get(splasher);
             PositionComp tgtPos = positionMapper.get(tgt);

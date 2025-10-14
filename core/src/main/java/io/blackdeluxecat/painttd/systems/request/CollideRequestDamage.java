@@ -20,12 +20,12 @@ public class CollideRequestDamage extends BaseSystem{
         for(int i = 0; i < collideQueue.queue.size; i++){
             CollideQueue.CollideRequest req = collideQueue.queue.get(i);
             if(req.handled) continue;
-            var source = world.getEntity(req.e1);
-            var target = world.getEntity(req.e2);
+            var source = world.getEntity(req.source);
+            var target = world.getEntity(req.target);
 
             if(aspect.isInterested(source) && aspect.isInterested(target)){
                 if(!utils.isTeammate(source.getId(), target.getId())){
-                    damageQueue.add(req.e1, req.e2, DamageQueue.newData(DamageQueue.CollideDamageData.class));
+                    damageQueue.add(req.source, req.target, DamageQueue.newData(DamageQueue.CollideDamageData.class));
                     //req.handle();
                 }
             }

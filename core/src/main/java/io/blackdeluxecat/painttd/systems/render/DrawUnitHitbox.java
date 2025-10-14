@@ -1,7 +1,6 @@
 package io.blackdeluxecat.painttd.systems.render;
 
 import com.artemis.*;
-import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.*;
@@ -40,8 +39,8 @@ public class DrawUnitHitbox extends IteratingSystem{
         shaper.getColor().set(Vars.c1);
         HitboxComp hb = hbm.get(entityId);
         boolean hasSize = hb != null;
-        float w = hasSize ? hb.getWidth() : 1;
-        float h = hasSize ? hb.getHeight() : 1;
+        float w = hasSize ? hb.x() : 1;
+        float h = hasSize ? hb.y() : 1;
         shaper.rect(pos.x - w / 2f, pos.y - h / 2f, w, h);
         shaper.end();
     }

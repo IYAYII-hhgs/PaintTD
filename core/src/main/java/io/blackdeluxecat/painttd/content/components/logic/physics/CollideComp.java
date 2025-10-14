@@ -5,69 +5,48 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 /**
  * 碰撞组件. 具有该组件的实体将参与碰撞检测, 并产生碰撞事件.
+ * 碰撞掩码决定可碰撞的对象
  */
 @Transient
 public class CollideComp extends CopyableComponent{
-    public static int FLOOR = 0, OVERLAY = 1, UNIT = 2, BUILDING = 3;
-    public static long MAP = 1L << FLOOR | 1L << OVERLAY, ENTITY = 1L << UNIT | 1L << BUILDING, ALL = MAP | ENTITY;
+    public static long FLOOR = 1L, OVERLAY = 1L << 1, UNIT = 1L << 2, BUILDING = 1L << 3;
 
-    /**
-     * 可碰撞层
-     */
-    public long collidesMask;   //64位够你折腾了
-    /**
-     * 碰撞层
-     */
-    public int collideIndex;
+    /**碰撞体类型*/
+    public long type;
+    /**碰撞掩码*/
+    public long mask;
     public boolean solid = false;
 
     public CollideComp(){
     }
 
-    /**
-     * 构造一个指定了碰撞层的单位.
-     */
-    public CollideComp(int collideIndex, boolean solid){
-        this.collideIndex = collideIndex;
+    public CollideComp(long type, boolean solid){
+        this.type = type;
         this.solid = solid;
     }
 
-    public CollideComp setCollidesMask(Long mask){
-        this.collidesMask = mask;
+    public CollideComp setCollidesMask(long mask){
+        this.mask = mask;
         return this;
     }
 
-    public CollideComp setCollidesWith(int index, boolean value){
-        if(value){
-            collidesMask |= 1L << index;
-        }else{
-            collidesMask &= ~(1L << index);
-        }
-        return this;
-    }
-
-    public boolean isCollideWith(int index){
-        return (collidesMask & (1L << index)) != 0;
+    public boolean canCollide(long targetType){
+        return (mask & targetType) != 0;
     }
 
     @Override
     public CopyableComponent copy(CopyableComponent other){
         CollideComp c = (CollideComp)other;
-        this.collidesMask = c.collidesMask;
-        this.collideIndex = c.collideIndex;
+        this.mask = c.mask;
+        this.type = c.type;
         this.solid = c.solid;
         return this;
     }
 
     @Override
     protected void reset(){
-        this.collidesMask = 0;
-        this.collideIndex = 0;
+        this.mask = 0;
+        this.type = 0;
         this.solid = false;
-    }
-
-    @Override
-    public void refill(CopyableComponent def){
-        copy(def);
     }
 }

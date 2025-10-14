@@ -5,7 +5,6 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 public class PositionComp extends CopyableComponent{
     public float x, y;
-    //用于z轴机制
     public float z;
 
     public PositionComp(){

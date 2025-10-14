@@ -3,7 +3,7 @@ package io.blackdeluxecat.painttd.content.components.logic.physics;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class HitboxComp extends CopyableComponent implements Json.Serializable{
+public class HitboxComp extends CopyableComponent{
     public float x = 1, y = 1;
     public float z = 1;
     public float scale = 1;
@@ -19,6 +19,11 @@ public class HitboxComp extends CopyableComponent implements Json.Serializable{
     public HitboxComp(float size){
         this.x = size;
         this.y = size;
+    }
+
+    public HitboxComp z(float z){
+        this.z = z;
+        return this;
     }
 
     public float x(){
@@ -39,6 +44,7 @@ public class HitboxComp extends CopyableComponent implements Json.Serializable{
         HitboxComp hitboxComp = (HitboxComp)other;
         x = hitboxComp.x;
         y = hitboxComp.y;
+        z = hitboxComp.z;
         scale = hitboxComp.scale;
         return this;
     }
@@ -47,17 +53,8 @@ public class HitboxComp extends CopyableComponent implements Json.Serializable{
     protected void reset(){
         x = 1;
         y = 1;
+        z = 0;
         scale = 1;
-    }
-
-    @Override
-    public void write(Json json){
-        json.writeValue("scale", scale);
-    }
-
-    @Override
-    public void read(Json json, JsonValue jsonData){
-        scale = jsonData.getFloat("scale");
     }
 
     @Override

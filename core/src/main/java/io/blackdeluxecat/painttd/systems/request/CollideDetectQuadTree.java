@@ -36,10 +36,10 @@ public class CollideDetectQuadTree extends BaseSystem{
         IntBag bag = collideSubscription.getEntities();
 
         for(int i = 0; i < bag.size(); i++){
-            int entityId = bag.get(i);
             result.clear();
+            int entityId = bag.get(i);
             entities.hitbox(entityId, r1);
-            entities.queryRect(r1.x - r1.width, r1.y - r1.height, r1.width * 3, r1.height * 3, result, null);
+            entities.queryRect(r1.x, r1.y, r1.width, r1.height, result, null);
 
             for(int i1 = 0; i1 < result.size; i1++){
                 int otherId = result.get(i1);

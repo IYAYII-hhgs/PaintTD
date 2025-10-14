@@ -24,7 +24,7 @@ public class CollideRequestDamage extends BaseSystem{
             var target = world.getEntity(req.target);
 
             if(aspect.isInterested(source) && aspect.isInterested(target)){
-                if(!utils.isTeammate(source.getId(), target.getId())){
+                if(!utils.isTeammate(req.source, req.target)){
                     damageQueue.add(req.source, req.target, DamageQueue.newData(DamageQueue.CollideDamageData.class));
                     //req.handle();
                 }

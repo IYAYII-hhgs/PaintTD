@@ -64,7 +64,7 @@ public class EntityTypes{
 
                 add(new HealthComp(16));
                 add(new PositionComp());
-                add(new HitboxComp(0.6f));
+                add(new HitboxComp(0.6f).z(1f));
 
                 add(new MoveSpeedComp(1f / lfps));
                 add(new VelocityComp());
@@ -78,6 +78,8 @@ public class EntityTypes{
             {
                 add(new TeamComp(0));
                 add(new MarkerComp.UseQuadTree());
+                add(new PositionComp());
+                add(new HitboxComp(0.2f).z(1));
             }
         };
 
@@ -89,7 +91,7 @@ public class EntityTypes{
                 add(new CollideComp(CollideComp.BUILDING, false));
                 add(new TeamComp(1));
                 add(new PositionComp());
-                add(new HitboxComp(1));
+                add(new HitboxComp(1).z(1));
             }
         };
 
@@ -122,15 +124,13 @@ public class EntityTypes{
                 add(new HealthComp(1));
 
                 add(new RangeComp(10));
-                //add(new DamageSplashComp(1, 1));
-                //add(new StainSplashComp(1));
                 add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
                 add(new TargetSingleComp());
                 add(new BulletTypeComp(1, new EntityType("brushBullet", bullet, cHide){
                     {
                         add(new HealthComp(0.01f));
                         add(new PositionComp());
-                        add(new HitboxComp(0.2f));
+                        add(new HitboxComp(0.2f).z(1));
                         add(new VelocityComp());
                         add(new MoveSpeedComp(12f / lfps));
 

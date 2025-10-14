@@ -1,6 +1,8 @@
 package io.blackdeluxecat.painttd.systems.request;
 
 import com.artemis.*;
+import com.artemis.annotations.*;
+import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.systems.*;
 
@@ -11,6 +13,9 @@ import static io.blackdeluxecat.painttd.game.Game.*;
  */
 @IsLogicProcess
 public class DamageApplySplashDamage extends BaseSystem{
+    @All(value = {HealthComp.class})
+    Aspect targetAspect;
+
     @Override
     protected void processSystem(){
         damageQueue.clearHandled();
@@ -18,7 +23,7 @@ public class DamageApplySplashDamage extends BaseSystem{
             DamageQueue.DamageRequest req = damageQueue.queue.get(i);
             if(req.data instanceof DamageQueue.SplashDamageData data){
                 entities.eachCircle(data.x, data.y, data.range,
-                    e -> !utils.isTeammate(req.sourceId, e),
+                    e -> !utils.isTeammate(req.sourceId, e) && targetAspect.isInterested(world.getEntity(e)),
                     e -> damageQueue.add(req.sourceId, e, DamageQueue.newData(DamageQueue.DirectDamageData.class).dmg(data.damage)));
             }
         }

@@ -48,10 +48,10 @@ public class TargetFind extends IteratingSystem{
 
         if(current.targetId == -1 || dm.has(current.targetId)){
             entityPos.set(pos.x, pos.y);
-            current.targetId = Game.entities.closestCircle(pos.x, pos.y, range.range, i -> {
+            current.targetId = Game.entities.closestCircle(pos.x, pos.y, range.range, other -> {
                 //排除友军
-                if(team.isSelf(tm.get(i).team)) return Float.MAX_VALUE;
-                return getDistanceFilter(priority.priority).get(i);
+                if(!tm.has(other) || Game.utils.isTeammate(entityId, other)) return Float.MAX_VALUE;
+                return getDistanceFilter(priority.priority).get(other);
             });
         }
     }

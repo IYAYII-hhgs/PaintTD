@@ -7,7 +7,7 @@ import io.blackdeluxecat.painttd.systems.request.*;
  * 碰撞请求队列.
  *
  * <p>请求发生时机是两个实体进入对方碰撞箱时{@link CollideDetectQuadTree}
- * <p>请求移除时机是两个实体离开对方碰撞箱时{@link CollideQueueRemoveNoLongerOverlaps}
+ * <p>请求移除时机是两个实体离开对方碰撞箱时
  * 期间请求应保持不变, 但可以标记handle, 一般不要使用{@link #clear()}和{@link #clearHandled()}, 交由系统自动管理!
  */
 public class CollideQueue extends RequestQueue<CollideQueue.CollideRequest>{

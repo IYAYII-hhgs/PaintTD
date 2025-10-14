@@ -22,16 +22,11 @@ public class CollideAtkRequestDirectDamage extends BaseSystem{
             CollideQueue.CollideRequest req = collideQueue.queue.get(i);
             if(req.handled) continue;
 
-            var e1 = world.getEntity(req.source);
-            var e2 = world.getEntity(req.target);
+            if(req.source == -1 || !sourceAspect.isInterested(world.getEntity(req.source))) continue;
 
-            int source = sourceAspect.isInterested(e1) ? req.source : sourceAspect.isInterested(e2) ? req.target : -1;
-            if(source == -1) continue;
-            int target = source == req.source ? req.target : req.source;
-
-            if(!utils.isTeammate(source, target)){
-                DamageComp dmg = damageMapper.get(source);
-                damageQueue.add(source, target, DamageQueue.newData(DamageQueue.DirectDamageData.class).dmg(dmg.damage));
+            if(!utils.isTeammate(req.source, req.target)){
+                DamageComp dmg = damageMapper.get(req.source);
+                damageQueue.add(req.source, req.target, DamageQueue.newData(DamageQueue.DirectDamageData.class).dmg(dmg.damage));
             }
         }
     }

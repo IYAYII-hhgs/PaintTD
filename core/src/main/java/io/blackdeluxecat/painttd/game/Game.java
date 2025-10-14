@@ -61,8 +61,8 @@ public class Game{
     public static void createNewMap(){
         endMap();
         rules = new Rule();
-        rules.width = 30;
-        rules.height = 20;
+        rules.width = 8;
+        rules.height = 6;
         rules.colorPalette = new ColorPalette();
         int l = 6;
 
@@ -154,7 +154,6 @@ public class Game{
         });
 
         logicCollide.with(l -> {
-            l.add(new CollideQueueRemoveNoLongerOverlaps());
             l.add(new CollideDetectQuadTree());
             l.add(new CollideTileSplash());
             l.add(new CollideAtkRequestSplashDamage());

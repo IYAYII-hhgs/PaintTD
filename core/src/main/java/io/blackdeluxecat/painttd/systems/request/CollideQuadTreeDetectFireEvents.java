@@ -5,11 +5,12 @@ import com.artemis.annotations.*;
 import com.artemis.utils.*;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
-import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.systems.*;
+import io.blackdeluxecat.painttd.utils.Events;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
@@ -17,7 +18,7 @@ import static io.blackdeluxecat.painttd.game.Game.*;
  * 执行碰撞检查. 产生碰撞请求.
  */
 @IsLogicProcess
-public class CollideDetectQuadTree extends BaseSystem{
+public class CollideQuadTreeDetectFireEvents extends BaseSystem{
     protected IntArray result = new IntArray();
     protected static Rectangle r1 = new Rectangle(), r2 = new Rectangle();
 
@@ -31,8 +32,6 @@ public class CollideDetectQuadTree extends BaseSystem{
 
     @Override
     protected void processSystem(){
-        clearInvalidCollides();
-
         IntBag bag = collideSubscription.getEntities();
 
         for(int i = 0; i < bag.size(); i++){
@@ -45,21 +44,12 @@ public class CollideDetectQuadTree extends BaseSystem{
                 int otherId = result.get(i1);
                 if(otherId != entityId){
                     if(checkZAndComp(entityId, otherId)){
-                        collideQueue.add(entityId, otherId);
+                        Events.fire(EventTypes.CollideEvent.class, e -> {
+                            e.source = entityId;
+                            e.target = otherId;
+                        });
                     }
                 }
-            }
-        }
-    }
-
-    protected void clearInvalidCollides(){
-        int runs = collideQueue.queue.size;
-        for(int i = 0; i < runs; i++){
-            CollideQueue.CollideRequest req = collideQueue.queue.removeFirst();
-            if(world.getEntity(req.source).isActive() && world.getEntity(req.target).isActive() && entities.hitbox(req.source, r1).overlaps(entities.hitbox(req.target, r2)) && checkZAndComp(req.source, req.target)){
-                collideQueue.queue.addLast(req);
-            }else{
-                collideQueue.free(req);
             }
         }
     }

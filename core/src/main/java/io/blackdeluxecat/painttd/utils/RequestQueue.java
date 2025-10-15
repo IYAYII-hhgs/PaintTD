@@ -1,4 +1,4 @@
-package io.blackdeluxecat.painttd.game.request;
+package io.blackdeluxecat.painttd.utils;
 
 import com.badlogic.gdx.utils.*;
 

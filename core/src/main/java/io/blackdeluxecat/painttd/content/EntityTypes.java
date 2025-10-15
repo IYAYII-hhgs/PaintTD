@@ -128,7 +128,7 @@ public class EntityTypes{
                 add(new TargetSingleComp());
                 add(new BulletTypeComp(1, new EntityType("brushBullet", bullet, cHide){
                     {
-                        add(new HealthComp(0.01f));
+                        add(new HealthComp(1f));
                         add(new PositionComp());
                         add(new HitboxComp(0.2f).z(1));
                         add(new VelocityComp());

@@ -15,6 +15,7 @@ import java.util.*;
 @Wire
 public class MapManager extends BaseSystem{
     public int width, height;
+    public int outOfBoundSize = 10;
 
     /**entity id映射表, 绑定瓦片与实体.*/
     public ObjectMap<String, IntBag> tileToEntity = new ObjectMap<>();

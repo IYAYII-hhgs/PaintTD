@@ -104,6 +104,10 @@ public class StaticUtils extends BaseSystem{
         p.y = y;
     }
 
+    public void markDead(int e){
+        world.getEntity(e).edit().create(MarkerComp.Dead.class);
+    }
+
     @Override
     protected void processSystem(){
     }

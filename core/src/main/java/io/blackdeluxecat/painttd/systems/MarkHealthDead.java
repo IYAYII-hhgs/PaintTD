@@ -5,6 +5,7 @@ import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
+import io.blackdeluxecat.painttd.game.*;
 
 @IsLogicProcess
 public class MarkHealthDead extends IteratingSystem{
@@ -17,7 +18,7 @@ public class MarkHealthDead extends IteratingSystem{
     @Override
     protected void process(int entityId){
         if(hm.get(entityId).health <= 0){
-            world.getEntity(entityId).edit().create(MarkerComp.Dead.class);
+            Game.utils.markDead(entityId);
         }
     }
 }

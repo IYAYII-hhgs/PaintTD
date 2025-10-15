@@ -9,7 +9,6 @@ import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.*;
 import io.blackdeluxecat.painttd.content.components.logic.target.*;
 import io.blackdeluxecat.painttd.game.pathfind.*;
-import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.map.*;
 import io.blackdeluxecat.painttd.systems.*;
 import io.blackdeluxecat.painttd.systems.render.*;
@@ -36,10 +35,6 @@ public class Game{
     //每帧开始时重建树, 需自行检查在当前帧中失效的单位.
     public static QuadTree entities = new QuadTree();
     public static FlowField flowField;
-
-    public static CollideQueue collideQueue = new CollideQueue();
-    public static DamageQueue damageQueue = new DamageQueue();
-
 
     /** 初始化Game类及系统 */
     public static void create(){
@@ -93,9 +88,6 @@ public class Game{
 
     /** 移除所有实体, 清空世界状态 */
     public static void endMap(){
-        collideQueue.clear();
-        damageQueue.clear();
-
         var oldBag = utils.allEntitiesSub.getEntities();
         for(int i = 0; i < oldBag.size(); i++){
             world.delete(oldBag.get(i));
@@ -127,10 +119,10 @@ public class Game{
     public static LayerManager.Layer<BaseSystem>
         backend = lm.lm.registerLayer("backend", -10000),
         logicPre = lm.lm.registerLayer("logicFirstWork", 0),
+        logicEvents = lm.lm.registerLayer("logicEvents", 10),
         logicCollide = lm.lm.registerLayer("logicCollide", 100),
         logicShootAI = lm.lm.registerLayer("logicShootAI", 200),
         logic = lm.lm.registerLayer("logic", 300),
-        logicDamage = lm.lm.registerLayer("logicDamage", 400),
         logicPost = lm.lm.registerLayer("logicLastWork", 9000),
         render = lm.lm.registerLayer("render", 10000);
 
@@ -144,6 +136,7 @@ public class Game{
             l.add(map = new MapManager());
             l.add(hovered = new HoverListener());
         });
+
         logicPre.with(l -> {
             l.add(new WaveTimer());
             l.add(new SpawnerSpawn());
@@ -153,25 +146,26 @@ public class Game{
             l.add(new RebuildQuadTree());
         });
 
-        logicCollide.with(l -> {
-            l.add(new CollideDetectQuadTree());
-            l.add(new CollideTileSplash());
-            l.add(new CollideAtkRequestSplashDamage());
-            l.add(new CollideAtkRequestDirectDamage());
-            l.add(new CollideAtkRequestSplashTileStain());
-            l.add(new CollideRequestDamage());
+        /*事件总线的系统仅注册事件和管理token*/
+        logicEvents.with(l -> {
+            l.add(new EventCollideFireDamageEvents());
 
+            l.add(new EventDamageApply());
+        });
+
+        logicCollide.with(l -> {
+            l.add(new CollideQuadTreeDetectFireEvents());
             //瓦片染色暂无四叉树管理, 单独检查碰撞
-            l.add(new TileStainRequestCollideDamage());
+            l.add(new CollideTileStainFireDamageEvents());
         });
 
         logicShootAI.with(l -> {
             l.add(new TargetFind());
             l.add(new CooldownShoot());
-            l.add(new ShootAtkSingleRequestDirectDamage());
-            l.add(new ShootAtkSingleRequestSplashDamage());
-            l.add(new ShootAtkSingleRequestSplashTileStain());
             l.add(new ShootSingleTargetBullet());
+            l.add(new ShootAtkSingleFireDirectDamage());
+            l.add(new ShootAtkSingleFireSplashDamage());
+            l.add(new ShootAtkSingleFireSplashTileStain());
         });
 
         logic.with(l -> {
@@ -181,18 +175,8 @@ public class Game{
             l.add(new MovementVelPush());
         });
 
-        logicDamage.with(l -> {
-            l.add(new DamageApplySplashTileStain());
-            l.add(new DamageApplyDirectTileStain());
-
-            l.add(new DamageApplySplashDamage());
-            l.add(new DamageApplyDirectDamage());
-            l.add(new DamageApplyCollideDamage());
-        });
-
         logicPost.with(l -> {
-            l.add(new PostDamageQueue());
-
+            l.add(new MarkOutOfBoundsDead());
             l.add(new MarkHealthDead());
             l.add(new RemoveDead());
         });

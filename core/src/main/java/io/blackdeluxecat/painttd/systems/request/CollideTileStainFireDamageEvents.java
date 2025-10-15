@@ -3,22 +3,23 @@ package io.blackdeluxecat.painttd.systems.request;
 import com.artemis.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.math.*;
+import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
 import io.blackdeluxecat.painttd.content.components.logic.physics.*;
 import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.game.*;
-import io.blackdeluxecat.painttd.game.request.*;
 import io.blackdeluxecat.painttd.systems.*;
+import io.blackdeluxecat.painttd.utils.*;
 
 import static io.blackdeluxecat.painttd.game.Game.*;
 
 @IsLogicProcess
-public class TileStainRequestCollideDamage extends IteratingSystem{
+public class CollideTileStainFireDamageEvents extends IteratingSystem{
     public ComponentMapper<CollideComp> collideMapper;
     public ComponentMapper<HitboxComp> hitboxMapper;
     public ComponentMapper<PositionComp> positionMapper;
 
-    public TileStainRequestCollideDamage(){
+    public CollideTileStainFireDamageEvents(){
         super(Aspect.all(CollideComp.class, HealthComp.class, TeamComp.class, PositionComp.class).exclude(MarkerComp.Dead.class));
     }
 
@@ -37,7 +38,11 @@ public class TileStainRequestCollideDamage extends IteratingSystem{
             for(int x = minx; x <= maxx; x++){
                 for(int y = miny; y <= maxy; y++){
                     if(Game.map.validPos(x, y)){
-                        damageQueue.add(entityId, Game.map.getTileStain(x, y), DamageQueue.newData(DamageQueue.CollideDamageData.class));
+                        int stainId = map.getTileStain(x, y);
+                        Events.fire(EventTypes.CollideDamageEvent.class, e -> {
+                            e.source = entityId;
+                            e.target = stainId;
+                        });
                     }
                 }
             }

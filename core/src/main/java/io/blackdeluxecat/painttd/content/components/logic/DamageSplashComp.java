@@ -4,21 +4,21 @@ import io.blackdeluxecat.painttd.content.components.*;
 
 public class DamageSplashComp extends CopyableComponent{
     public float damage;
-    public float range;
+    public float radius;
 
     public DamageSplashComp(){
     }
 
-    public DamageSplashComp(float damage, float range){
+    public DamageSplashComp(float damage, float radius){
         this.damage = damage;
-        this.range = range;
+        this.radius = radius;
     }
 
     @Override
     public CopyableComponent copy(CopyableComponent other){
         DamageSplashComp otherComp = (DamageSplashComp)other;
         this.damage = otherComp.damage;
-        this.range = otherComp.range;
+        this.radius = otherComp.radius;
         return this;
     }
 

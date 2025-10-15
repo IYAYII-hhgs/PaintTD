@@ -3,11 +3,11 @@ package io.blackdeluxecat.painttd.content.components.logic.physics;
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
-public class VelocityComp extends CopyableComponent{
+public class AccelerationComp extends CopyableComponent{
     public float x, y;
     public float z;
 
-    public VelocityComp(){
+    public AccelerationComp(){
     }
 
     public Vector2 get(Vector2 out){
@@ -19,8 +19,9 @@ public class VelocityComp extends CopyableComponent{
         y = in.y;
     }
 
-    public void z(float z){
+    public AccelerationComp z(float z){
         this.z = z;
+        return this;
     }
 
     @Override
@@ -31,11 +32,11 @@ public class VelocityComp extends CopyableComponent{
     }
 
     @Override
-    public VelocityComp copy(CopyableComponent other){
-        VelocityComp velocityComp = (VelocityComp)other;
-        x = velocityComp.x;
-        y = velocityComp.y;
-        z = velocityComp.z;
+    public AccelerationComp copy(CopyableComponent other){
+        AccelerationComp acc = (AccelerationComp)other;
+        x = acc.x;
+        y = acc.y;
+        z = acc.z;
         return this;
     }
 }

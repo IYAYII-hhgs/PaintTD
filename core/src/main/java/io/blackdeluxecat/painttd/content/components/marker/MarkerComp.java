@@ -23,6 +23,11 @@ public class MarkerComp extends CopyableComponent{
         }
     }
 
+    public static class OnCollideDead extends MarkerComp{
+        public OnCollideDead(){
+        }
+    }
+
     /**标记的实体被自动插入四叉树*/
     @Transient
     public static class UseQuadTree extends MarkerComp{
@@ -67,6 +72,12 @@ public class MarkerComp extends CopyableComponent{
     @Transient
     public static class BulletHoming extends MarkerComp{
         public BulletHoming(){
+        }
+    }
+
+    @Transient
+    public static class BulletProjected extends MarkerComp{
+        public BulletProjected(){
         }
     }
 }

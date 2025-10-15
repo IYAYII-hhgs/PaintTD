@@ -1,7 +1,6 @@
 package io.blackdeluxecat.painttd.systems;
 
 import com.artemis.*;
-import com.artemis.annotations.*;
 import com.artemis.systems.*;
 import com.badlogic.gdx.math.*;
 import io.blackdeluxecat.painttd.*;
@@ -50,7 +49,7 @@ public class TargetFind extends IteratingSystem{
             entityPos.set(pos.x, pos.y);
             current.targetId = Game.entities.closestCircle(pos.x, pos.y, range.range, other -> {
                 //排除友军
-                if(!tm.has(other) || Game.utils.isTeammate(entityId, other)) return Float.MAX_VALUE;
+                if(!tm.has(other) || Game.utils.isTeammateOrFriendly(entityId, other)) return Float.MAX_VALUE;
                 return getDistanceFilter(priority.priority).get(other);
             });
         }

@@ -25,6 +25,7 @@ public class CollideTileStainFireDamageEvents extends IteratingSystem{
 
     @Override
     protected void process(int entityId){
+        if(true) return;
         CollideComp collide = collideMapper.get(entityId);
         if(collide.canCollide(CollideComp.OVERLAY)){
             PositionComp positionComp = positionMapper.get(entityId);

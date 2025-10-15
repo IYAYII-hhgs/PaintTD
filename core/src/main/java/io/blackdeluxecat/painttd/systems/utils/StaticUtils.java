@@ -13,6 +13,8 @@ public class StaticUtils extends BaseSystem{
     public EntitySubscription allEntitiesSub;
 
     public ComponentMapper<PositionComp> positionMapper;
+    public ComponentMapper<VelocityComp> velocityMapper;
+    public ComponentMapper<AccelerationComp> accelerationMapper;
     public ComponentMapper<HitboxComp> hitboxMapper;
     public ComponentMapper<HealthComp> healthMapper;
     public ComponentMapper<TeamComp> teamMapper;
@@ -52,10 +54,10 @@ public class StaticUtils extends BaseSystem{
         }
     }
 
-    public boolean isTeammate(int e1, int e2){
+    public boolean isTeammateOrFriendly(int e1, int e2){
         var t1 = teamMapper.get(e1);
         var t2 = teamMapper.get(e2);
-        if(t1 == null || t2 == null) return false;
+        if(t1 == null || t2 == null) return true;
         return t1.team == t2.team;
     }
 
@@ -90,6 +92,14 @@ public class StaticUtils extends BaseSystem{
                 pos.x = p.x;
                 pos.y = p.y;
             }
+        }
+    }
+
+    public void setProjectileBulletZ(float ticks, int e){
+        VelocityComp v = velocityMapper.get(e);
+        AccelerationComp a = accelerationMapper.get(e);
+        if(v != null && a != null){
+            v.z = ticks * -a.z / 2f;
         }
     }
 

@@ -3,6 +3,11 @@ package io.blackdeluxecat.painttd;
 import io.blackdeluxecat.painttd.utils.*;
 
 public class EventTypes{
+    public static class BulletSpawnEvent extends Events.Event{
+        public int source;
+        public int b;
+    }
+
     public static class CollideEvent extends Events.Event{
         public int source, target;
     }

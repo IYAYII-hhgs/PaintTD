@@ -46,7 +46,7 @@ public class EntityTypes{
         building, pencil, brush, airbrush,
 
         //bullets
-        bullet, airbrushBullet,
+        bullet,
 
         //tiles
         tile, tileStain, spawner;
@@ -137,6 +137,7 @@ public class EntityTypes{
                         add(new MarkerComp.BulletHoming());
                         add(new MarkerComp.CollideAttacker());
                         add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.UNIT));
+
                         add(new TargetSingleComp());
                         add(new DamageSplashComp(1, 1));
                         add(new StainSplashComp(1));
@@ -148,38 +149,43 @@ public class EntityTypes{
                 add(new PartTextureComp("b-brush"));
             }
         };
-//
-//        airbrush = new EntityType("airbrush", building, cBuilding){
-//            {
-//                add(new MarkerComp.UseQuadTree());
-//                add(new TeamComp(0));
-//
-//                add(new HealthComp(4));
-//
-//                add(new RangeComp(18));
-//                add(new BulletTypeComp(4, airbrushBullet = new EntityType("airbrushBullet", bullet, cHide){
-//                    {
-//                        add(new TeamComp(0));
-//                        add(new ColorLevelComp());
-//                        add(new PositionComp().z(1f));
-//                        add(new HitboxComp(0.2f));
-//                        add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.ENTITY));
-//
-//                        add(new DamageComp(1));
-//                        add(new DamageSplashComp(1, 2));
-//
-//                        add(new StainSplashComp(2));
-//                        //add(new PartTextureComp("bullet-airbrush"));
-//                    }
-//                }));
-//                add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
-//                add(new TargetSingleComp());
-//                add(new CooldownComp(200f));
-//                add(new ColorLevelComp(1));
-//
-//                add(new PartTextureComp("b-airbrush"));
-//            }
-//        };
+
+        airbrush = new EntityType("airbrush", building, cBuilding){
+            {
+                add(new MarkerComp.UseQuadTree());
+                add(new TeamComp(0));
+
+                add(new HealthComp(4));
+
+                add(new RangeComp(18));
+                add(new BulletTypeComp(4, new EntityType("airbrushBullet", bullet, cHide){
+                    {
+                        add(new HealthComp(1f));
+                        add(new PositionComp().z(1f));
+                        add(new VelocityComp());
+                        add(new AccelerationComp().z(-1f / lfps));
+                        add(new HitboxComp(0.4f).z(0.5f));
+                        add(new MoveSpeedComp(4f / lfps));
+
+                        add(new MarkerComp.CollideAttacker());
+                        add(new MarkerComp.BulletProjected());
+                        add(new MarkerComp.OnCollideDead());
+                        add(new CollideComp(CollideComp.UNIT, false).setCollidesMask(CollideComp.OVERLAY));
+
+                        add(new TargetPosComp());
+                        add(new DamageSplashComp(1, 2));
+                        add(new StainSplashComp(2));
+                        //add(new PartTextureComp("bullet-airbrush"));
+                    }
+                }));
+                add(new TargetPriorityComp(TargetPriorityComp.CLOSEST));
+                add(new TargetSingleComp());
+                add(new CooldownComp(200f));
+                add(new ColorLevelComp(1));
+
+                add(new PartTextureComp("b-airbrush"));
+            }
+        };
 
         tile = new EntityType("tile", cHide){
             {
@@ -188,6 +194,7 @@ public class EntityTypes{
                 add(new HitboxComp(1));
                 add(new CollideComp(CollideComp.FLOOR, true));
                 add(new TileComp());
+                add(new MarkerComp.UseQuadTree());
             }
         };
 
@@ -201,6 +208,7 @@ public class EntityTypes{
 
                 add(new TeamComp(0));
                 add(new HealthComp(-1));
+                add(new MarkerComp.UseQuadTree());
             }
         };
 

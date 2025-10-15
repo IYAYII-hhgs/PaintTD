@@ -2,9 +2,11 @@ package io.blackdeluxecat.painttd.systems.request;
 
 import com.artemis.*;
 import com.artemis.annotations.*;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.*;
 import io.blackdeluxecat.painttd.content.components.logic.*;
+import io.blackdeluxecat.painttd.content.components.marker.*;
 import io.blackdeluxecat.painttd.systems.*;
 import io.blackdeluxecat.painttd.utils.*;
 
@@ -27,6 +29,10 @@ public class EventDamageApply extends BaseSystem{
 
         tokenCollideDamage = Events.on(EventTypes.CollideDamageEvent.class, e -> {
             if(e.handled) return;
+
+            if(world.getMapper(MarkerComp.BulletProjected.class).has(e.source) && world.getMapper(TileStainComp.class).has(e.target)){
+                Gdx.app.debug("", e.source + " " + e.target);
+            }
             if(healthMapper.has(e.source) && healthMapper.has(e.target)){
                 var sourceHealth = healthMapper.get(e.source);
                 var targetHealth = healthMapper.get(e.target);
@@ -43,7 +49,7 @@ public class EventDamageApply extends BaseSystem{
         tokenSplashDamage = Events.on(EventTypes.SplashDamageEvent.class, e -> {
             if(e.handled) return;
             entities.eachCircle(e.x, e.y, e.radius,
-                other -> !utils.isTeammate(e.source, other) && damagableAspect.isInterested(world.getEntity(other)),
+                other -> !utils.isTeammateOrFriendly(e.source, other) && damagableAspect.isInterested(world.getEntity(other)),
                 other -> {
                     Events.fire(EventTypes.DamageEvent.class, e2 -> {
                         e2.source = e.source;

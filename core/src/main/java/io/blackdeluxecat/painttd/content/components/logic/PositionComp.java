@@ -50,6 +50,7 @@ public class PositionComp extends CopyableComponent{
         PositionComp positionComp = (PositionComp)other;
         this.x = positionComp.x;
         this.y = positionComp.y;
+        this.z = positionComp.z;
         return this;
     }
 }

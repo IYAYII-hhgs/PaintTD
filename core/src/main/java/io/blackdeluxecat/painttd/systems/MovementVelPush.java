@@ -21,5 +21,6 @@ public class MovementVelPush extends IteratingSystem{
         VelocityComp v = vm.get(entityId);
         p.x += v.x;
         p.y += v.y;
+        p.z += v.z;
     }
 }

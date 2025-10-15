@@ -56,15 +56,15 @@ public class Game{
     public static void createNewMap(){
         endMap();
         rules = new Rule();
-        rules.width = 8;
-        rules.height = 6;
+        rules.width = 20;
+        rules.height = 16;
         rules.colorPalette = new ColorPalette();
         int l = 6;
 
-        Color color = Vars.c1.set(Color.CYAN);
+        Color color = Vars.c1.set(Color.FOREST);
 
         for(int i = 0; i < l; i++){
-            color.lerp(Color.YELLOW, i / (float)l);
+            color.lerp(Color.ORANGE, i / (float)l);
             rules.colorPalette.addColor(color);
         }
         Vars.hud.rebuild();
@@ -170,9 +170,12 @@ public class Game{
 
         logic.with(l -> {
             l.add(new HealthRegen());
+            l.add(new MovementAccelerationPush());
             l.add(new MovementVelGenFlowField());
             l.add(new MovementVelGenSingleTgtBulletHoming());
             l.add(new MovementVelPush());
+
+            l.add(new MovementProjectileLimitPosition());
         });
 
         logicPost.with(l -> {

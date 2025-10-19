@@ -53,10 +53,11 @@ public class ShootSingleTargetBullet extends IteratingSystem{
                     utils.setTeam(bulletId, teamMapper.get(entityId).team);
                     utils.targetCompParser(entityId, bulletId);
 
-                    Events.fire(EventTypes.BulletSpawnEvent.class, e -> {
-                        e.b = bulletId;
-                        e.source = entityId;
-                    });
+                    var event = EventTypes.bulletSpawnEvent;
+                    event.reset();
+                    event.b = bulletId;
+                    event.source = entityId;
+                    Events.fire(event);
                 }
             }
         }

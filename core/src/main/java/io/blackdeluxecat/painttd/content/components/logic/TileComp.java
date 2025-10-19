@@ -17,5 +17,6 @@ public class TileComp extends CopyableComponent{
 
     @Override
     protected void reset(){
+        isWall = false;
     }
 }

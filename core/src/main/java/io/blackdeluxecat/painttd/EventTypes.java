@@ -2,7 +2,16 @@ package io.blackdeluxecat.painttd;
 
 import io.blackdeluxecat.painttd.utils.*;
 
+/**单例事件*/
 public class EventTypes{
+    public static BulletSpawnEvent bulletSpawnEvent = new BulletSpawnEvent();
+    public static CollideEvent collideEvent = new CollideEvent();
+    public static DamageEvent damageEvent = new DamageEvent();
+    public static CollideDamageEvent collideDamageEvent = new CollideDamageEvent();
+    public static SplashDamageEvent splashDamageEvent = new SplashDamageEvent();
+    public static StainSplashDamageEvent stainSplashDamageEvent = new StainSplashDamageEvent();
+    public static StainDamageEvent stainDamageEvent = new StainDamageEvent();
+
     public static class BulletSpawnEvent extends Events.Event{
         public int source;
         public int b;

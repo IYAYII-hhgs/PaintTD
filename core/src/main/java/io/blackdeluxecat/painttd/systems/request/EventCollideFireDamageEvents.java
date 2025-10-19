@@ -42,10 +42,11 @@ public class EventCollideFireDamageEvents extends BaseSystem{
             if(!collideAspect.isInterested(world.getEntity(e.source)) || !collideAspect.isInterested(world.getEntity(e.target))) return;
             if(utils.isTeammateOrFriendly(e.source, e.target)) return;
 
-            Events.fire(EventTypes.CollideDamageEvent.class, e2 -> {
-                e2.source = e.source;
-                e2.target = e.target;
-            });
+            var event = EventTypes.collideDamageEvent;
+            event.reset();
+            event.source = e.source;
+            event.target = e.target;
+            Events.fire(event);
         });
 
         tokenOnCollideDeadEvent = Events.on(EventTypes.CollideEvent.class, e -> {
@@ -62,13 +63,14 @@ public class EventCollideFireDamageEvents extends BaseSystem{
             DamageSplashComp dmg = damageSplashMapper.get(e.source);
             if(dmg == null) return;
 
-            Events.fire(EventTypes.SplashDamageEvent.class, e2 -> {
-                e2.source = e.source;
-                e2.x = pos.x;
-                e2.y = pos.y;
-                e2.damage = dmg.damage;
-                e2.radius = dmg.radius;
-            });
+            var event = EventTypes.splashDamageEvent;
+            event.reset();
+            event.source = e.source;
+            event.x = pos.x;
+            event.y = pos.y;
+            event.damage = dmg.damage;
+            event.radius = dmg.radius;
+            Events.fire(event);
         });
 
         tokenCollideStainSplashEvent = Events.on(EventTypes.CollideEvent.class, e -> {
@@ -78,13 +80,14 @@ public class EventCollideFireDamageEvents extends BaseSystem{
             PositionComp pos = positionMapper.get(e.source);
             StainSplashComp dmg = stainSplashMapper.get(e.source);
 
-            Events.fire(EventTypes.StainSplashDamageEvent.class, e2 -> {
-                e2.source = e.source;
-                e2.x = pos.x;
-                e2.y = pos.y;
-                e2.damage = dmg.damage;
-                e2.radius = dmg.radius;
-            });
+            var event = EventTypes.stainSplashDamageEvent;
+            event.reset();
+            event.source = e.source;
+            event.x = pos.x;
+            event.y = pos.y;
+            event.damage = dmg.damage;
+            event.radius = dmg.radius;
+            Events.fire(event);
         });
     }
 

@@ -31,14 +31,15 @@ public class ShootAtkSingleFireSplashTileStain extends IteratingSystem{
                 StainSplashComp splash = stainSplashMapper.get(entityId);
 
                 for(int i = 0; i < cooldown.shootCount; i++){
-                    Events.fire(EventTypes.StainSplashDamageEvent.class, e -> {
-                        e.source = entityId;
-                        e.team = teamMapper.get(entityId).team;
-                        e.x = tgtPos.tileX();
-                        e.y = tgtPos.tileY();
-                        e.damage = splash.damage;
-                        e.radius = splash.radius;
-                    });
+                    var event = EventTypes.stainSplashDamageEvent;
+                    event.reset();
+                    event.source = entityId;
+                    event.team = teamMapper.get(entityId).team;
+                    event.x = tgtPos.tileX();
+                    event.y = tgtPos.tileY();
+                    event.damage = splash.damage;
+                    event.radius = splash.radius;
+                    Events.fire(event);
                 }
             }
         }

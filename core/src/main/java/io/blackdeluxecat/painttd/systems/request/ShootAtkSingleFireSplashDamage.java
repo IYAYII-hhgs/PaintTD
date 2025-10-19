@@ -30,13 +30,14 @@ public class ShootAtkSingleFireSplashDamage extends IteratingSystem{
                 DamageSplashComp splash = damageSplashMapper.get(entityId);
 
                 for(int i = 0; i < cooldown.shootCount; i++){
-                    Events.fire(EventTypes.SplashDamageEvent.class, e -> {
-                        e.source = entityId;
-                        e.x = tgtPos.x;
-                        e.y = tgtPos.y;
-                        e.damage = splash.damage;
-                        e.radius = splash.radius;
-                    });
+                    var event = EventTypes.splashDamageEvent;
+                    event.reset();
+                    event.source = entityId;
+                    event.x = tgtPos.x;
+                    event.y = tgtPos.y;
+                    event.damage = splash.damage;
+                    event.radius = splash.radius;
+                    Events.fire(event);
                 }
             }
         }

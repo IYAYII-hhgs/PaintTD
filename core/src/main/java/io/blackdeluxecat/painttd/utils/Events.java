@@ -48,7 +48,7 @@ public class Events{
         fire(event.getClass(), event);
     }
 
-    /**有池化管理的事件发射*/
+    /**有池化管理的事件发射, 建议自行缓存builder*/
     public static <T> void fire(Class<T> eventType, Cons<T> eventBuilder){
         T event = Pools.obtain(eventType);
         eventBuilder.get(event);

@@ -51,11 +51,12 @@ public class EventDamageApply extends BaseSystem{
             entities.eachCircle(e.x, e.y, e.radius,
                 other -> !utils.isTeammateOrFriendly(e.source, other) && damagableAspect.isInterested(world.getEntity(other)),
                 other -> {
-                    Events.fire(EventTypes.DamageEvent.class, e2 -> {
-                        e2.source = e.source;
-                        e2.target = other;
-                        e2.damage = e.damage;
-                    });
+                    var event = EventTypes.damageEvent;
+                    event.reset();
+                    event.source = e.source;
+                    event.target = other;
+                    event.damage = e.damage;
+                    Events.fire(event);
                 });
             e.handle();
         });
@@ -77,12 +78,13 @@ public class EventDamageApply extends BaseSystem{
             map.queryCircle(map.stains, Math.round(e.x), Math.round(e.y), (int)e.radius, tmp);
             for(int j = 0; j < tmp.size; j++){
                 int tileStain = tmp.get(j);
-                Events.fire(EventTypes.StainDamageEvent.class, e2 -> {
-                    e2.source = e.source;
-                    e2.target = tileStain;
-                    e2.damage = e.damage;
-                    e2.team = e.team;
-                });
+                var event = EventTypes.stainDamageEvent;
+                event.reset();
+                event.source = e.source;
+                event.target = tileStain;
+                event.damage = e.damage;
+                event.team = e.team;
+                Events.fire(event);
             }
         });
 

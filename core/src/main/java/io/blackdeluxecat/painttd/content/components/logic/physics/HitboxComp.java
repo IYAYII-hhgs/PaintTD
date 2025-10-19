@@ -1,6 +1,5 @@
 package io.blackdeluxecat.painttd.content.components.logic.physics;
 
-import com.badlogic.gdx.utils.*;
 import io.blackdeluxecat.painttd.content.components.*;
 
 public class HitboxComp extends CopyableComponent{

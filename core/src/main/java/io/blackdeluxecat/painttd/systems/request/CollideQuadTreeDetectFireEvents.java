@@ -44,10 +44,11 @@ public class CollideQuadTreeDetectFireEvents extends BaseSystem{
                 int otherId = result.get(i1);
                 if(otherId != entityId){
                     if(checkZAndComp(entityId, otherId)){
-                        Events.fire(EventTypes.CollideEvent.class, e -> {
-                            e.source = entityId;
-                            e.target = otherId;
-                        });
+                        var event = EventTypes.collideEvent;
+                        event.reset();
+                        event.source = entityId;
+                        event.target = otherId;
+                        Events.fire(event);
                     }
                 }
             }

@@ -40,10 +40,11 @@ public class CollideTileStainFireDamageEvents extends IteratingSystem{
                 for(int y = miny; y <= maxy; y++){
                     if(Game.map.validPos(x, y)){
                         int stainId = map.getTileStain(x, y);
-                        Events.fire(EventTypes.CollideDamageEvent.class, e -> {
-                            e.source = entityId;
-                            e.target = stainId;
-                        });
+                        var event = EventTypes.collideDamageEvent;
+                        event.reset();
+                        event.source = entityId;
+                        event.target = stainId;
+                        Events.fire(event);
                     }
                 }
             }

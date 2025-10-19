@@ -28,11 +28,12 @@ public class ShootAtkSingleFireDirectDamage extends IteratingSystem{
                 DamageComp damage = damageMapper.get(entityId);
 
                 for(int i = 0; i < cooldown.shootCount; i++){
-                    Events.fire(EventTypes.DamageEvent.class, e -> {
-                        e.source = entityId;
-                        e.target = targetSingle.targetId;
-                        e.damage = damage.damage;
-                    });
+                    var event = EventTypes.damageEvent;
+                    event.reset();
+                    event.source = entityId;
+                    event.target = targetSingle.targetId;
+                    event.damage = damage.damage;
+                    Events.fire(event);
                 }
             }
         }

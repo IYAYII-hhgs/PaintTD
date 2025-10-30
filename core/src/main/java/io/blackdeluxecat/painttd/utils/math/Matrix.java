@@ -11,12 +11,12 @@ public class Matrix {
 
     public int column;
     public int row;
-    public ArrayList<Vector> rows = new ArrayList<>();
+    public ArrayList<FloatVector> rows = new ArrayList<>();
     public Matrix(int column){
         this.column = column;
     }
 
-    public Matrix(int column, Vector ... vs){
+    public Matrix(int column, FloatVector... vs){
         this.column = column;
         Collections.addAll(this.rows, vs);
         this.row = rows.size();

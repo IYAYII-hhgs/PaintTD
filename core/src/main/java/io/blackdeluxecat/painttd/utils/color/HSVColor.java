@@ -1,29 +1,30 @@
 package io.blackdeluxecat.painttd.utils.color;
 
 import com.badlogic.gdx.graphics.Color;
+import io.blackdeluxecat.painttd.utils.math.FloatVector;
 
 public class HSVColor {
-    float[] hsv = new float[3];
+    FloatVector hsv = new FloatVector();
     float h, s, v;
     public HSVColor(float h, float s, float v) {
+        this.hsv.expand(h,s,v);
         this.h = h;
         this.s = s;
         this.v = v;
     }
-    public HSVColor(int h, int s, int v) {
-        this.h = h;
-        this.s = s;
-        this.v = v;
-    }
+
     public HSVColor(Color color) {
-        this.hsv = color.toHsv(hsv);
+        float[] hsv = new float[3];
+        this.hsv = new FloatVector(color.toHsv(hsv));
         this.h = hsv[0];
         this.s = hsv[1];
         this.v = hsv[2];
     }
 
     public Color toRGB() {
-        return new Color().fromHsv(h, s, v);
+        Color c = new Color().fromHsv(h, s, v);
+        c.a = 1.0f;
+        return c;
     }
 
     @Override

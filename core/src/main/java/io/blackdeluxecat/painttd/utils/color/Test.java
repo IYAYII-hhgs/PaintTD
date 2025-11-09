@@ -8,7 +8,11 @@ public class Test {
         HSVColor green = new HSVColor(120f, 1.0f, 1.0f);
         HSVColor red = new HSVColor(0f, 0.5f, 1.0f);
         TileColor color = new TileColor();
-        color.mixWith(red,green,blue);
+
+        color.addColor(blue);
+        //color.addColor(green);
+        color.addColor(red);
+        color.mix();
         System.out.println(color);
     }
 }

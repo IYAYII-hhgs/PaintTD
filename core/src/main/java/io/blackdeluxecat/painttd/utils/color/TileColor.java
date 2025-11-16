@@ -10,7 +10,7 @@ public class TileColor {
     /*该向量参数依次表示色相，饱和度，明度在三维坐标系中的位置
      *原点在下底面中心
      * */
-    public Vector3 colorVector = new Vector3();
+    private Vector3 colorVector = new Vector3();
     //总饱和度，最终混色时使用
     float totalSaturation = 0.0f;
     //最终显示颜色
@@ -52,9 +52,21 @@ public class TileColor {
     void addColor(HSVColor color){
         colorList.add(color);
     }
+
+    void removeColor(int colorIndex){
+        //承接一下，减少遍历次数
+        HSVColor tempColor = new HSVColor(0.0f,0.0f,0.0f,colorIndex);
+        colorList.remove(tempColor);
+    }
     void mix(){
+
         //求得总饱和度
         for (HSVColor color : colorList) {
+            //去除饱和度过低的颜色
+            if (color.s < 0.0001f) {
+                removeColor(color.index);
+                continue;
+            }
             totalSaturation += color.s;
         }
         mixer.mix(colorList);
@@ -80,8 +92,8 @@ public class TileColor {
         }
 
         // 限制饱和度和亮度在有效范围内
-        finalColor.s = Math.max(0.0f, Math.min(1.0f, finalColor.s));
-        finalColor.v = Math.max(0.0f, Math.min(1.0f, finalColor.v));
+        //finalColor.s = Math.max(0.0f, Math.min(1.0f, finalColor.s));
+        //finalColor.v = Math.max(0.0f, Math.min(1.0f, finalColor.v));
 
         //极短向量归零
         if (finalColor.s < 0.0001f) {

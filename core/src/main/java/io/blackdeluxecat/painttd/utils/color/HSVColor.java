@@ -3,6 +3,7 @@ package io.blackdeluxecat.painttd.utils.color;
 import com.badlogic.gdx.graphics.Color;
 
 public class HSVColor {
+    static int pubIndex = 0;
     float h, s, v;
     int index;
 
@@ -16,6 +17,10 @@ public class HSVColor {
         this.h = h;
         this.s = s;
         this.v = v;
+        //暂不考虑线程安全
+        pubIndex++;
+        this.index = pubIndex;
+
     }
 
     public HSVColor(Color color) {
@@ -39,5 +44,10 @@ public class HSVColor {
             ", s=" + s +
             ", v=" + v +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((HSVColor)obj).index == this.index;
     }
 }

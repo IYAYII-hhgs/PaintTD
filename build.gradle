@@ -8,7 +8,7 @@ buildscript {
   }
   dependencies {
     classpath "com.android.tools.build:gradle:8.9.3"
-
+    classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
   }
 }
 
@@ -29,26 +29,6 @@ configure(subprojects - project(':android')) {
   apply plugin: 'java-library'
   java.sourceCompatibility = 17
 
-  // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
-  // The article can be helpful when using assets.txt in your project.
-  tasks.register('generateAssetList') {
-    inputs.dir("${project.rootDir}/assets/")
-    // projectFolder/assets
-    File assetsFolder = new File("${project.rootDir}/assets/")
-    // projectFolder/assets/assets.txt
-    File assetsFile = new File(assetsFolder, "assets.txt")
-    // delete that file in case we've already created it
-    assetsFile.delete()
-
-    // iterate through all files inside that folder
-    // convert it to a relative path
-    // and append it to the file assets.txt
-    fileTree(assetsFolder).collect { assetsFolder.relativePath(it) }.sort().each {
-      assetsFile.append(it + "\n")
-    }
-  }
-  processResources.dependsOn 'generateAssetList'
-
   compileJava {
     options.incremental = true
   }
@@ -66,4 +46,71 @@ subprojects {
   }
 }
 
+// https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
+// The article can be helpful when using assets.txt in your project.
+tasks.register("generateAssetList") {
+  group = "assets"
+  description = "Generate assets/assets.txt from the shared assets directory."
+
+  dependsOn(tasks.named("packTextures"))
+
+  def assetsFolder = rootProject.file("assets")
+  def assetsFile = rootProject.file("assets/assets.txt")
+
+  inputs.files(fileTree(assetsFolder) {
+    exclude "assets.txt"
+  })
+  outputs.file(assetsFile)
+
+  doLast {
+    def lines = fileTree(assetsFolder) {
+      exclude "assets.txt"
+    }.files.collect { file ->
+      assetsFolder.toPath().relativize(file.toPath()).toString().replace('\\', '/')
+    }.sort()
+
+    assetsFile.text = lines.isEmpty() ? "" : lines.join("\n") + "\n"
+  }
+}
+
 eclipse.project.name = 'PaintTD' + '-parent'
+
+def atlasInputDir = file("assets-raw")
+def atlasOutputDir = file("assets/atlas")
+def atlasName = "textures"
+
+tasks.register("packTextures") {
+  group = "assets"
+  description = "Pack raw textures into a libGDX atlas."
+
+  inputs.dir(atlasInputDir)
+  outputs.dir(atlasOutputDir)
+  onlyIf { atlasInputDir.exists() }
+
+  doLast {
+    delete(atlasOutputDir)
+    atlasOutputDir.mkdirs()
+
+    logger.lifecycle("Packing atlas: ${atlasInputDir} -> ${atlasOutputDir}/${atlasName}.atlas")
+    com.badlogic.gdx.tools.texturepacker.TexturePacker.process(
+            atlasInputDir.absolutePath,
+            atlasOutputDir.absolutePath,
+            atlasName
+    )
+  }
+}
+
+// 让 desktop 的现有资源链路先打图集，再生成 assets.txt，再 processResources
+project(":lwjgl3") {
+  tasks.named("processResources") {
+    dependsOn(rootProject.tasks.named("generateAssetList"))
+  }
+}
+// android 资源依赖
+project(":android") {
+  plugins.withId("com.android.application") {
+    tasks.matching { it.name == "preBuild" }.configureEach {
+      dependsOn(rootProject.tasks.named("generateAssetList"))
+    }
+  }
+}

@@ -1,9 +1,10 @@
 package io.bdc.painttd.infra;
 
 import com.badlogic.gdx.graphics.g2d.*;
+import io.bdc.painttd.*;
 import io.bdc.painttd.lib.*;
 
-public class Render {
+public class RenderHub {
     public static Batch batch = new SpriteBatch();
 
     public static Fill fill = new Fill();
@@ -11,7 +12,7 @@ public class Render {
     public static TextureRegion white;
 
     public static void load() {
-        white = Assets.atlas.findRegion("white");
+        white = PaintTD.app.assets.atlas.findRegion("white");
         fill.setBatch(batch);
         line.setBatch(batch);
         fill.setRegion(white);

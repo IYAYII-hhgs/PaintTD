@@ -4,10 +4,12 @@ import com.badlogic.gdx.*;
 import io.bdc.painttd.*;
 import io.bdc.painttd.screen.mainmenu.*;
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.assemble.*;
 
 public class GameScreen implements Screen {
     public PaintTD app;
     public WorldRuntime currentWorld;
+
     public GameHud hud;
     public PauseWindow pauseWindow;
     public GameScreenInputAdapter inputAdapter;
@@ -18,11 +20,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        currentWorld = new WorldRuntime(app, app.worldView);
-        assembleProbeWorld(currentWorld);
-        currentWorld.sortSystems();
-
         app.worldView.reset();
+        currentWorld = new WorldRuntime(app, app.worldView);
+        WorldAssembler assembler = new WorldAssembler();
+        assembler.assemble(currentWorld);
 
         hud = new GameHud(this, currentWorld);
         pauseWindow = new PauseWindow(this);
@@ -114,23 +115,5 @@ public class GameScreen implements Screen {
         float x = Math.max(0f, (app.ui.stage.getWidth() - pauseWindow.getWidth()) * 0.5f);
         float y = Math.max(0f, (app.ui.stage.getHeight() - pauseWindow.getHeight()) * 0.5f);
         pauseWindow.setPosition(x, y);
-    }
-
-    private void assembleProbeWorld(WorldRuntime world) {
-        world.addSystem(new ProbeSystem(world, WorldPhase.PREPARE, 100));
-        world.addSystem(new ProbeSystem(world, WorldPhase.SPAWN, 200));
-        world.addSystem(new ProbeSystem(world, WorldPhase.SIMULATE, 250));
-        world.addSystem(new ProbeSystem(world, WorldPhase.APPLY, 300));
-        world.addSystem(new ProbeSystem(world, WorldPhase.CLEANUP, 400));
-    }
-
-    private static final class ProbeSystem extends WorldSystem {
-        private ProbeSystem(WorldRuntime world, WorldPhase phase, int order) {
-            super(world, phase, order);
-        }
-
-        @Override
-        public void run(float delta) {
-        }
     }
 }

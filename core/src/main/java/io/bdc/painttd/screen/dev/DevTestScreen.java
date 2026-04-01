@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.*;
 import io.bdc.painttd.*;
 import io.bdc.painttd.screen.mainmenu.*;
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.store.*;
+import io.bdc.painttd.world.system.*;
 
 public class DevTestScreen implements Screen {
     public PaintTD app;
@@ -167,7 +169,7 @@ public class DevTestScreen implements Screen {
     }
 
     private void assembleProbeWorld(WorldRuntime world) {
-        world.addStore(ProbeStore.class, new ProbeStore());
+        world.addStore(new ProbeStore());
 
         world.addSystem(new ProbeSystem(world, WorldPhase.APPLY, 300));
         world.addSystem(new ProbeSystem(world, WorldPhase.PREPARE, 100));
@@ -182,7 +184,7 @@ public class DevTestScreen implements Screen {
         app.setScreen(new MainMenuScreen(app));
     }
 
-    private static final class ProbeStore {
+    private static final class ProbeStore implements WorldStore {
         public int totalFrames;
         public int lastSystemsRan;
         public float lastDelta;
@@ -192,11 +194,15 @@ public class DevTestScreen implements Screen {
     }
 
     private static final class ProbeSystem extends WorldSystem {
-        public final ProbeStore probe;
+        public ProbeStore probe;
 
         private ProbeSystem(WorldRuntime world, WorldPhase phase, int order) {
             super(world, phase, order);
-            probe = world.getStore(ProbeStore.class);
+        }
+
+        @Override
+        public void onStoreBind(WorldStoreBinder binder) {
+            probe = binder.require(ProbeStore.class);
         }
 
         @Override

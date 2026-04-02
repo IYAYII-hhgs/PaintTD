@@ -13,17 +13,20 @@ public class WorldAssembler {
     }
 
     public void createStores(WorldRuntime world) {
-        world.addStore(new MapStore());
-        world.addStore(new TransformStore());
-        world.addStore(new EntityMetaStore());
         world.addStore(new SpawnRequestQueue());
         world.addStore(new DestroyRequestQueue());
+
+        world.addStore(new MapStore());
+        world.addStore(new TransformStore());
+        world.addStore(new HitboxStore());
+        world.addStore(new EntityMetaStore());
     }
 
     public void createSystems(WorldRuntime world) {
         var entityAssembler = new EntityAssembler();
+        entityAssembler.onStoreBind(world.storeBinder);
         world.addSystem(new EntitySpawnSystem(world, WorldPhase.SPAWN, 0, entityAssembler));
-        world.addSystem(new EntityRecycleSystem(world, WorldPhase.CLEANUP, 0, entityAssembler));
+        world.addSystem(new EntityDestroySystem(world, WorldPhase.CLEANUP, 0, entityAssembler));
     }
 
 }

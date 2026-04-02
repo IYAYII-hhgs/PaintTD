@@ -1,29 +1,23 @@
 package io.bdc.painttd.world.store;
 
 import com.badlogic.gdx.utils.*;
-import io.bdc.painttd.content.def.*;
+import io.bdc.painttd.world.assemble.*;
 
 public class SpawnRequestQueue implements WorldStore {
-    public final Array<EntityDef> entityDefs = new Array<>();
-    public final IntArray eids = new IntArray();
-    public final FloatArray x = new FloatArray();
-    public final FloatArray y = new FloatArray();
+    public final Array<EntitySpawnRequest> requests = new Array<>();
 
     public int size() {
-        return entityDefs.size;
+        return requests.size;
     }
 
-    public void add(EntityDef entityDef, int eid, float xValue, float yValue) {
-        entityDefs.add(entityDef);
-        eids.add(eid);
-        x.add(xValue);
-        y.add(yValue);
+    public void add(EntitySpawnRequest request) {
+        requests.add(request);
     }
 
     public void clear() {
-        entityDefs.clear();
-        eids.clear();
-        x.clear();
-        y.clear();
+        for (var req : requests) {
+            req.reset();
+        }
+        requests.clear();
     }
 }

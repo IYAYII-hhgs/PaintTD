@@ -9,6 +9,12 @@ public class DestroyRequestQueue implements WorldStore {
         return eids.size;
     }
 
+    /**
+     * Queues an entity id for recycle processing.
+     * <p>
+     * Queueing an entity id that is already absent from the relevant stores is allowed; recycle
+     * processing will treat that destroy request as a no-op.
+     */
     public void add(int eid) {
         eids.add(eid);
     }

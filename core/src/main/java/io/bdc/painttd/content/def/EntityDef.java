@@ -1,57 +1,20 @@
 package io.bdc.painttd.content.def;
 
 import com.badlogic.gdx.utils.*;
+import io.bdc.painttd.world.assemble.step.*;
 
 public class EntityDef {
-    /** 持久化形态 */
-    public String kind;
-    public String variant = "";
+    public String name;
 
-    public final Array<String> tags = new Array<>();
-    public final OrderedMap<String, Integer> intParams = new OrderedMap<>();
-    public final OrderedMap<String, Float> floatParams = new OrderedMap<>();
-    public final OrderedMap<String, String> stringParams = new OrderedMap<>();
+    /** 已编译的steps序列, 高效装配实体 */
+    public final Array<AssembleStep> steps = new Array<>();
 
-    /** 注册形态 */
-    public final int id;
+    public ObjectMap<String, Object> properties = new ObjectMap<>();
 
-    public int sizeX = 1;
-    public int sizeY = 1;
+    /** 运行时分配id */
+    public int id;
 
-
-    public EntityDef(int id) {
-        this.id = id;
-    }
-
-    public EntityDef tag(String value) {
-        tags.add(value);
-        return this;
-    }
-
-    public EntityDef intParam(String key, int value) {
-        intParams.put(key, value);
-        return this;
-    }
-
-    public EntityDef floatParam(String key, float value) {
-        floatParams.put(key, value);
-        return this;
-    }
-
-    public EntityDef stringParam(String key, String value) {
-        stringParams.put(key, value);
-        return this;
-    }
-
-    public int intParamOr(String key, int fallback) {
-        return intParams.get(key, fallback);
-    }
-
-    public float floatParamOr(String key, float fallback) {
-        return floatParams.get(key, fallback);
-    }
-
-    public String stringParamOr(String key, String fallback) {
-        return stringParams.get(key, fallback);
+    public EntityDef(String name) {
+        this.name = name;
     }
 }

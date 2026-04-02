@@ -2,6 +2,7 @@ package io.bdc.painttd;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.utils.*;
+import io.bdc.painttd.content.*;
 import io.bdc.painttd.infra.*;
 import io.bdc.painttd.screen.mainmenu.*;
 import io.bdc.painttd.world.*;
@@ -49,6 +50,8 @@ public class PaintTD extends ApplicationAdapter {
         input.create();
         input.addCoreInput(new UI.UiManagerInputAdapter(ui));
         input.addCoreInput(ui.stage);
+
+        Entities.load();
 
         setScreen(new MainMenuScreen(this));
     }

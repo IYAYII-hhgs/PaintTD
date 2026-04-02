@@ -3,10 +3,14 @@ package io.bdc.painttd.world.store;
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.content.def.*;
 
-public class EntityMetaStore implements WorldStore {
+/**
+ * 实体元数据存储
+ * 所有的实体都使用该存储
+ */
+
+public class EntityMetaStore implements WorldStore, EntityOwner {
     public StoreIndexer indexer = new MappingStoreIndexer();
-    public final IntArray entityDefIds = new IntArray();
-    public final Array<String> kinds = new Array<>();
+    public final Array<EntityDef> entityDefArray = new Array<>();
 
     public int size() {
         return indexer.size();
@@ -26,20 +30,17 @@ public class EntityMetaStore implements WorldStore {
 
     public void clear() {
         indexer.clear();
-        entityDefIds.clear();
-        kinds.clear();
+        entityDefArray.clear();
     }
 
     public void put(int eid, EntityDef entityDef) {
         var result = indexer.ensure(eid);
         int slot = result.slot();
         if (result.created()) {
-            entityDefIds.add(entityDef.id);
-            kinds.add(entityDef.kind);
+            entityDefArray.add(entityDef);
             return;
         }
-        entityDefIds.set(slot, entityDef.id);
-        kinds.set(slot, entityDef.kind);
+        entityDefArray.set(slot, entityDef);
     }
 
     public void remove(int eid) {
@@ -49,11 +50,15 @@ public class EntityMetaStore implements WorldStore {
         }
 
         if (result.swapped()) {
-            entityDefIds.swap(result.swappedSlot(), result.removedSlot());
-            kinds.swap(result.swappedSlot(), result.removedSlot());
+            entityDefArray.swap(result.swappedSlot(), result.removedSlot());
         }
 
-        entityDefIds.pop();
-        kinds.pop();
+        entityDefArray.pop();
+    }
+
+    @Override
+    public void onEntityDestroy(int entityId) {
+        if (!has(entityId)) return;
+        remove(entityId);
     }
 }

@@ -11,6 +11,8 @@ import java.util.*;
 public class WorldRuntime {
     public final PaintTD app;
     public final WorldView worldView;
+    public final WorldStoreBinder storeBinder;
+    public final EntityIdManager idManager;
 
     /* 请使用接口装配System和Store, 不应直接修改数组 */
     public final ObjectMap<Class<? extends WorldStore>, WorldStore> stores;
@@ -23,8 +25,10 @@ public class WorldRuntime {
     public WorldRuntime(PaintTD app, WorldView worldView) {
         this.app = app;
         this.worldView = worldView;
-        this.stores = new ObjectMap<>();
+        this.stores = new OrderedMap<>();
         this.systems = new Array<>();
+        this.storeBinder = new WorldStoreBinder(this);
+        this.idManager = new EntityIdManager();
     }
 
     /** 添加指定的store */
@@ -58,7 +62,7 @@ public class WorldRuntime {
             }
         }
 
-        system.onStoreBind(new WorldStoreBinder(this));
+        system.onStoreBind(storeBinder);
         systems.add(system);
         systemsSorted = false;
     }

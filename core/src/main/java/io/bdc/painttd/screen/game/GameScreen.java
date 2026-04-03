@@ -4,7 +4,6 @@ import com.badlogic.gdx.*;
 import io.bdc.painttd.*;
 import io.bdc.painttd.screen.mainmenu.*;
 import io.bdc.painttd.world.*;
-import io.bdc.painttd.world.assemble.*;
 
 public class GameScreen implements Screen {
     public PaintTD app;
@@ -22,7 +21,7 @@ public class GameScreen implements Screen {
     public void show() {
         app.worldView.reset();
         currentWorld = new WorldRuntime(app, app.worldView);
-        WorldAssembler assembler = new WorldAssembler();
+        WorldConfiguration assembler = new WorldConfiguration();
         assembler.assemble(currentWorld);
 
         hud = new GameHud(this, currentWorld);

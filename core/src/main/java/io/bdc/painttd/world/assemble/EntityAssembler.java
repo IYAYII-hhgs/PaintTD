@@ -10,12 +10,14 @@ public class EntityAssembler {
     public WorldStoreBinder binder;
     private final EntityMetaStep metaStep = new EntityMetaStep();
 
-    public void onStoreBind(WorldStoreBinder binder) {
+    public void bindStore(WorldStoreBinder binder) {
         this.binder = binder;
     }
 
     public void assemble(int eid, EntitySpawnRequest req) {
-        WorldStoreBinder activeBinder = requireBinder();
+        if (binder == null) {
+            throw new IllegalStateException("EntityAssembler is not bound to stores.");
+        }
         if (req == null) {
             throw new IllegalArgumentException("EntitySpawnRequest is required.");
         }
@@ -24,13 +26,13 @@ public class EntityAssembler {
             throw new IllegalStateException("EntitySpawnRequest.entityDef is required.");
         }
 
-        metaStep.run(eid, req, activeBinder);
+        metaStep.run(eid, req, binder);
 
         for (AssembleStep step : req.entityDef.steps) {
-            step.run(eid, req, activeBinder);
+            step.run(eid, req, binder);
         }
         for (PostSpawnStep step : req.extraSteps) {
-            step.run(eid, req, activeBinder);
+            step.run(eid, req, binder);
         }
     }
 
@@ -46,12 +48,5 @@ public class EntityAssembler {
                 owner.onEntityDestroy(eid);
             }
         }
-    }
-
-    private WorldStoreBinder requireBinder() {
-        if (binder == null) {
-            throw new IllegalStateException("EntityAssembler is not bound to stores.");
-        }
-        return binder;
     }
 }

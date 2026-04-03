@@ -3,6 +3,7 @@ package io.bdc.painttd.world;
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.*;
 import io.bdc.painttd.infra.*;
+import io.bdc.painttd.world.assemble.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 
@@ -13,6 +14,7 @@ public class WorldRuntime {
     public final WorldView worldView;
     public final WorldStoreBinder storeBinder;
     public final EntityIdManager idManager;
+    public final EntityAssembler entityAssembler;
 
     /* 请使用接口装配System和Store, 不应直接修改数组 */
     public final ObjectMap<Class<? extends WorldStore>, WorldStore> stores;
@@ -29,6 +31,7 @@ public class WorldRuntime {
         this.systems = new Array<>();
         this.storeBinder = new WorldStoreBinder(this);
         this.idManager = new EntityIdManager();
+        this.entityAssembler = new EntityAssembler();
     }
 
     /** 添加指定的store */

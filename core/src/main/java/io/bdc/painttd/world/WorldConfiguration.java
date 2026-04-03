@@ -1,11 +1,10 @@
-package io.bdc.painttd.world.assemble;
+package io.bdc.painttd.world;
 
-import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.common.*;
 import io.bdc.painttd.world.system.render.*;
 
-public class WorldAssembler {
+public class WorldConfiguration {
     /** 装配标准世界 */
     public void assemble(WorldRuntime world) {
         createStores(world);
@@ -24,8 +23,8 @@ public class WorldAssembler {
     }
 
     public void createSystems(WorldRuntime world) {
-        var entityAssembler = new EntityAssembler();
-        entityAssembler.onStoreBind(world.storeBinder);
+        var entityAssembler = world.entityAssembler;
+        entityAssembler.bindStore(world.storeBinder);
         // 实体生命周期
         world.addSystem(new EntitySpawnSystem(world, WorldPhase.SPAWN, 0, entityAssembler));
         world.addSystem(new EntityDestroySystem(world, WorldPhase.CLEANUP, 0, entityAssembler));

@@ -22,8 +22,8 @@ public class WorldView {
         camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
 
-        minZoom = 0.25f;
-        maxZoom = 6f;
+        minZoom = 0.1f;
+        maxZoom = 24f;
 
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         reset();
@@ -35,7 +35,7 @@ public class WorldView {
         lastScreenY = 0f;
 
         camera.position.set(0f, 0f, 0f);
-        camera.zoom = 1f;
+        camera.zoom = 0.5f;
         camera.update();
     }
 

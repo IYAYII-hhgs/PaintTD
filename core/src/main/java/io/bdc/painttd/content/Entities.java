@@ -26,7 +26,7 @@ public class Entities {
         registerDef(test = new EntityDef("test") {
             {
                 steps.add(new TransformStep());
-                steps.add(new HitboxStep().setup(2));
+                steps.add(new HitboxStep().setup(1));
             }
         });
     }

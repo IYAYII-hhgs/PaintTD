@@ -11,6 +11,8 @@ public class RenderHub {
     public static Line line = new Line();
     public static TextureRegion white;
 
+    public static float scl = 10f;
+
     public static void load() {
         white = PaintTD.app.assets.atlas.findRegion("white");
         fill.setBatch(batch);

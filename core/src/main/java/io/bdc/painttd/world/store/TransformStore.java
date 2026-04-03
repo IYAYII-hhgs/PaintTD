@@ -13,6 +13,16 @@ public class TransformStore implements WorldStore, EntityOwner {
         return slot >= 0 ? out.set(x.get(slot), y.get(slot)) : null;
     }
 
+    public float getX(int eid) {
+        int slot = slotOf(eid);
+        return slot >= 0 ? x.get(slot) : 0;
+    }
+
+    public float getY(int eid) {
+        int slot = slotOf(eid);
+        return slot >= 0 ? y.get(slot) : 0;
+    }
+
     public int size() {
         return indexer.size();
     }

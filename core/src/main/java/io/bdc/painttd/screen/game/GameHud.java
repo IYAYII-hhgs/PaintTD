@@ -1,6 +1,7 @@
 package io.bdc.painttd.screen.game;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.bdc.painttd.content.*;
 import io.bdc.painttd.lib.*;
@@ -44,7 +45,7 @@ public class GameHud {
                                 .free();
 
         TextButton button1 = ActorUtils.wrap(new TextButton("生成测试单位", screen.app.skins.skin))
-                                .click(b -> world.getStore(SpawnRequestQueue.class).add(new EntitySpawnRequest().setup(Entities.test, 0, 5)))
+                                .click(b -> world.getStore(SpawnRequestQueue.class).add(new EntitySpawnRequest().setup(Entities.test, MathUtils.random(10), MathUtils.random(10))))
                                 .free();
 
         TextButton button2 = ActorUtils.wrap(new TextButton("删除一个单位", screen.app.skins.skin))

@@ -18,4 +18,31 @@ public class GameScreenInputAdapter extends InputAdapter {
 
         return screen.togglePauseWindow();
     }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return screen.app.worldView.onScrolled(amountY, Gdx.input.getX(), Gdx.input.getY());
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (button == Buttons.RIGHT) {
+            return screen.app.worldView.onRightDragStart(screenX, screenY);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return screen.app.worldView.onRightDragMove(screenX, screenY);
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (button == Buttons.RIGHT) {
+            screen.app.worldView.onRightDragEnd();
+            return true;
+        }
+        return false;
+    }
 }

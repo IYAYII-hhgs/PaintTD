@@ -1,12 +1,10 @@
 package io.bdc.painttd.screen.game;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.bdc.painttd.content.*;
 import io.bdc.painttd.lib.*;
 import io.bdc.painttd.world.*;
-import io.bdc.painttd.world.assemble.*;
 import io.bdc.painttd.world.store.*;
 
 import java.util.*;
@@ -14,6 +12,7 @@ import java.util.*;
 public class GameHud {
     public GameScreen screen;
     public WorldRuntime world;
+
     public Table root;
     public Label fpsLabel;
     public Label worldLabel;
@@ -40,15 +39,30 @@ public class GameHud {
         worldEntityLabel = new Label("", screen.app.skins.skin);
         worldEntityLabel.setWrap(true);
 
-        TextButton button = ActorUtils.wrap(new TextButton("暂停", screen.app.skins.skin))
+        Table buttonsTable = new Table();
+        buttonsTable.defaults().growX();
+
+        TextButton buttonPause = ActorUtils.wrap(new TextButton("暂停", screen.app.skins.skin))
                                 .click(b -> screen.togglePauseWindow())
                                 .free();
 
-        TextButton button1 = ActorUtils.wrap(new TextButton("生成测试单位", screen.app.skins.skin))
-                                .click(b -> world.getStore(SpawnRequestQueue.class).add(new EntitySpawnRequest().setup(Entities.test, MathUtils.random(10), MathUtils.random(10))))
+        TextButton buttonTestUnit = ActorUtils.wrap(new TextButton("放置测试单位", screen.app.skins.skin))
+                                .click(b -> screen.placement.toggle(Entities.test))
                                 .free();
 
-        TextButton button2 = ActorUtils.wrap(new TextButton("删除一个单位", screen.app.skins.skin))
+        TextButton buttonTestBuilding = ActorUtils.wrap(new TextButton("放置测试建筑", screen.app.skins.skin))
+                                        .click(b -> screen.placement.toggle(Entities.testBuilding))
+                                        .free();
+
+        TextButton buttonCore = ActorUtils.wrap(new TextButton("放置核心", screen.app.skins.skin))
+                                            .click(b -> screen.placement.toggleCore())
+                                            .free();
+
+        TextButton buttonWall = ActorUtils.wrap(new TextButton("放置墙壁", screen.app.skins.skin))
+                                    .click(b -> screen.placement.toggleWall())
+                                    .free();
+
+        TextButton buttonDelete = ActorUtils.wrap(new TextButton("删除一个单位", screen.app.skins.skin))
                                  .click(b -> {
                                      int target = -1;
                                      var store = world.getStore(EntityMetaStore.class);
@@ -66,14 +80,16 @@ public class GameHud {
         panel.add(fpsLabel).left();
         panel.row();
         panel.add(worldLabel).width(260f).left();
+        panel.row();
 
-        panel.row();
-        panel.add(button).width(80f).left();
-        panel.row();
-        panel.add(button1).width(80f).left();
-        panel.row();
-        panel.add(button2).width(80f).left();
+        buttonsTable.add(buttonCore).row();
+        buttonsTable.add(buttonWall).row();
+        buttonsTable.add(buttonTestUnit).row();
+        buttonsTable.add(buttonTestBuilding).row();
 
+        panel.add(buttonsTable).left();
+        panel.row();
+        panel.add(buttonPause).left();
         panel.row();
         panel.add(worldEntityLabel).width(480f).left();
 

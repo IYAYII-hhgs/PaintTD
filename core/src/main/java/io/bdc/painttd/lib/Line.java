@@ -109,7 +109,7 @@ public class Line {
         line(x, y + h, x, y);
     }
 
-    public void rectCenter(float cx, float cy, float w, float h) {
+    public void crect(float cx, float cy, float w, float h) {
         rect(cx - w / 2, cy - h / 2, w, h);
     }
 

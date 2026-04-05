@@ -19,13 +19,19 @@ public class Entities {
         def.id = nextId();
     }
 
-
-    public static EntityDef test;
+    public static EntityDef test, testBuilding;
 
     public static void load() {
         registerDef(test = new EntityDef("test") {
             {
                 steps.add(new TransformStep());
+                steps.add(new HitboxStep().setup(0.8f));
+            }
+        });
+
+        registerDef(testBuilding = new EntityDef("testBuilding") {
+            {
+                steps.add(new BuildingTransformStep());
                 steps.add(new HitboxStep().setup(1));
             }
         });

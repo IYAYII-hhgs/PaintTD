@@ -1,4 +1,4 @@
-package io.bdc.painttd.world.assemble;
+package io.bdc.painttd.world.request;
 
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.content.def.*;

@@ -16,7 +16,7 @@ public class WorldConfiguration {
         world.addStore(new SpawnRequestQueue());
         world.addStore(new DestroyRequestQueue());
 
-        world.addStore(new MapStore());
+        world.addStore(new MapStore(30, 20));
         world.addStore(new TransformStore());
         world.addStore(new HitboxStore());
         world.addStore(new EntityMetaStore());
@@ -31,6 +31,7 @@ public class WorldConfiguration {
 
         world.addSystem(new PreRenderSystem(world, WorldPhase.RENDER_PREPARE, 0));
         // 图形渲染
+        world.addSystem(new DrawMapSystem(world, WorldPhase.RENDER_TERRAIN, 0));
         world.addSystem(new DrawHitboxSystem(world, WorldPhase.RENDER_ENTITY, 0));
 
         world.addSystem(new PostRenderSystem(world, WorldPhase.RENDER_POST, 0));

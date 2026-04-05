@@ -2,6 +2,7 @@ package io.bdc.painttd.screen.game;
 
 import com.badlogic.gdx.Input.*;
 import com.badlogic.gdx.*;
+import io.bdc.painttd.infra.*;
 
 public class GameScreenInputAdapter extends InputAdapter {
     public GameScreen screen;
@@ -26,6 +27,10 @@ public class GameScreenInputAdapter extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (button == Buttons.LEFT) {
+            var v = screen.app.worldView.screenToWorld(screenX, screenY).scl(1f / RenderHub.scl);
+            return screen.placement.place(v.x, v.y);
+        }
         if (button == Buttons.RIGHT) {
             return screen.app.worldView.onRightDragStart(screenX, screenY);
         }

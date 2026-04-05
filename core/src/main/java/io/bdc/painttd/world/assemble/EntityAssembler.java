@@ -4,6 +4,7 @@ import io.bdc.painttd.content.def.*;
 import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.assemble.step.*;
 import io.bdc.painttd.world.assemble.step.asm.*;
+import io.bdc.painttd.world.request.*;
 import io.bdc.painttd.world.store.*;
 
 public class EntityAssembler {

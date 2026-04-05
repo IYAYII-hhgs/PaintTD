@@ -8,6 +8,7 @@ import io.bdc.painttd.world.*;
 public class GameScreen implements Screen {
     public PaintTD app;
     public WorldRuntime currentWorld;
+    public PlacementControl placement;
 
     public GameHud hud;
     public PauseWindow pauseWindow;
@@ -23,6 +24,8 @@ public class GameScreen implements Screen {
         currentWorld = new WorldRuntime(app, app.worldView);
         WorldConfiguration assembler = new WorldConfiguration();
         assembler.assemble(currentWorld);
+
+        placement = new PlacementControl(currentWorld);
 
         hud = new GameHud(this, currentWorld);
         pauseWindow = new PauseWindow(this);

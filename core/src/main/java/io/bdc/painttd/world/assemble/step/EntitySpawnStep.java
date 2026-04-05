@@ -1,7 +1,7 @@
 package io.bdc.painttd.world.assemble.step;
 
 import io.bdc.painttd.world.*;
-import io.bdc.painttd.world.assemble.*;
+import io.bdc.painttd.world.request.*;
 
 /**
  * 实体装配模块的基类.

@@ -7,6 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.viewport.*;
 import io.bdc.painttd.*;
 
+/**
+ * 世界摄像机及控制接口
+ */
+
 public class WorldView {
     public OrthographicCamera camera;
     public ScreenViewport viewport;
@@ -17,6 +21,8 @@ public class WorldView {
     public boolean dragging;
     public float lastScreenX;
     public float lastScreenY;
+
+    private static Vector2 v = new Vector2(), v1 = new Vector2(), v2 = new Vector2(), v3 = new Vector2(), v4 = new Vector2();
 
     public void create() {
         camera = new OrthographicCamera();
@@ -44,16 +50,20 @@ public class WorldView {
         camera.update();
     }
 
-    public Vector2 screenToWorld(float screenX, float screenY) {
+    public Vector2 screenToWorld(float screenX, float screenY, Vector2 out) {
         Vector3 projected = new Vector3(screenX, screenY, 0f);
         camera.unproject(
-                projected,
-                viewport.getScreenX(),
-                viewport.getScreenY(),
-                viewport.getScreenWidth(),
-                viewport.getScreenHeight()
+            projected,
+            viewport.getScreenX(),
+            viewport.getScreenY(),
+            viewport.getScreenWidth(),
+            viewport.getScreenHeight()
         );
-        return new Vector2(projected.x, projected.y);
+        return out.set(projected.x, projected.y);
+    }
+
+    public Vector2 screenToWorld(float screenX, float screenY) {
+        return screenToWorld(screenX, screenY, v);
     }
 
     public Vector2 worldToScreen(float worldX, float worldY) {
@@ -95,11 +105,11 @@ public class WorldView {
             return false;
         }
 
-        Vector2 before = screenToWorld(screenX, screenY);
+        Vector2 before = screenToWorld(screenX, screenY, v1);
         camera.zoom = MathUtils.clamp(camera.zoom * zoomFactor(amountY), minZoom, maxZoom);
         camera.update();
 
-        Vector2 after = screenToWorld(screenX, screenY);
+        Vector2 after = screenToWorld(screenX, screenY, v2);
         camera.position.add(before.x - after.x, before.y - after.y, 0f);
         camera.update();
         return true;
@@ -121,8 +131,8 @@ public class WorldView {
             return false;
         }
 
-        Vector2 from = screenToWorld(lastScreenX, lastScreenY);
-        Vector2 to = screenToWorld(screenX, screenY);
+        Vector2 from = screenToWorld(lastScreenX, lastScreenY, v3);
+        Vector2 to = screenToWorld(screenX, screenY, v4);
         camera.position.add(from.x - to.x, from.y - to.y, 0f);
         camera.update();
 

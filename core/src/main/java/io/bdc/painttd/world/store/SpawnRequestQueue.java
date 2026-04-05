@@ -1,7 +1,7 @@
 package io.bdc.painttd.world.store;
 
 import com.badlogic.gdx.utils.*;
-import io.bdc.painttd.world.assemble.*;
+import io.bdc.painttd.world.request.*;
 
 public class SpawnRequestQueue implements WorldStore {
     public final Array<EntitySpawnRequest> requests = new Array<>();

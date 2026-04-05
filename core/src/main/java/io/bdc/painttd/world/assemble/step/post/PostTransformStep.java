@@ -2,8 +2,8 @@ package io.bdc.painttd.world.assemble.step.post;
 
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.world.*;
-import io.bdc.painttd.world.assemble.*;
 import io.bdc.painttd.world.assemble.step.*;
+import io.bdc.painttd.world.request.*;
 import io.bdc.painttd.world.store.*;
 
 public final class PostTransformStep implements PostSpawnStep, Pool.Poolable {

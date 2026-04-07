@@ -26,6 +26,8 @@ public class Entities {
             {
                 steps.add(new TransformStep());
                 steps.add(new HitboxStep().setup(0.8f));
+                steps.add(new EntityHealthStep().setup(1, 1));
+                steps.add(new DebugTeamStep().setup(1));
             }
         });
 
@@ -33,6 +35,8 @@ public class Entities {
             {
                 steps.add(new BuildingTransformStep());
                 steps.add(new HitboxStep().setup(1));
+                steps.add(new EntityHealthStep().setup(4, 4));
+                steps.add(new DebugTeamStep().setup(0));
             }
         });
     }

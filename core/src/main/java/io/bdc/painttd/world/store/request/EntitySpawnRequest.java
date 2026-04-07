@@ -1,4 +1,4 @@
-package io.bdc.painttd.world.request;
+package io.bdc.painttd.world.store.request;
 
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.content.def.*;
@@ -10,6 +10,8 @@ public final class EntitySpawnRequest implements Pool.Poolable {
     public float y;
 
     public final Array<PostSpawnStep> extraSteps = new Array<>();
+
+    public EntitySpawnRequest() {}
 
     public EntitySpawnRequest setup(EntityDef entityDef, float x, float y) {
         this.entityDef = entityDef;

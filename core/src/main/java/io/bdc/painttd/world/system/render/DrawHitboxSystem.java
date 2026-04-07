@@ -10,6 +10,7 @@ import io.bdc.painttd.world.system.*;
 public class DrawHitboxSystem extends WorldSystem {
     public TransformStore transformStore;
     public HitboxStore hitboxStore;
+    public EntityHealthStore hpStore;
 
     private static Rectangle rect = new Rectangle();
     private static Vector2 pos = new Vector2();
@@ -19,9 +20,10 @@ public class DrawHitboxSystem extends WorldSystem {
     }
 
     @Override
-    public void onStoreBind(WorldStoreBinder binder) {
-        transformStore =  binder.require(TransformStore.class);
-        hitboxStore = binder.require(HitboxStore.class);
+    public void onBind(WorldAccess binder) {
+        transformStore =  binder.getStore(TransformStore.class);
+        hitboxStore = binder.getStore(HitboxStore.class);
+        hpStore = binder.getStore(EntityHealthStore.class);
     }
 
     @Override
@@ -37,12 +39,18 @@ public class DrawHitboxSystem extends WorldSystem {
             }
             hbSize *= RenderHub.scl;
 
+            if (hpStore.has(eid)) {
+                int slot = hpStore.slotOf(eid);
+                float hp = hpStore.healths.get(slot);
+                float maxHp = hpStore.maxHealths.get(slot);
+                hbSize = hbSize * (hp / maxHp * 0.5f + 0.5f);
+            }
+
             rect.setSize(hbSize).setCenter(pos.x, pos.y);
 
             RenderHub.batch.setColor(Color.WHITE);
             RenderHub.line.setStroke(1f);
             RenderHub.line.rect(rect);
-
         }
     }
 }

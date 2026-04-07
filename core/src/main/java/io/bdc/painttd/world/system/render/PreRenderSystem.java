@@ -10,8 +10,8 @@ public class PreRenderSystem extends WorldSystem {
     }
 
     @Override
-    public void onStoreBind(WorldStoreBinder binder) {
-        super.onStoreBind(binder);
+    public void onBind(WorldAccess binder) {
+        super.onBind(binder);
     }
 
     @Override

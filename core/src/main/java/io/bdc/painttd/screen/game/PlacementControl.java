@@ -2,10 +2,8 @@ package io.bdc.painttd.screen.game;
 
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
-import io.bdc.painttd.*;
 import io.bdc.painttd.content.def.*;
 import io.bdc.painttd.world.*;
-import io.bdc.painttd.world.request.*;
 import io.bdc.painttd.world.store.*;
 
 /**
@@ -22,6 +20,11 @@ public class PlacementControl {
 
     public PlacementControl(WorldRuntime world) {
         this.world = world;
+    }
+
+    public void setSelect(EntityDef def) {
+        select = def;
+        placeCore = placeWall = false;
     }
 
     public void toggle(EntityDef def) {
@@ -69,7 +72,7 @@ public class PlacementControl {
         if (type == null) return false;
         var queue = world.getStore(SpawnRequestQueue.class);
 
-        queue.add(new EntitySpawnRequest().setup(type, inputX, inputY));
+        queue.add(SpawnRequestQueue.obtain().setup(type, inputX, inputY));
 
         return true;
     }

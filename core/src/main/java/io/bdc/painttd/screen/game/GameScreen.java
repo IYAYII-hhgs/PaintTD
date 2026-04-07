@@ -2,6 +2,7 @@ package io.bdc.painttd.screen.game;
 
 import com.badlogic.gdx.*;
 import io.bdc.painttd.*;
+import io.bdc.painttd.infra.*;
 import io.bdc.painttd.screen.mainmenu.*;
 import io.bdc.painttd.world.*;
 
@@ -22,7 +23,7 @@ public class GameScreen implements Screen {
     public void show() {
         app.worldView.reset();
         currentWorld = new WorldRuntime(app, app.worldView);
-        WorldConfiguration assembler = new WorldConfiguration();
+        WorldConfiguration assembler = new WorldConfiguration().setupMap(30, 20);
         assembler.assemble(currentWorld);
 
         placement = new PlacementControl(currentWorld);
@@ -35,6 +36,8 @@ public class GameScreen implements Screen {
         app.input.setScreenInput(inputAdapter);
         app.currentWorld = currentWorld;
         hud.refresh();
+
+        app.worldView.camera.position.set(assembler.mapWidth * RenderHub.scl / 2f, assembler.mapHeight * RenderHub.scl / 2f, 0f);
     }
 
     @Override

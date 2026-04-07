@@ -12,7 +12,7 @@ import io.bdc.painttd.world.system.*;
  * Once a destroy request enters {@code EntityDestroySystem}, cleanup must remain order-independent.
  */
 public class EntityDestroySystem extends WorldSystem {
-    public DestroyRequestQueue destroyQueue;
+    public DestroyQueue destroyQueue;
     public EntityAssembler entityAssembler;
 
     public EntityDestroySystem(WorldRuntime world, WorldPhase phase, int order, EntityAssembler entityAssembler) {
@@ -21,8 +21,8 @@ public class EntityDestroySystem extends WorldSystem {
     }
 
     @Override
-    public void onStoreBind(WorldStoreBinder binder) {
-        destroyQueue = binder.require(DestroyRequestQueue.class);
+    public void onBind(WorldAccess binder) {
+        destroyQueue = binder.getStore(DestroyQueue.class);
     }
 
     @Override

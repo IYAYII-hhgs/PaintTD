@@ -16,8 +16,8 @@ public class EntitySpawnSystem extends WorldSystem {
     }
 
     @Override
-    public void onStoreBind(WorldStoreBinder binder) {
-        spawnQueue = binder.require(SpawnRequestQueue.class);
+    public void onBind(WorldAccess binder) {
+        spawnQueue = binder.getStore(SpawnRequestQueue.class);
     }
 
     @Override

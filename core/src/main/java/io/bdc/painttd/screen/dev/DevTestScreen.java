@@ -201,8 +201,8 @@ public class DevTestScreen implements Screen {
         }
 
         @Override
-        public void onStoreBind(WorldStoreBinder binder) {
-            probe = binder.require(ProbeStore.class);
+        public void onBind(WorldAccess binder) {
+            probe = binder.getStore(ProbeStore.class);
         }
 
         @Override

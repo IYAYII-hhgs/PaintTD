@@ -3,8 +3,8 @@ package io.bdc.painttd.world.assemble.step.post;
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.assemble.step.*;
-import io.bdc.painttd.world.request.*;
 import io.bdc.painttd.world.store.*;
+import io.bdc.painttd.world.store.request.*;
 
 public final class PostTransformStep implements PostSpawnStep, Pool.Poolable {
     public float x, y;
@@ -15,8 +15,8 @@ public final class PostTransformStep implements PostSpawnStep, Pool.Poolable {
     }
 
     @Override
-    public void run(int eid, EntitySpawnRequest req, WorldStoreBinder binder) {
-        var transformStore = binder.require(TransformStore.class);
+    public void run(int eid, EntitySpawnRequest req, WorldAccess binder) {
+        var transformStore = binder.getStore(TransformStore.class);
         if (transformStore == null) {
             throw new IllegalStateException("Target store is missed.");
         }

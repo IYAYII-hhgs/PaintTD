@@ -13,6 +13,10 @@ public class MappingStoreIndexer implements StoreIndexer{
         return ids.size;
     }
 
+    /**
+     * @param id
+     * @return slot索引, 若无索引记录, 返回-1
+     */
     @Override
     public int slotOf(int id) {
         return idToSlot.get(id, -1);

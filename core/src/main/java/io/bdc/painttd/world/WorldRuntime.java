@@ -3,6 +3,7 @@ package io.bdc.painttd.world;
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.*;
 import io.bdc.painttd.infra.*;
+import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.assemble.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
@@ -12,12 +13,16 @@ import java.util.*;
 public class WorldRuntime {
     public final PaintTD app;
     public final WorldView worldView;
-    public final WorldStoreBinder storeBinder;
+    public final WorldAccess access;
     public final EntityIdManager idManager;
     public final EntityAssembler entityAssembler;
 
-    /* 请使用接口装配System和Store, 不应直接修改数组 */
+    // 请使用接口装配System和Store, 不应直接修改数组
+    /** 运行时数据仓库 */
     public final ObjectMap<Class<? extends WorldStore>, WorldStore> stores;
+    /** API封装了可复用的立即读写Stores操作 */
+    public final ObjectMap<Class<? extends WorldAPI>, WorldAPI> apis = new ObjectMap<>();
+    /** 按主循环调度更新世界, 注意其可操作stores或调用apis */
     public final Array<WorldSystem> systems;
     private boolean systemsSorted;
 
@@ -29,7 +34,7 @@ public class WorldRuntime {
         this.worldView = worldView;
         this.stores = new OrderedMap<>();
         this.systems = new Array<>();
-        this.storeBinder = new WorldStoreBinder(this);
+        this.access = new WorldAccess(this);
         this.idManager = new EntityIdManager();
         this.entityAssembler = new EntityAssembler();
     }
@@ -56,6 +61,28 @@ public class WorldRuntime {
         return stores.containsKey(type);
     }
 
+    public void addApi(WorldAPI api) {
+        Class<? extends WorldAPI> type = api.getClass();
+        if (apis.containsKey(type)) {
+            throw new IllegalStateException("Duplicate api: " + type.getSimpleName());
+        }
+        api.onBind(access);
+        apis.put(type, api);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends WorldAPI> T getApi(Class<T> type) {
+        WorldAPI value = apis.get(type);
+        if (value == null) {
+            throw new IllegalStateException("Missing api: " + type.getSimpleName());
+        }
+        return (T) value;
+    }
+
+    public <T extends WorldAPI> boolean hasApi(Class<T> type) {
+        return apis.containsKey(type);
+    }
+
     public void addSystem(WorldSystem system) {
         for (WorldSystem other : systems) {
             if (other.phase == system.phase && other.order == system.order) {
@@ -65,7 +92,7 @@ public class WorldRuntime {
             }
         }
 
-        system.onStoreBind(storeBinder);
+        system.onBind(access);
         systems.add(system);
         systemsSorted = false;
     }
@@ -104,6 +131,12 @@ public class WorldRuntime {
             }
         }
 
+        for (WorldAPI api : apis.values()) {
+            if (api instanceof Disposable disposable) {
+                disposable.dispose();
+            }
+        }
+
         for (WorldStore store : stores.values()) {
             if (store instanceof Disposable disposable) {
                 disposable.dispose();
@@ -111,6 +144,7 @@ public class WorldRuntime {
         }
 
         systems.clear();
+        apis.clear();
         stores.clear();
         systemsSorted = false;
         time = 0f;

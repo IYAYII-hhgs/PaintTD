@@ -1,6 +1,7 @@
 package io.bdc.painttd.screen.game;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.bdc.painttd.content.*;
 import io.bdc.painttd.lib.*;
@@ -16,7 +17,7 @@ public class GameHud {
     public Table root;
     public Label fpsLabel;
     public Label worldLabel;
-    public Label worldEntityLabel;
+    public Label worldStateLabel;
 
     public GameHud(GameScreen screen, WorldRuntime world) {
         this.screen = screen;
@@ -36,8 +37,8 @@ public class GameHud {
         worldLabel = new Label("", screen.app.skins.skin);
         worldLabel.setWrap(true);
 
-        worldEntityLabel = new Label("", screen.app.skins.skin);
-        worldEntityLabel.setWrap(true);
+        worldStateLabel = new Label("", screen.app.skins.skin);
+        worldStateLabel.setWrap(true);
 
         Table buttonsTable = new Table();
         buttonsTable.defaults().growX();
@@ -49,6 +50,16 @@ public class GameHud {
         TextButton buttonTestUnit = ActorUtils.wrap(new TextButton("放置测试单位", screen.app.skins.skin))
                                 .click(b -> screen.placement.toggle(Entities.test))
                                 .free();
+
+        TextButton buttonTestUnit5000 = ActorUtils.wrap(new TextButton("随机放置5000测试单位", screen.app.skins.skin))
+                                        .click(b -> {
+                                            screen.placement.setSelect(Entities.test);
+                                            for (int i = 0; i < 5000; i++) {
+                                                screen.placement.place(MathUtils.random(0f, world.getStore(MapStore.class).width), MathUtils.random(0f, world.getStore(MapStore.class).height));
+                                            }
+                                            screen.placement.toggle(Entities.test);
+                                        })
+                                        .free();
 
         TextButton buttonTestBuilding = ActorUtils.wrap(new TextButton("放置测试建筑", screen.app.skins.skin))
                                         .click(b -> screen.placement.toggle(Entities.testBuilding))
@@ -70,7 +81,7 @@ public class GameHud {
                                          target = store.eidOf(0);
                                      }
                                      if (target != -1) {
-                                         world.getStore(DestroyRequestQueue.class).add(target);
+                                         world.getStore(DestroyQueue.class).add(target);
                                      }
                                  })
                                  .free();
@@ -86,12 +97,14 @@ public class GameHud {
         buttonsTable.add(buttonWall).row();
         buttonsTable.add(buttonTestUnit).row();
         buttonsTable.add(buttonTestBuilding).row();
+        buttonsTable.add(buttonDelete).row();
+        buttonsTable.add(buttonTestUnit5000).row();
 
         panel.add(buttonsTable).left();
         panel.row();
         panel.add(buttonPause).left();
         panel.row();
-        panel.add(worldEntityLabel).width(480f).left();
+        panel.add(worldStateLabel).width(480f).left();
 
         hudRoot.add(panel).expand().top().left().pad(12f);
         return hudRoot;
@@ -111,15 +124,11 @@ public class GameHud {
                 world.getStore(EntityMetaStore.class).size()
         ));
 
-        var metaStore = world.getStore(EntityMetaStore.class);
-        StringBuilder entityString = new StringBuilder("EntityMetaArray\n");
-        for (int i = 0; i < 5; i++) {
-            if (i >= metaStore.size()) break;
-            entityString.append(metaStore.indexer.eidOf(i));
-            entityString.append("\n");
-        }
+        StringBuilder entityString = new StringBuilder("调试状态");
+        entityString.append("\n生成队列: ").append(world.getStore(SpawnRequestQueue.class).lastSpawn);
+        entityString.append("\n销毁队列: ").append(world.getStore(DestroyQueue.class).lastDestroy);
 
-        worldEntityLabel.setText(String.format(
+        worldStateLabel.setText(String.format(
             Locale.ROOT,
             entityString.toString()
         ));

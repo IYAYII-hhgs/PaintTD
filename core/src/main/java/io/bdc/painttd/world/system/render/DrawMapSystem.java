@@ -18,8 +18,8 @@ public class DrawMapSystem extends WorldSystem {
     }
 
     @Override
-    public void onStoreBind(WorldStoreBinder binder) {
-        map = binder.require(MapStore.class);
+    public void onBind(WorldAccess binder) {
+        map = binder.getStore(MapStore.class);
     }
 
     @Override

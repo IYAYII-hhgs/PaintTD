@@ -17,7 +17,7 @@ public abstract class WorldSystem {
     }
 
     /** 缓存store依赖 */
-    public void onStoreBind(WorldStoreBinder binder) {
+    public void onBind(WorldAccess binder) {
     }
 
     public abstract void run(float delta);

@@ -1,56 +1,21 @@
 package io.bdc.painttd.world;
 
-import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.*;
+import io.bdc.painttd.lib.*;
 
 /**
  * 运行时实体Id池.
  */
 
-public class EntityIdManager {
-    int size;
-    final IntArray freeIds = new IntArray();
-    final Bits inPool = new Bits();
+public class EntityIdManager extends IntHandlePool {
+    public static final int NONE = -1;
 
-    public int size() {
-        return size;
-    }
-
-    public int alloc() {
-        if (freeIds.size == 0) {
-            ensurePool(size + 1000);
+    @Override
+    public boolean free(int handle) {
+        boolean signal = super.free(handle);
+        if (!signal) {
+            PaintTD.log.error("EntityIdManager: free failed, handle: " + handle);
         }
-        int id = freeIds.pop();
-        inPool.clear(id);
-        return id;
-    }
-
-    public void free(int id) {
-        if (id >= size || id < 0) {
-            PaintTD.log.info("Invalid freeing entity id: " + id);
-            return;
-        }
-        if (!inPool.get(id)) {
-            freeIds.add(id);
-            inPool.set(id);
-        } else {
-            PaintTD.log.info("Duplicate freeing entity id: " + id);
-        }
-    }
-
-    public void ensurePool(int newSize) {
-        if (size < newSize) {
-            for (int i = newSize - 1; i >= size; i--) {
-                freeIds.add(i);
-                inPool.set(i);
-            }
-            size = newSize;
-        }
-    }
-
-    public void clear() {
-        size = 0;
-        freeIds.clear();
-        inPool.clear();
+        return signal;
     }
 }

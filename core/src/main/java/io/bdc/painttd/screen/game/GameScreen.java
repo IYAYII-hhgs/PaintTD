@@ -13,6 +13,7 @@ public class GameScreen implements Screen {
 
     public GameHud hud;
     public PauseWindow pauseWindow;
+    public TileBucketDebugWindow tileBucketDebugWindow;
     public GameScreenInputAdapter inputAdapter;
 
     public GameScreen(PaintTD app) {
@@ -30,6 +31,7 @@ public class GameScreen implements Screen {
 
         hud = new GameHud(this, currentWorld);
         pauseWindow = new PauseWindow(this);
+        tileBucketDebugWindow = new TileBucketDebugWindow(this, currentWorld);
         app.ui.mainLayer.addActor(hud.root);
 
         inputAdapter = new GameScreenInputAdapter(this);
@@ -76,6 +78,9 @@ public class GameScreen implements Screen {
         if (pauseWindow != null && app.ui.containsWindow(pauseWindow)) {
             app.ui.removeWindow(pauseWindow);
         }
+        if (tileBucketDebugWindow != null && app.ui.containsWindow(tileBucketDebugWindow)) {
+            app.ui.removeWindow(tileBucketDebugWindow);
+        }
     }
 
     @Override
@@ -87,6 +92,7 @@ public class GameScreen implements Screen {
 
         hud = null;
         pauseWindow = null;
+        tileBucketDebugWindow = null;
         inputAdapter = null;
     }
 
@@ -105,6 +111,21 @@ public class GameScreen implements Screen {
         return true;
     }
 
+    public boolean toggleTileBucketDebugWindow() {
+        if (tileBucketDebugWindow == null) {
+            return false;
+        }
+
+        if (app.ui.containsWindow(tileBucketDebugWindow)) {
+            app.ui.removeWindow(tileBucketDebugWindow);
+            return true;
+        }
+
+        centerWindow(tileBucketDebugWindow);
+        app.ui.pushWindow(tileBucketDebugWindow);
+        return true;
+    }
+
     public void resumeFromPause() {
         if (pauseWindow != null) {
             app.ui.removeWindow(pauseWindow);
@@ -116,9 +137,13 @@ public class GameScreen implements Screen {
     }
 
     private void centerPauseWindow() {
-        pauseWindow.pack();
-        float x = Math.max(0f, (app.ui.stage.getWidth() - pauseWindow.getWidth()) * 0.5f);
-        float y = Math.max(0f, (app.ui.stage.getHeight() - pauseWindow.getHeight()) * 0.5f);
-        pauseWindow.setPosition(x, y);
+        centerWindow(pauseWindow);
+    }
+
+    private void centerWindow(com.badlogic.gdx.scenes.scene2d.ui.Window window) {
+        window.pack();
+        float x = Math.max(0f, (app.ui.stage.getWidth() - window.getWidth()) * 0.5f);
+        float y = Math.max(0f, (app.ui.stage.getHeight() - window.getHeight()) * 0.5f);
+        window.setPosition(x, y);
     }
 }

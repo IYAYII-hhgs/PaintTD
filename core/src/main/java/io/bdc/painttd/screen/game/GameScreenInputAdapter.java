@@ -1,7 +1,7 @@
 package io.bdc.painttd.screen.game;
 
-import com.badlogic.gdx.Input.*;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.Input.*;
 import io.bdc.painttd.infra.*;
 
 public class GameScreenInputAdapter extends InputAdapter {

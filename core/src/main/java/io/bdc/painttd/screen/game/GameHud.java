@@ -47,6 +47,10 @@ public class GameHud {
                                 .click(b -> screen.togglePauseWindow())
                                 .free();
 
+        TextButton buttonTileBucketDebug = ActorUtils.wrap(new TextButton("打开TileBucket调试", screen.app.skins.skin))
+                                        .click(b -> screen.toggleTileBucketDebugWindow())
+                                        .free();
+
         TextButton buttonTestUnit = ActorUtils.wrap(new TextButton("放置测试单位", screen.app.skins.skin))
                                 .click(b -> screen.placement.toggle(Entities.test))
                                 .free();
@@ -86,6 +90,15 @@ public class GameHud {
                                  })
                                  .free();
 
+        TextButton buttonDeleteAll = ActorUtils.wrap(new TextButton("删除所有单位", screen.app.skins.skin))
+                                      .click(b -> {
+                                          var store = world.getStore(DestroyQueue.class);
+                                          for (int i = 0; i < world.getStore(EntityMetaStore.class).size(); i++) {
+                                              store.add(world.getStore(EntityMetaStore.class).eidOf(i));
+                                          }
+                                      })
+                                      .free();
+
         panel.add(new Label("Game Screen", screen.app.skins.skin)).left();
         panel.row();
         panel.add(fpsLabel).left();
@@ -98,9 +111,12 @@ public class GameHud {
         buttonsTable.add(buttonTestUnit).row();
         buttonsTable.add(buttonTestBuilding).row();
         buttonsTable.add(buttonDelete).row();
+        buttonsTable.add(buttonDeleteAll).row();
         buttonsTable.add(buttonTestUnit5000).row();
 
         panel.add(buttonsTable).left();
+        panel.row();
+        panel.add(buttonTileBucketDebug).left();
         panel.row();
         panel.add(buttonPause).left();
         panel.row();
@@ -115,7 +131,14 @@ public class GameHud {
             return;
         }
 
-        fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+        fpsLabel.setText(String.format(
+            Locale.ROOT,
+            "FPS: %d RAM: %.2f/%.2f",
+            Gdx.graphics.getFramesPerSecond(),
+            Gdx.app.getJavaHeap() / 1e6,
+            Gdx.app.getNativeHeap() / 1e6
+        ));
+
         worldLabel.setText(String.format(
                 Locale.ROOT,
                 "Tick: %d Time: %.2f Entity Count: %d\nEsc opens pause window",
@@ -132,5 +155,9 @@ public class GameHud {
             Locale.ROOT,
             entityString.toString()
         ));
+
+        if (screen.tileBucketDebugWindow != null && screen.app.ui.containsWindow(screen.tileBucketDebugWindow)) {
+            screen.tileBucketDebugWindow.refresh();
+        }
     }
 }

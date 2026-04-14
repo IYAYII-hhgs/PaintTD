@@ -2,6 +2,7 @@ package io.bdc.painttd.world;
 
 import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.store.*;
+import io.bdc.painttd.world.system.*;
 import io.bdc.painttd.world.system.common.*;
 import io.bdc.painttd.world.system.render.*;
 
@@ -30,6 +31,7 @@ public class WorldConfiguration {
         world.addStore(new TileBucketStore(mapWidth, mapHeight, 40000));
         world.addStore(new TileBucketDebugStore());
         world.addStore(new TransformStore());
+        world.addStore(new VelocityStore());
         world.addStore(new HitboxStore());
         world.addStore(new EntityMetaStore());
 
@@ -51,6 +53,8 @@ public class WorldConfiguration {
         world.addSystem(new TileBucketSyncSystem(world, WorldPhase.SIMULATE, 100));
 
         //world.addSystem(new TestGlobalDamageSystem(world, WorldPhase.APPLY, 0));
+        world.addSystem(new VelocityApplySystem(world, WorldPhase.APPLY, 996));
+        world.addSystem(new VelocityDecaySystem(world, WorldPhase.APPLY, 997));
 
         world.addSystem(new DeathToDestroySystem(world, WorldPhase.CLEANUP, 90));
         world.addSystem(new EntityDestroySystem(world, WorldPhase.CLEANUP, 100, entityAssembler));

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.content.def.*;
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.assemble.step.*;
 import io.bdc.painttd.world.store.*;
 
 /**
@@ -17,6 +18,7 @@ public class PlacementControl {
 
     public @Null EntityDef select;
     public boolean placeWall, placeCore;
+    public Array<PostSpawnStep> extraSteps = new Array<>();
 
     public PlacementControl(WorldRuntime world) {
         this.world = world;
@@ -56,9 +58,17 @@ public class PlacementControl {
         }
     }
 
+    public void addPostSteps(PostSpawnStep... steps) {
+        extraSteps.addAll(steps);
+    }
+
+    public void clearPostSteps() {
+        extraSteps.clear();
+    }
+
     public boolean place(float inputX, float inputY) {
         if (select != null) {
-            return place(select, inputX, inputY);
+            return place(select, inputX, inputY, extraSteps);
         } else if (placeWall) {
             return placeWall(inputX, inputY);
         } else if (placeCore) {
@@ -68,11 +78,14 @@ public class PlacementControl {
         }
     }
 
-    private boolean place(EntityDef type, float inputX, float inputY) {
+    private boolean place(EntityDef type, float inputX, float inputY, Array<PostSpawnStep> steps) {
         if (type == null) return false;
         var queue = world.getStore(SpawnRequestQueue.class);
+        var req = SpawnRequestQueue.obtain();
+        req.setup(type, inputX, inputY);
+        req.extraSteps.addAll(steps);
 
-        queue.add(SpawnRequestQueue.obtain().setup(type, inputX, inputY));
+        queue.add(req);
 
         return true;
     }

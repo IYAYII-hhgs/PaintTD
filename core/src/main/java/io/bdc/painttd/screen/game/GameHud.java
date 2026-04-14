@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import io.bdc.painttd.content.*;
 import io.bdc.painttd.lib.*;
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.assemble.step.post.*;
 import io.bdc.painttd.world.store.*;
 
 import java.util.*;
@@ -55,19 +56,26 @@ public class GameHud {
                                 .click(b -> screen.placement.toggle(Entities.test))
                                 .free();
 
-        TextButton buttonTestUnit5000 = ActorUtils.wrap(new TextButton("随机放置5000测试单位", screen.app.skins.skin))
-                                        .click(b -> {
-                                            screen.placement.setSelect(Entities.test);
-                                            for (int i = 0; i < 5000; i++) {
-                                                screen.placement.place(MathUtils.random(0f, world.getStore(MapStore.class).width), MathUtils.random(0f, world.getStore(MapStore.class).height));
-                                            }
-                                            screen.placement.toggle(Entities.test);
-                                        })
-                                        .free();
-
         TextButton buttonTestBuilding = ActorUtils.wrap(new TextButton("放置测试建筑", screen.app.skins.skin))
                                         .click(b -> screen.placement.toggle(Entities.testBuilding))
                                         .free();
+
+        TextButton buttonTestInitVelocityStep = ActorUtils.wrap(new TextButton("放置附加初始速度", screen.app.skins.skin))
+                                            .click(b -> screen.placement.addPostSteps(new PostTestRandomVelocityStep().set(0.1f, 0.1f)))
+                                            .free();
+
+        TextButton buttonTestClearSteps = ActorUtils.wrap(new TextButton("清除放置附加步骤", screen.app.skins.skin))
+                                                .click(b -> screen.placement.clearPostSteps())
+                                                .free();
+
+        TextButton buttonTestUnit5000 = ActorUtils.wrap(new TextButton("随机放置5000个实体", screen.app.skins.skin))
+                                            .click(b -> {
+                                                if (screen.placement.select == null) return;
+                                                for (int i = 0; i < 5000; i++) {
+                                                    screen.placement.place(MathUtils.random(0f, world.getStore(MapStore.class).width), MathUtils.random(0f, world.getStore(MapStore.class).height));
+                                                }
+                                            })
+                                            .free();
 
         TextButton buttonCore = ActorUtils.wrap(new TextButton("放置核心", screen.app.skins.skin))
                                             .click(b -> screen.placement.toggleCore())
@@ -109,10 +117,12 @@ public class GameHud {
         buttonsTable.add(buttonCore).row();
         buttonsTable.add(buttonWall).row();
         buttonsTable.add(buttonTestUnit).row();
+        buttonsTable.add(buttonTestInitVelocityStep).row();
+        buttonsTable.add(buttonTestClearSteps).row();
+        buttonsTable.add(buttonTestUnit5000).row();
         buttonsTable.add(buttonTestBuilding).row();
         buttonsTable.add(buttonDelete).row();
         buttonsTable.add(buttonDeleteAll).row();
-        buttonsTable.add(buttonTestUnit5000).row();
 
         panel.add(buttonsTable).left();
         panel.row();
@@ -150,6 +160,7 @@ public class GameHud {
         StringBuilder entityString = new StringBuilder("调试状态");
         entityString.append("\n生成队列: ").append(world.getStore(SpawnRequestQueue.class).lastSpawn);
         entityString.append("\n销毁队列: ").append(world.getStore(DestroyQueue.class).lastDestroy);
+        entityString.append("\n放置器附加步骤数量: ").append(screen.placement.extraSteps.size);
 
         worldStateLabel.setText(String.format(
             Locale.ROOT,

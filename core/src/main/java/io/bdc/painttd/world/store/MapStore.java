@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.*;
 public class MapStore implements WorldStore {
     public int width, height;
     //cell左下角的世界坐标==网格坐标
+    //临时实现: cell[i]=0可通行格, =1墙格
     public int[] cells;
 
     public boolean[] coreMask;

@@ -161,6 +161,12 @@ public class GameHud {
         entityString.append("\n生成队列: ").append(world.getStore(SpawnRequestQueue.class).lastSpawn);
         entityString.append("\n销毁队列: ").append(world.getStore(DestroyQueue.class).lastDestroy);
         entityString.append("\n放置器附加步骤数量: ").append(screen.placement.extraSteps.size);
+        var collisionDebug = world.getStore(CollisionDebugStore.class);
+        entityString.append("\nEE查询: ").append(collisionDebug.eeQueryCount);
+        entityString.append("\nEE候选: ").append(collisionDebug.eeCandidateCount);
+        entityString.append("\nEE精筛命中: ").append(collisionDebug.eeOverlapCount);
+        entityString.append("\nEE无向唯一对: ").append(collisionDebug.eeUniquePairCount);
+        entityString.append("\nEC墙格命中: ").append(collisionDebug.ecWallCount);
 
         worldStateLabel.setText(String.format(
             Locale.ROOT,

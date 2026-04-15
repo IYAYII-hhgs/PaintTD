@@ -30,9 +30,12 @@ public class WorldConfiguration {
         world.addStore(new MapStore(mapWidth, mapHeight));
         world.addStore(new TileBucketStore(mapWidth, mapHeight, 40000));
         world.addStore(new TileBucketDebugStore());
+        world.addStore(new CollisionDebugStore());
+        world.addStore(new CollisionSolidBounceStore());
         world.addStore(new TransformStore());
         world.addStore(new VelocityStore());
         world.addStore(new HitboxStore());
+        world.addStore(new CollisionBodyStore());
         world.addStore(new EntityMetaStore());
 
         world.addStore(new EntityHealthStore());
@@ -42,6 +45,7 @@ public class WorldConfiguration {
     public void createAPIs(WorldRuntime world) {
         world.addApi(new DamageAPI());
         world.addApi(new TileBucketQueryAPI());
+        world.addApi(new CollisionDispatchAPI());
     }
 
     public void createSystems(WorldRuntime world) {
@@ -50,11 +54,17 @@ public class WorldConfiguration {
         // 实体生命周期
         world.addSystem(new EntitySpawnSystem(world, WorldPhase.SPAWN, 0, entityAssembler));
 
+        world.addSystem(new VelocityApplySystem(world, WorldPhase.SIMULATE, 10));
+        world.addSystem(new VelocityDecaySystem(world, WorldPhase.SIMULATE, 20));
         world.addSystem(new TileBucketSyncSystem(world, WorldPhase.SIMULATE, 100));
+        world.addSystem(new CollisionFrameBeginSystem(world, WorldPhase.SIMULATE, 110));
+        world.addSystem(new CollisionSoftRepulsionSystem(world, WorldPhase.SIMULATE, 115));
+        world.addSystem(new DetectEeAabbSystem(world, WorldPhase.SIMULATE, 120));
+        world.addSystem(new DetectEcSolidCellSystem(world, WorldPhase.SIMULATE, 130));
+        world.addSystem(new CollisionSolidBounceSystem(world, WorldPhase.SIMULATE, 140));
+        world.addSystem(new WorldBoundsBounceSystem(world, WorldPhase.SIMULATE, 150));
 
         //world.addSystem(new TestGlobalDamageSystem(world, WorldPhase.APPLY, 0));
-        world.addSystem(new VelocityApplySystem(world, WorldPhase.APPLY, 996));
-        world.addSystem(new VelocityDecaySystem(world, WorldPhase.APPLY, 997));
 
         world.addSystem(new DeathToDestroySystem(world, WorldPhase.CLEANUP, 90));
         world.addSystem(new EntityDestroySystem(world, WorldPhase.CLEANUP, 100, entityAssembler));

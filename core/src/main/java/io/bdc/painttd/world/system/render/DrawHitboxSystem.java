@@ -8,9 +8,10 @@ import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 
 public class DrawHitboxSystem extends WorldSystem {
-    public TransformStore transformStore;
-    public HitboxStore hitboxStore;
-    public EntityHealthStore hpStore;
+    TransformStore transformStore;
+    HitboxStore hitboxStore;
+    EntityHealthStore hpStore;
+    CollisionBodyStore collisionStore;
 
     private static Rectangle rect = new Rectangle();
     private static Vector2 pos = new Vector2();
@@ -24,6 +25,7 @@ public class DrawHitboxSystem extends WorldSystem {
         transformStore =  binder.getStore(TransformStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         hpStore = binder.getStore(EntityHealthStore.class);
+        collisionStore = binder.getStore(CollisionBodyStore.class);
     }
 
     @Override
@@ -48,7 +50,10 @@ public class DrawHitboxSystem extends WorldSystem {
 
             rect.setSize(hbSize).setCenter(pos.x, pos.y);
 
-            RenderHub.batch.setColor(Color.WHITE);
+            var color = Color.WHITE;
+            if (collisionStore.isStatic(eid)) color = Color.MAROON;
+
+            RenderHub.batch.setColor(color);
             RenderHub.line.setStroke(1f);
             RenderHub.line.rect(rect);
         }

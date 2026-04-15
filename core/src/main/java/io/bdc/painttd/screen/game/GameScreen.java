@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
     public void show() {
         app.worldView.reset();
         currentWorld = new WorldRuntime(app, app.worldView);
-        WorldConfiguration assembler = new WorldConfiguration().setupMap(240, 160);
+        WorldConfiguration assembler = new WorldConfiguration().setupMap(200, 160);
         assembler.assemble(currentWorld);
 
         placement = new PlacementControl(currentWorld);

@@ -28,7 +28,7 @@ public class VelocityApplySystem extends WorldSystem{
                 var vel = velStore.get(eid, tmp1);
                 var trans = transStore.get(eid, tmp2);
                 trans.add(vel.x * 1, vel.y * 1);
-                transStore.put(eid, trans);
+                transStore.set(eid, trans.x, trans.y);
             }
         }
     }

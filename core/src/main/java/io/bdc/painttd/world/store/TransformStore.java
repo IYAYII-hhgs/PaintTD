@@ -45,6 +45,28 @@ public class TransformStore implements WorldStore, EntityOwner {
         y.clear();
     }
 
+    public boolean set(int eid, float xValue, float yValue) {
+        int slot = slotOf(eid);
+        if (slot < 0) return false;
+        x.set(slot, xValue);
+        y.set(slot, yValue);
+        return true;
+    }
+
+    public boolean setX(int eid, float xValue) {
+        int slot = slotOf(eid);
+        if (slot < 0) return false;
+        x.set(slot, xValue);
+        return true;
+    }
+
+    public boolean setY(int eid, float yValue) {
+        int slot = slotOf(eid);
+        if (slot < 0) return false;
+        y.set(slot, yValue);
+        return true;
+    }
+
     public void put(int eid, float xValue, float yValue) {
         var result = indexer.ensure(eid);
         int slot = result.slot();
@@ -59,26 +81,6 @@ public class TransformStore implements WorldStore, EntityOwner {
 
     public void put(int eid, Vector2 pos) {
         put(eid, pos.x, pos.y);
-    }
-
-    public void putX(int eid, float xValue) {
-        var result = indexer.ensure(eid);
-        int slot = result.slot();
-        if (result.created()) {
-            x.add(xValue);
-            return;
-        }
-        x.set(slot, xValue);
-    }
-
-    public void putY(int eid, float yValue) {
-        var result = indexer.ensure(eid);
-        int slot = result.slot();
-        if (result.created()) {
-            y.add(yValue);
-            return;
-        }
-        y.set(slot, yValue);
     }
 
     public void remove(int eid) {

@@ -15,6 +15,6 @@ public final class EntityMetaStep implements AssembleStep {
         if (entityDef == null) {
             throw new IllegalStateException("EntitySpawnRequest.entityDef is required.");
         }
-        binder.getStore(EntityMetaStore.class).put(eid, entityDef);
+        binder.getStore(EntityMetaStore.class).createAndSet(eid, entityDef);
     }
 }

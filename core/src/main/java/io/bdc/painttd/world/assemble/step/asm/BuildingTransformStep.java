@@ -19,6 +19,6 @@ public final class BuildingTransformStep implements AssembleStep {
         if (transformStore == null) {
             throw new IllegalStateException("Target store is missed.");
         }
-        transformStore.put(eid, MathUtils.floor(req.x) + 0.5f, MathUtils.floor(req.y) + 0.5f);
+        transformStore.createAndSet(eid, MathUtils.floor(req.x) + 0.5f, MathUtils.floor(req.y) + 0.5f);
     }
 }

@@ -6,6 +6,8 @@ import io.bdc.painttd.world.assemble.step.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
+import static io.bdc.painttd.PaintTD.app;
+
 public final class PostTransformStep implements PostSpawnStep, Pool.Poolable {
     public float x, y;
 
@@ -21,7 +23,10 @@ public final class PostTransformStep implements PostSpawnStep, Pool.Poolable {
             throw new IllegalStateException("Target store is missed.");
         }
 
-        transformStore.put(eid, x, y);
+        boolean set = transformStore.set(eid, x, y);
+        if (!set) {
+            app.log.error("TransformStore not created for entity: " + eid);
+        }
     }
 
     @Override

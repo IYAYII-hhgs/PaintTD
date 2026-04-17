@@ -21,6 +21,6 @@ public final class CollisionBodyStep implements AssembleStep {
         if (store == null) {
             throw new IllegalStateException("Target store is missed.");
         }
-        store.put(eid, bodyType);
+        store.createAndSet(eid, bodyType);
     }
 }

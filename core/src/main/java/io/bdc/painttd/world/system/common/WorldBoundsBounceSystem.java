@@ -30,21 +30,32 @@ public class WorldBoundsBounceSystem extends WorldSystem {
     public void run(float delta) {
         float worldWidth = mapStore.width;
         float worldHeight = mapStore.height;
+        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        float[] transformXItems = transformStore.x.items;
+        float[] transformYItems = transformStore.y.items;
+        float[] hitboxItems = hitboxStore.hb.items;
+        float[] velocityXItems = velocityStore.x.items;
+        float[] velocityYItems = velocityStore.y.items;
 
-        for (int slot = 0; slot < collisionBodyStore.size(); slot++) {
-            int eid = collisionBodyStore.eidOf(slot);
-            if (!collisionBodyStore.isDynamic(eid)) {
+        for (int bodySlot = 0; bodySlot < collisionBodyStore.size(); bodySlot++) {
+            if (bodyTypeItems[bodySlot] != CollisionBodyStore.BODY_DYNAMIC) {
                 continue;
             }
-            if (!transformStore.has(eid) || !hitboxStore.has(eid)) {
+
+            int eid = collisionBodyStore.eidOf(bodySlot);
+            int transformSlot = transformStore.slotOf(eid);
+            int hitboxSlot = hitboxStore.slotOf(eid);
+            if (transformSlot < 0 || hitboxSlot < 0) {
                 continue;
             }
 
-            float half = hitboxStore.get(eid) * 0.5f;
-            float x = transformStore.getX(eid);
-            float y = transformStore.getY(eid);
-            float vx = velocityStore.getX(eid);
-            float vy = velocityStore.getY(eid);
+            int velocitySlot = velocityStore.slotOf(eid);
+
+            float half = hitboxItems[hitboxSlot] * 0.5f;
+            float x = transformXItems[transformSlot];
+            float y = transformYItems[transformSlot];
+            float vx = velocitySlot >= 0 ? velocityXItems[velocitySlot] : 0f;
+            float vy = velocitySlot >= 0 ? velocityYItems[velocitySlot] : 0f;
 
             boolean transformDirty = false;
             boolean velocityDirty = false;
@@ -100,10 +111,12 @@ public class WorldBoundsBounceSystem extends WorldSystem {
             }
 
             if (transformDirty) {
-                transformStore.set(eid, x, y);
+                transformXItems[transformSlot] = x;
+                transformYItems[transformSlot] = y;
             }
-            if (velocityDirty && velocityStore.has(eid)) {
-                velocityStore.set(eid, vx, vy);
+            if (velocityDirty && velocitySlot >= 0) {
+                velocityXItems[velocitySlot] = vx;
+                velocityYItems[velocitySlot] = vy;
             }
         }
     }

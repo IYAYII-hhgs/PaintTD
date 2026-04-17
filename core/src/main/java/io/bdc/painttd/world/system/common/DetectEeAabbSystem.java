@@ -36,64 +36,78 @@ public class DetectEeAabbSystem extends WorldSystem {
 
     @Override
     public void run(float delta) {
-        for (int slot = 0; slot < collisionBodyStore.size(); slot++) {
-            int sourceEid = collisionBodyStore.eidOf(slot);
-            if (!collisionBodyStore.isDynamic(sourceEid)) {
-                continue;
-            }
-            if (!transformStore.has(sourceEid) || !hitboxStore.has(sourceEid)) {
+        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        float[] transformXItems = transformStore.x.items;
+        float[] transformYItems = transformStore.y.items;
+        float[] hitboxItems = hitboxStore.hb.items;
+
+        int eeQueryCount = collisionDebugStore.eeQueryCount;
+        int eeCandidateCount = collisionDebugStore.eeCandidateCount;
+        int eeOverlapCount = collisionDebugStore.eeOverlapCount;
+
+        for (int sourceBodySlot = 0; sourceBodySlot < collisionBodyStore.size(); sourceBodySlot++) {
+            if (bodyTypeItems[sourceBodySlot] != CollisionBodyStore.BODY_DYNAMIC) {
                 continue;
             }
 
-            float sourceSize = hitboxStore.get(sourceEid);
+            int sourceEid = collisionBodyStore.eidOf(sourceBodySlot);
+            int sourceTransformSlot = transformStore.slotOf(sourceEid);
+            int sourceHitboxSlot = hitboxStore.slotOf(sourceEid);
+            if (sourceTransformSlot < 0 || sourceHitboxSlot < 0) {
+                continue;
+            }
+
+            float sourceSize = hitboxItems[sourceHitboxSlot];
             if (sourceSize <= 0f) {
                 continue;
             }
 
-            float sourceX = transformStore.getX(sourceEid);
-            float sourceY = transformStore.getY(sourceEid);
+            float sourceX = transformXItems[sourceTransformSlot];
+            float sourceY = transformYItems[sourceTransformSlot];
             float sourceHalf = sourceSize * 0.5f;
             float sourceMinX = sourceX - sourceHalf;
             float sourceMinY = sourceY - sourceHalf;
             float sourceMaxX = sourceX + sourceHalf;
             float sourceMaxY = sourceY + sourceHalf;
 
-            collisionDebugStore.eeQueryCount += 1;
+            eeQueryCount += 1;
             IntArray candidates = tileBucketQueryAPI.collectAabb(sourceMinX, sourceMinY, sourceMaxX, sourceMaxY);
-            collisionDebugStore.eeCandidateCount += candidates.size;
+            eeCandidateCount += candidates.size;
 
             for (int i = 0; i < candidates.size; i++) {
-                int targetEid = candidates.get(i);
+                int targetEid = candidates.items[i];
                 if (targetEid == sourceEid) {
                     continue;
                 }
-                if (!collisionBodyStore.has(targetEid)) {
-                    continue;
-                }
-                if (!transformStore.has(targetEid) || !hitboxStore.has(targetEid)) {
+
+                int targetBodySlot = collisionBodyStore.slotOf(targetEid);
+                if (targetBodySlot < 0) {
                     continue;
                 }
 
+                int targetTransformSlot = transformStore.slotOf(targetEid);
                 float targetSize = hitboxStore.get(targetEid);
-                if (targetSize <= 0f) {
+                if (targetTransformSlot < 0 || targetSize <= 0) {
                     continue;
                 }
 
-                float targetX = transformStore.getX(targetEid);
-                float targetY = transformStore.getY(targetEid);
                 float targetHalf = targetSize * 0.5f;
-                float targetMinX = targetX - targetHalf;
-                float targetMinY = targetY - targetHalf;
-                float targetMaxX = targetX + targetHalf;
-                float targetMaxY = targetY + targetHalf;
+                float targetMinX = transformXItems[targetTransformSlot] - targetHalf;
+                float targetMinY = transformYItems[targetTransformSlot] - targetHalf;
+                float targetMaxX = transformXItems[targetTransformSlot] + targetHalf;
+                float targetMaxY = transformYItems[targetTransformSlot] + targetHalf;
                 if (!overlaps(sourceMinX, sourceMinY, sourceMaxX, sourceMaxY, targetMinX, targetMinY, targetMaxX, targetMaxY)) {
                     continue;
                 }
 
-                collisionDebugStore.eeOverlapCount += 1;
+                eeOverlapCount += 1;
                 collisionDispatchAPI.emitUndirectedEe(sourceEid, targetEid);
             }
         }
+
+        collisionDebugStore.eeQueryCount = eeQueryCount;
+        collisionDebugStore.eeCandidateCount = eeCandidateCount;
+        collisionDebugStore.eeOverlapCount = eeOverlapCount;
     }
 
     private boolean overlaps(

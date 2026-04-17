@@ -8,57 +8,41 @@ import io.bdc.painttd.content.def.*;
  * 所有的实体都使用该存储
  */
 
-public class EntityMetaStore implements WorldStore, EntityOwner {
-    public StoreIndexer indexer = new MappingStoreIndexer();
+public class EntityMetaStore extends ArrayEntityStoreBase {
     public final Array<EntityDef> entityDefArray = new Array<>();
 
-    public int size() {
-        return indexer.size();
-    }
-
-    public int slotOf(int eid) {
-        return indexer.slotOf(eid);
-    }
-
-    public int eidOf(int slot) {
-        return indexer.eidOf(slot);
-    }
-
-    public boolean has(int eid) {
-        return indexer.has(eid);
-    }
-
-    public void clear() {
-        indexer.clear();
-        entityDefArray.clear();
-    }
-
-    public void put(int eid, EntityDef entityDef) {
-        var result = indexer.ensure(eid);
-        int slot = result.slot();
-        if (result.created()) {
-            entityDefArray.add(entityDef);
-            return;
-        }
+    public boolean set(int eid, EntityDef entityDef) {
+        int slot = slotOf(eid);
+        if (slot < 0) return false;
         entityDefArray.set(slot, entityDef);
+        return true;
+    }
+
+    public boolean createAndSet(int eid, EntityDef entityDef) {
+        boolean created = createRow(eid);
+        entityDefArray.set(slotOf(eid), entityDef);
+        return created;
     }
 
     public void remove(int eid) {
-        var result = indexer.swapRemove(eid);
-        if (!result.removed()) {
-            return;
-        }
+        removeRow(eid);
+    }
 
-        if (result.swapped()) {
-            entityDefArray.swap(result.swappedSlot(), result.removedSlot());
-        }
+    @Override
+    protected void onRowCreated(int eid, int slot) {
+        entityDefArray.add(null);
+    }
 
+    @Override
+    protected void onRowRemoved(int removedEid, int removedSlot, int movedEid, int movedFromSlot) {
+        if (movedEid != NO_EID) {
+            entityDefArray.swap(movedFromSlot, removedSlot);
+        }
         entityDefArray.pop();
     }
 
     @Override
-    public void onEntityDestroy(int entityId) {
-        if (!has(entityId)) return;
-        remove(entityId);
+    protected void onRowsCleared() {
+        entityDefArray.clear();
     }
 }

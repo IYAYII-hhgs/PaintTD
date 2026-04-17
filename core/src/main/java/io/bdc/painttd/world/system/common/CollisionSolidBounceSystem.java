@@ -48,15 +48,20 @@ public class CollisionSolidBounceSystem extends WorldSystem {
 
     @Override
     public void run(float delta) {
-        for (int slot = 0; slot < solidBounceStore.size(); slot++) {
-            int eid = solidBounceStore.eidOf(slot);
-            if (!velocityStore.has(eid)) {
+        int[] maskItems = solidBounceStore.masks.items;
+        float[] velocityXItems = velocityStore.x.items;
+        float[] velocityYItems = velocityStore.y.items;
+
+        for (int solidSlot = 0; solidSlot < solidBounceStore.size(); solidSlot++) {
+            int eid = solidBounceStore.eidOf(solidSlot);
+            int velocitySlot = velocityStore.slotOf(eid);
+            if (velocitySlot < 0) {
                 continue;
             }
 
-            int mask = solidBounceStore.masks.get(slot);
-            float vx = velocityStore.getX(eid);
-            float vy = velocityStore.getY(eid);
+            int mask = maskItems[solidSlot];
+            float vx = velocityXItems[velocitySlot];
+            float vy = velocityYItems[velocitySlot];
 
             if ((mask & (CollisionSolidBounceStore.HIT_LEFT | CollisionSolidBounceStore.HIT_RIGHT))
                     == (CollisionSolidBounceStore.HIT_LEFT | CollisionSolidBounceStore.HIT_RIGHT)) {
@@ -82,24 +87,30 @@ public class CollisionSolidBounceSystem extends WorldSystem {
                 }
             }
 
-            velocityStore.set(eid, vx, vy);
+            velocityXItems[velocitySlot] = vx;
+            velocityYItems[velocitySlot] = vy;
         }
 
         solidBounceStore.clear();
     }
 
     private void handleEc(int eid, int cellIndex) {
-        if (!transformStore.has(eid) || !hitboxStore.has(eid)) {
+        int transformSlot = transformStore.slotOf(eid);
+        int hitboxSlot = hitboxStore.slotOf(eid);
+        if (transformSlot < 0 || hitboxSlot < 0) {
             return;
         }
 
         int cellX = cellIndex % mapStore.width;
         int cellY = cellIndex / mapStore.width;
-        float entityX = transformStore.getX(eid);
-        float entityY = transformStore.getY(eid);
-        float half = hitboxStore.get(eid) * 0.5f;
-        float dx = entityX - mapStore.cellCenterX(cellX);
-        float dy = entityY - mapStore.cellCenterY(cellY);
+        float[] transformXItems = transformStore.x.items;
+        float[] transformYItems = transformStore.y.items;
+        float[] hitboxItems = hitboxStore.hb.items;
+        float entityX = transformXItems[transformSlot];
+        float entityY = transformYItems[transformSlot];
+        float half = hitboxItems[hitboxSlot] * 0.5f;
+        float dx = entityX - (cellX + 0.5f);
+        float dy = entityY - (cellY + 0.5f);
         float overlapX = half + 0.5f - Math.abs(dx);
         float overlapY = half + 0.5f - Math.abs(dy);
         if (overlapX <= 0f || overlapY <= 0f) {
@@ -119,29 +130,44 @@ public class CollisionSolidBounceSystem extends WorldSystem {
     }
 
     private void handleUndirectedEe(int eidA, int eidB) {
-        boolean aDynamic = collisionBodyStore.isDynamic(eidA);
-        boolean bDynamic = collisionBodyStore.isDynamic(eidB);
-        boolean aStatic = collisionBodyStore.isStatic(eidA);
-        boolean bStatic = collisionBodyStore.isStatic(eidB);
+        int bodySlotA = collisionBodyStore.slotOf(eidA);
+        int bodySlotB = collisionBodyStore.slotOf(eidB);
+        if (bodySlotA < 0 || bodySlotB < 0) {
+            return;
+        }
+
+        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        boolean aDynamic = bodyTypeItems[bodySlotA] == CollisionBodyStore.BODY_DYNAMIC;
+        boolean bDynamic = bodyTypeItems[bodySlotB] == CollisionBodyStore.BODY_DYNAMIC;
+        boolean aStatic = bodyTypeItems[bodySlotA] == CollisionBodyStore.BODY_STATIC;
+        boolean bStatic = bodyTypeItems[bodySlotB] == CollisionBodyStore.BODY_STATIC;
         if (aDynamic == bDynamic || aStatic == bStatic) {
             return;
         }
 
         int dynamicEid = aDynamic ? eidA : eidB;
         int staticEid = aStatic ? eidA : eidB;
-        if (!transformStore.has(dynamicEid) || !transformStore.has(staticEid)) {
-            return;
-        }
-        if (!hitboxStore.has(dynamicEid) || !hitboxStore.has(staticEid)) {
+        int dynamicTransformSlot = transformStore.slotOf(dynamicEid);
+        int staticTransformSlot = transformStore.slotOf(staticEid);
+        if (dynamicTransformSlot < 0 || staticTransformSlot < 0) {
             return;
         }
 
-        float dynamicX = transformStore.getX(dynamicEid);
-        float dynamicY = transformStore.getY(dynamicEid);
-        float staticX = transformStore.getX(staticEid);
-        float staticY = transformStore.getY(staticEid);
-        float dynamicHalf = hitboxStore.get(dynamicEid) * 0.5f;
-        float staticHalf = hitboxStore.get(staticEid) * 0.5f;
+        int dynamicHitboxSlot = hitboxStore.slotOf(dynamicEid);
+        int staticHitboxSlot = hitboxStore.slotOf(staticEid);
+        if (dynamicHitboxSlot < 0 || staticHitboxSlot < 0) {
+            return;
+        }
+
+        float[] transformXItems = transformStore.x.items;
+        float[] transformYItems = transformStore.y.items;
+        float[] hitboxItems = hitboxStore.hb.items;
+        float dynamicX = transformXItems[dynamicTransformSlot];
+        float dynamicY = transformYItems[dynamicTransformSlot];
+        float staticX = transformXItems[staticTransformSlot];
+        float staticY = transformYItems[staticTransformSlot];
+        float dynamicHalf = hitboxItems[dynamicHitboxSlot] * 0.5f;
+        float staticHalf = hitboxItems[staticHitboxSlot] * 0.5f;
         float dx = dynamicX - staticX;
         float dy = dynamicY - staticY;
         float overlapX = dynamicHalf + staticHalf - Math.abs(dx);

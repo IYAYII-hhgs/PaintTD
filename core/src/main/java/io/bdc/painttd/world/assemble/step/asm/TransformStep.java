@@ -18,6 +18,6 @@ public final class TransformStep implements AssembleStep {
         if (transformStore == null) {
             throw new IllegalStateException("Target store is missed.");
         }
-        transformStore.put(eid, req.x, req.y);
+        transformStore.createAndSet(eid, req.x, req.y);
     }
 }

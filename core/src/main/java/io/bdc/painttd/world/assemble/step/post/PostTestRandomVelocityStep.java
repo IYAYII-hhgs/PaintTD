@@ -7,6 +7,8 @@ import io.bdc.painttd.world.assemble.step.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
+import static io.bdc.painttd.PaintTD.app;
+
 public final class PostTestRandomVelocityStep implements PostSpawnStep, Pool.Poolable {
     public float x, y;
 
@@ -23,7 +25,10 @@ public final class PostTestRandomVelocityStep implements PostSpawnStep, Pool.Poo
             throw new IllegalStateException("Target store is missed.");
         }
 
-        store.put(eid, MathUtils.random(-x, x), MathUtils.random(-y, y));
+        boolean set = store.set(eid, MathUtils.random(-x, x), MathUtils.random(-y, y));
+        if (!set) {
+            app.log.error("VelocityStore not created for entity: " + eid);
+        }
     }
 
     @Override

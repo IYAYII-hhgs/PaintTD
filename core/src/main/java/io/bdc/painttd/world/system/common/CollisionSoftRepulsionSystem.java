@@ -32,38 +32,58 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
     }
 
     private void handleUndirectedEe(int eidA, int eidB) {
-        if (!collisionBodyStore.isDynamic(eidA) || !collisionBodyStore.isDynamic(eidB)) {
-            return;
-        }
-        if (!transformStore.has(eidA) || !transformStore.has(eidB)) {
-            return;
-        }
-        if (!hitboxStore.has(eidA) || !hitboxStore.has(eidB)) {
+        int bodySlotA = collisionBodyStore.slotOf(eidA);
+        int bodySlotB = collisionBodyStore.slotOf(eidB);
+        if (bodySlotA < 0 || bodySlotB < 0) {
             return;
         }
 
-        float ax = transformStore.getX(eidA);
-        float ay = transformStore.getY(eidA);
-        float bx = transformStore.getX(eidB);
-        float by = transformStore.getY(eidB);
+        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        if (bodyTypeItems[bodySlotA] != CollisionBodyStore.BODY_DYNAMIC
+                || bodyTypeItems[bodySlotB] != CollisionBodyStore.BODY_DYNAMIC) {
+            return;
+        }
 
-        float ah = hitboxStore.get(eidA) * 0.5f;
-        float bh = hitboxStore.get(eidB) * 0.5f;
+        int transformSlotA = transformStore.slotOf(eidA);
+        int transformSlotB = transformStore.slotOf(eidB);
+        if (transformSlotA < 0 || transformSlotB < 0) {
+            return;
+        }
+
+        int hitboxSlotA = hitboxStore.slotOf(eidA);
+        int hitboxSlotB = hitboxStore.slotOf(eidB);
+        if (hitboxSlotA < 0 || hitboxSlotB < 0) {
+            return;
+        }
+
+        float ax = transformStore.x.items[transformSlotA];
+        float ay = transformStore.y.items[transformSlotA];
+        float bx = transformStore.x.items[transformSlotB];
+        float by = transformStore.y.items[transformSlotB];
+
+        float ah = hitboxStore.hb.items[hitboxSlotA] * 0.5f;
+        float bh = hitboxStore.hb.items[hitboxSlotB] * 0.5f;
         float overlapX = ah + bh - Math.abs(bx - ax);
         float overlapY = ah + bh - Math.abs(by - ay);
         if (overlapX <= 0f || overlapY <= 0f) {
             return;
         }
 
+        float[] velocityXItems = velocityStore.x.items;
+        float[] velocityYItems = velocityStore.y.items;
+
+        int velocitySlotA = velocityStore.slotOf(eidA);
+        int velocitySlotB = velocityStore.slotOf(eidB);
+
         float sign = resolveAxisSign(bx - ax, eidA, eidB);
         float push = overlapX * pushPerOverlap;
-        addVelocity(eidA, -sign * push, 0f);
-        addVelocity(eidB, sign * push, 0f);
+        addVelocity(velocitySlotA, velocityXItems, velocityYItems, -sign * push, 0f);
+        addVelocity(velocitySlotB, velocityXItems, velocityYItems, sign * push, 0f);
 
         sign = resolveAxisSign(by - ay, eidA, eidB);
         push = overlapY * pushPerOverlap;
-        addVelocity(eidA, 0f, -sign * push);
-        addVelocity(eidB, 0f, sign * push);
+        addVelocity(velocitySlotA, velocityXItems, velocityYItems, 0f, -sign * push);
+        addVelocity(velocitySlotB, velocityXItems, velocityYItems, 0f, sign * push);
     }
 
     private float resolveAxisSign(float delta, int eidA, int eidB) {
@@ -76,9 +96,11 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
         return eidA < eidB ? 1f : -1f;
     }
 
-    private void addVelocity(int eid, float addX, float addY) {
-        float nextX = velocityStore.getX(eid) + addX;
-        float nextY = velocityStore.getY(eid) + addY;
-        velocityStore.set(eid, nextX, nextY);
+    private void addVelocity(int velocitySlot, float[] velocityXItems, float[] velocityYItems, float addX, float addY) {
+        if (velocitySlot < 0) {
+            return;
+        }
+        velocityXItems[velocitySlot] += addX;
+        velocityYItems[velocitySlot] += addY;
     }
 }

@@ -14,6 +14,6 @@ public class VelocityStep implements AssembleStep {
         if (store == null) {
             throw new IllegalStateException("Target store is missed.");
         }
-        store.put(eid, 0, 0);
+        store.createAndSet(eid, 0, 0);
     }
 }

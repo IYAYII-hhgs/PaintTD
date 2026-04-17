@@ -21,6 +21,6 @@ public final class HitboxStep implements AssembleStep {
         if (store == null) {
             throw new IllegalStateException("Target store is missed.");
         }
-        store.put(eid, size);
+        store.createAndSet(eid, size);
     }
 }

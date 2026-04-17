@@ -18,6 +18,6 @@ public final class DebugTeamStep implements AssembleStep {
     @Override
     public void run(int eid, EntitySpawnRequest req, WorldAccess binder) {
         var store = binder.getStore(EntityTeamStore.class);
-        store.put(eid, team);
+        store.createAndSet(eid, team);
     }
 }

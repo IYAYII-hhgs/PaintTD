@@ -8,15 +8,12 @@ import io.bdc.painttd.world.system.*;
 
 /**
  * 静态阻挡响应的应用层 system。
- * 以Handler形式同时消费两类接触：EC 的墙格接触，以及 EE 里的 dynamic-static 接触，
+ * 它同时消费来自 EC 与 EE 的静态阻挡接触，
  * 再统一转换成“动态实体撞到静态阻挡”的响应。
- * system 执行时, 再实际应用缓存的响应.
  * <p>
- * 该系统当前三层式设计想表达的重点：
- * 检测层继续区分 EE 和 EC，
- * 分发层继续按 family 提供稳定入口，
- * 但应用层可以按玩法语义把不同 family 的接触合并处理。
- * 所以这个 system 能同时处理墙格和静态实体是因为它们在应用层都属于"静态阻挡反弹"。
+ * 这正是当前三层式设计的一部分：检测层继续区分接触来源，
+ * 分发层提供稳定入口，应用层则按效果语义把不同 family 的接触合并处理。
+ * 当前中间态除了 side mask，还会累计四方向推出量；system 执行时先解穿透，再修正速度。
  */
 public class CollisionSolidBounceSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
@@ -52,11 +49,23 @@ public class CollisionSolidBounceSystem extends WorldSystem {
     @Override
     public void run(float delta) {
         int[] maskItems = solidBounceStore.masks.items;
+        float[] pushLeftItems = solidBounceStore.pushLeft.items;
+        float[] pushRightItems = solidBounceStore.pushRight.items;
+        float[] pushDownItems = solidBounceStore.pushDown.items;
+        float[] pushUpItems = solidBounceStore.pushUp.items;
+        float[] transformXItems = transformStore.x.items;
+        float[] transformYItems = transformStore.y.items;
         float[] velocityXItems = velocityStore.x.items;
         float[] velocityYItems = velocityStore.y.items;
 
         for (int solidSlot = 0; solidSlot < solidBounceStore.size(); solidSlot++) {
             int eid = solidBounceStore.eidOf(solidSlot);
+            int transformSlot = transformStore.slotOf(eid);
+            if (transformSlot >= 0) {
+                transformXItems[transformSlot] += pushLeftItems[solidSlot] - pushRightItems[solidSlot];
+                transformYItems[transformSlot] += pushDownItems[solidSlot] - pushUpItems[solidSlot];
+            }
+
             int velocitySlot = velocityStore.slotOf(eid);
             if (velocitySlot < 0) {
                 continue;
@@ -137,7 +146,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
             mask |= dy <= 0f ? CollisionSolidBounceStore.HIT_UP : CollisionSolidBounceStore.HIT_DOWN;
         }
 
-        solidBounceStore.addMask(eid, mask);
+        addResponse(eid, mask, overlapX, overlapY);
     }
 
     private void handleUndirectedEe(int eidA, int eidB) {
@@ -196,6 +205,14 @@ public class CollisionSolidBounceSystem extends WorldSystem {
             mask |= dy <= 0f ? CollisionSolidBounceStore.HIT_UP : CollisionSolidBounceStore.HIT_DOWN;
         }
 
-        solidBounceStore.addMask(dynamicEid, mask);
+        addResponse(dynamicEid, mask, overlapX, overlapY);
+    }
+
+    private void addResponse(int eid, int mask, float overlapX, float overlapY) {
+        float pushLeft = (mask & CollisionSolidBounceStore.HIT_LEFT) != 0 ? overlapX : 0f;
+        float pushRight = (mask & CollisionSolidBounceStore.HIT_RIGHT) != 0 ? overlapX : 0f;
+        float pushDown = (mask & CollisionSolidBounceStore.HIT_DOWN) != 0 ? overlapY : 0f;
+        float pushUp = (mask & CollisionSolidBounceStore.HIT_UP) != 0 ? overlapY : 0f;
+        solidBounceStore.addResponse(eid, mask, pushLeft, pushRight, pushDown, pushUp);
     }
 }

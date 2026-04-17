@@ -2,6 +2,8 @@ package io.bdc.painttd.world.store;
 
 import com.badlogic.gdx.math.*;
 
+import java.util.*;
+
 /**
  * 地图聚合数据源
  */
@@ -21,6 +23,7 @@ public class MapStore implements WorldStore {
         cells = new int[width * height];
         coreMask = new boolean[width * height];
         teamMask = new int[width * height];
+        Arrays.fill(teamMask, -1);
         hpMask = new float[width * height];
     }
 

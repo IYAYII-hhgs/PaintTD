@@ -5,9 +5,12 @@ import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 
 /**
- * 当前实现直接按 TransformStore + HitboxStore 每帧全量重建 TileBucket，
+ * TileBucket 的同步 barrier。
+ * 当前实现采用每帧 `clear + rebuild` 的保守同步方式，
+ * 在进入碰撞与查询阶段前把 TransformStore 与 HitboxStore 的当前状态重建到 bucket 中。
+ * <p>
+ * 文档中讨论过的 `flushDirty` / 增量同步仍保留为后续优化方向，当前版本尚未落地到代码。 
  */
-
 public class TileBucketSyncSystem extends WorldSystem {
     public TileBucketStore bucketStore;
     public TransformStore transformStore;

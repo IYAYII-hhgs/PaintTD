@@ -141,7 +141,9 @@ public class PlacementControl {
         for (int x = cx - placeCellHpSize; x <= cx + placeCellHpSize; x++) {
             for (int y = cy - placeCellHpSize; y <= cy + placeCellHpSize; y++) {
                 if (x >= 0 && x < store.width && y >= 0 && y < store.height) {
-                    api.setCellHp(placeCellHpAmt, store.index(x, y));
+                    int cid = store.index(x, y);
+                    api.setCellHp(placeCellHpAmt, cid);
+                    api.setCellTeam(0, cid);
                 }
             }
         }

@@ -15,9 +15,13 @@ public class MapAPI implements WorldAPI {
     public float damageCell(float damage, int cid) {
         float mapHp = mapStore.hpMask[cid];
         if (mapHp > 0) {
-            float realDamage = Math.min(mapHp, damage);
-            mapStore.hpMask[cid] -= realDamage;
-            return realDamage;
+            mapStore.hpMask[cid] -= damage;
+            if (mapStore.hpMask[cid] < 0) {
+                mapStore.hpMask[cid] = 0;
+                mapStore.teamMask[cid] = -1;
+                return mapHp;
+            }
+            return damage;
         }
         return 0;
     }
@@ -28,5 +32,9 @@ public class MapAPI implements WorldAPI {
 
     public void addCellHp(float hp, int cid) {
         mapStore.hpMask[cid] += hp;
+    }
+
+    public void setCellTeam(int team, int cid) {
+        mapStore.teamMask[cid] = team;
     }
 }

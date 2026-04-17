@@ -5,6 +5,12 @@ import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 
+/**
+ * 地图格伤害的应用层 system。
+ * 它消费地图格接触，并在应用层结合实体 team、图格 team 与图格 hp 判断是否造成伤害。
+ * <p>
+ * 当前实现是简化版：按帧、按格即时结算，cell 级 cooldown 尚未加入。
+ */
 public class CollisionCellDamageSystem extends WorldSystem {
     MapStore mapStore;
     EntityTeamStore entityTeamStore;

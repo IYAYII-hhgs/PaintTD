@@ -10,9 +10,9 @@ import io.bdc.painttd.world.store.*;
  * 检测 system 发现接触后直接调用这里的 emit 方法；
  * 应用层 system 则在这里注册各自的 handler。
  * <p>
- * 它的职责不是做玩法结算，而是把瞬时接触按 family 整理后分发出去。
- * 当前保留三类入口：DirectedEE、UndirectedEE、EC。
- * 其中 UndirectedEE 在这里统一做 pair 归一化和去重.
+ * 它的职责不是做玩法结算，而是把瞬时接触整理成稳定的 family 入口并转发出去。
+ * 当前保留 DirectedEE、UndirectedEE 以及按需要细分的 EC 入口；
+ * 其中 UndirectedEE 在这里统一做 pair 归一化和去重。
  */
 public class CollisionDispatchAPI implements WorldAPI {
     public interface EeHandler {

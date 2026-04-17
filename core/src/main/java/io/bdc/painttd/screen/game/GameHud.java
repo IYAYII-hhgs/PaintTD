@@ -97,7 +97,7 @@ public class GameHud {
                                         } else if (amt == 2f) {
                                             amt = 10f;
                                         } else if (amt == 10f) {
-                                            amt = 0f;
+                                            amt = 1f;
                                         }
                                         screen.placement.setCellHpAmt(amt);
                                     })

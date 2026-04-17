@@ -10,7 +10,7 @@ import io.bdc.painttd.world.system.*;
  * EE 检测层的首版实现。
  * 先做 bucket 粗筛，再做 AABB 精筛；命中后不缓存结果，而是直接发给分发层。
  * <p>
- * 只产出两个实体接触事实, 传递给有向碰撞和无向碰撞分发层, 不处理应用效果.
+ * 只产出两个实体的接触事实，不处理伤害、反弹或其他应用效果。
  */
 public class DetectEeAabbSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;

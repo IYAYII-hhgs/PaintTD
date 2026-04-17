@@ -7,10 +7,10 @@ import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 
 /**
- * EC 检测层的首版实现。
- * 负责把实体与地图格的接触转成 (eid, cellIndex) 并直接发给分发层
+ * EC 检测层实现。
+ * 负责把实体与地图格的接触转成 `(eid, cellIndex)`，并在检测层按地图格大类做薄分流后发给分发层。
  * <p>
- * 只产出实体与地图格接触事实, 不处理应用效果。
+ * 它只产出地图格接触事实，不在这里处理敌我、伤害、反弹或其他应用效果。
  */
 public class DetectEcSolidCellSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
@@ -90,7 +90,7 @@ public class DetectEcSolidCellSystem extends WorldSystem {
                     }
 
                     //有色格接触
-                    if (mapStore.hpMask[cellIndex] > 0) {
+                    if (mapStore.teamMask[cellIndex] >= 0 && mapStore.hpMask[cellIndex] > 0) {
                         collisionDispatchAPI.emitEcStain(eid, cellIndex);
                     }
                 }

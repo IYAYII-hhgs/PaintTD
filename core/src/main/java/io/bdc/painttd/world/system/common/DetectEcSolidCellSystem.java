@@ -8,9 +8,9 @@ import io.bdc.painttd.world.system.*;
 
 /**
  * EC 检测层的首版实现。
- * 负责把实体与墙格的接触转成 (eid, cellIndex) 并直接发给分发层
+ * 负责把实体与地图格的接触转成 (eid, cellIndex) 并直接发给分发层
  * <p>
- * 只产出实体与墙格接触事实, 不处理应用效果。
+ * 只产出实体与地图格接触事实, 不处理应用效果。
  */
 public class DetectEcSolidCellSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
@@ -82,12 +82,17 @@ public class DetectEcSolidCellSystem extends WorldSystem {
                 int rowIndex = cellY * mapWidth;
                 for (int cellX = minCellX; cellX <= maxCellX; cellX++) {
                     int cellIndex = rowIndex + cellX;
-                    if (mapCells[cellIndex] != 1) {
-                        continue;
+
+                    //墙格接触
+                    if (mapCells[cellIndex] == 1) {
+                        ecWallCount += 1;
+                        collisionDispatchAPI.emitEcWall(eid, cellIndex);
                     }
 
-                    ecWallCount += 1;
-                    collisionDispatchAPI.emitEc(eid, cellIndex);
+                    //有色格接触
+                    if (mapStore.hpMask[cellIndex] > 0) {
+                        collisionDispatchAPI.emitEcStain(eid, cellIndex);
+                    }
                 }
             }
         }

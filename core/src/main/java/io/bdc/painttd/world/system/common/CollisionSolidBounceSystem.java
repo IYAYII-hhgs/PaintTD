@@ -22,6 +22,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
     public CollisionSolidBounceStore solidBounceStore;
     public TransformStore transformStore;
+    public EntityTeamStore teamStore;
     public HitboxStore hitboxStore;
     public VelocityStore velocityStore;
     public MapStore mapStore;
@@ -37,12 +38,14 @@ public class CollisionSolidBounceSystem extends WorldSystem {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
         solidBounceStore = binder.getStore(CollisionSolidBounceStore.class);
         transformStore = binder.getStore(TransformStore.class);
+        teamStore = binder.getStore(EntityTeamStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         velocityStore = binder.getStore(VelocityStore.class);
         mapStore = binder.getStore(MapStore.class);
 
         var collisionDispatch = binder.getApi(CollisionDispatchAPI.class);
-        collisionDispatch.onEc(this::handleEc);
+        collisionDispatch.onEcWall(this::handleEc);
+        collisionDispatch.onEcStain(this::handleEcStain);
         collisionDispatch.onUndirectedEe(this::handleUndirectedEe);
     }
 
@@ -92,6 +95,14 @@ public class CollisionSolidBounceSystem extends WorldSystem {
         }
 
         solidBounceStore.clear();
+    }
+
+    private void handleEcStain(int eid, int cellIndex) {
+        if (mapStore.cells[cellIndex] == 1) return;// handled by wall handler
+        int eTeam = teamStore.get(eid);
+        int cellTeam = mapStore.teamMask[cellIndex];
+        if (eTeam == cellTeam) return;
+        handleEc(eid, cellIndex);
     }
 
     private void handleEc(int eid, int cellIndex) {

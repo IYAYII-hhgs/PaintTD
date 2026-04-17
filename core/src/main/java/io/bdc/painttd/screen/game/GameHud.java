@@ -85,6 +85,38 @@ public class GameHud {
                                     .click(b -> screen.placement.toggleWall())
                                     .free();
 
+        TextButton buttonCellHp = ActorUtils.wrap(new TextButton("放置涂色", screen.app.skins.skin))
+                                    .click(b -> screen.placement.toggleCellHp())
+                                    .free();
+
+        TextButton buttonCellHpSwitch = ActorUtils.wrap(new TextButton("涂色血量切换", screen.app.skins.skin))
+                                    .click(b -> {
+                                        float amt = screen.placement.placeCellHpAmt;
+                                        if (amt == 1f) {
+                                            amt = 2f;
+                                        } else if (amt == 2f) {
+                                            amt = 10f;
+                                        } else if (amt == 10f) {
+                                            amt = 0f;
+                                        }
+                                        screen.placement.setCellHpAmt(amt);
+                                    })
+                                    .free();
+
+        TextButton buttonCellSizeSwitch = ActorUtils.wrap(new TextButton("涂色尺寸切换", screen.app.skins.skin))
+                                            .click(b -> {
+                                                int amt = screen.placement.placeCellHpSize;
+                                                if (amt == 0) {
+                                                    amt = 1;
+                                                } else if (amt == 1) {
+                                                    amt = 3;
+                                                } else if (amt == 3) {
+                                                    amt = 0;
+                                                }
+                                                screen.placement.placeCellHpSize = amt;
+                                            })
+                                            .free();
+
         TextButton buttonDelete = ActorUtils.wrap(new TextButton("删除一个单位", screen.app.skins.skin))
                                  .click(b -> {
                                      int target = -1;
@@ -116,6 +148,9 @@ public class GameHud {
 
         buttonsTable.add(buttonCore).row();
         buttonsTable.add(buttonWall).row();
+        buttonsTable.add(buttonCellHp).row();
+        buttonsTable.add(buttonCellHpSwitch).row();
+        buttonsTable.add(buttonCellSizeSwitch).row();
         buttonsTable.add(buttonTestUnit).row();
         buttonsTable.add(buttonTestInitVelocityStep).row();
         buttonsTable.add(buttonTestClearSteps).row();
@@ -160,7 +195,6 @@ public class GameHud {
         StringBuilder entityString = new StringBuilder("调试状态");
         entityString.append("\n生成队列: ").append(world.getStore(SpawnRequestQueue.class).lastSpawn);
         entityString.append("\n销毁队列: ").append(world.getStore(DestroyQueue.class).lastDestroy);
-        entityString.append("\n放置器附加步骤数量: ").append(screen.placement.extraSteps.size);
         var collisionDebug = world.getStore(CollisionDebugStore.class);
         entityString.append("\nEE查询: ").append(collisionDebug.eeQueryCount);
         entityString.append("\nEE候选: ").append(collisionDebug.eeCandidateCount);

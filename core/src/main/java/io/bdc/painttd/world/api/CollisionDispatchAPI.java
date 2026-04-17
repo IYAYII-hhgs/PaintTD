@@ -25,7 +25,8 @@ public class CollisionDispatchAPI implements WorldAPI {
 
     public final Array<EeHandler> directedEeHandlers = new Array<>();
     public final Array<EeHandler> undirectedEeHandlers = new Array<>();
-    public final Array<EcHandler> ecHandlers = new Array<>();
+    public final Array<EcHandler> ecWallHandlers = new Array<>();
+    public final Array<EcHandler> ecStainHandlers = new Array<>();
     public final LongSet seenUndirectedPairs = new LongSet();
 
     public CollisionDebugStore debugStore;
@@ -47,8 +48,12 @@ public class CollisionDispatchAPI implements WorldAPI {
         undirectedEeHandlers.add(handler);
     }
 
-    public void onEc(EcHandler handler) {
-        ecHandlers.add(handler);
+    public void onEcWall(EcHandler handler) {
+        ecWallHandlers.add(handler);
+    }
+
+    public void onEcStain(EcHandler handler) {
+        ecStainHandlers.add(handler);
     }
 
     public void emitDirectedEe(int eidA, int eidB) {
@@ -75,9 +80,15 @@ public class CollisionDispatchAPI implements WorldAPI {
         }
     }
 
-    public void emitEc(int eid, int cellIndex) {
-        for (int i = 0; i < ecHandlers.size; i++) {
-            ecHandlers.get(i).handle(eid, cellIndex);
+    public void emitEcWall(int eid, int cellIndex) {
+        for (int i = 0; i < ecWallHandlers.size; i++) {
+            ecWallHandlers.get(i).handle(eid, cellIndex);
+        }
+    }
+
+    public void emitEcStain(int eid, int cellIndex) {
+        for (int i = 0; i < ecStainHandlers.size; i++) {
+            ecStainHandlers.get(i).handle(eid, cellIndex);
         }
     }
 

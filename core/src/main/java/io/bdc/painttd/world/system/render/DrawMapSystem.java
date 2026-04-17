@@ -12,6 +12,7 @@ public class DrawMapSystem extends WorldSystem {
 
     private static Rectangle rect = new Rectangle();
     private static Vector2 pos = new Vector2();
+    private static Color col = new Color();
 
     public DrawMapSystem(WorldRuntime world, WorldPhase phase, int order) {
         super(world, phase, order);
@@ -29,6 +30,12 @@ public class DrawMapSystem extends WorldSystem {
         for (int x = 0; x < map.width; x++) {
             for (int y = 0; y < map.height; y++) {
                 int pos = map.index(x, y);
+
+                if (map.hpMask[pos] > 0) {
+                    col.set(Color.GREEN).a = MathUtils.clamp(map.hpMask[pos] / 10f, 0.2f, 1);
+                    RenderHub.batch.setColor(col);
+                    RenderHub.fill.rect(x * scl, y * scl, scl, scl);
+                }
 
                 RenderHub.batch.setColor(Color.DARK_GRAY);
                 RenderHub.line.setStroke(0.6f);

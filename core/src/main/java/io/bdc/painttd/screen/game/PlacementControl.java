@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.content.def.*;
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.assemble.step.*;
 import io.bdc.painttd.world.store.*;
 
@@ -17,8 +18,11 @@ public class PlacementControl {
     public WorldRuntime world;
 
     public @Null EntityDef select;
-    public boolean placeWall, placeCore;
+    public boolean placeWall, placeCore, placeCellHp;
     public Array<PostSpawnStep> extraSteps = new Array<>();
+
+    public float placeCellHpAmt = 1;
+    public int placeCellHpSize = 0;
 
     public PlacementControl(WorldRuntime world) {
         this.world = world;
@@ -26,7 +30,7 @@ public class PlacementControl {
 
     public void setSelect(EntityDef def) {
         select = def;
-        placeCore = placeWall = false;
+        placeCore = placeWall = placeCellHp = false;
     }
 
     public void toggle(EntityDef def) {
@@ -34,7 +38,7 @@ public class PlacementControl {
             select = null;
         } else {
             select = def;
-            placeCore = placeWall = false;
+            placeCore = placeWall = placeCellHp = false;
         }
     }
 
@@ -43,6 +47,7 @@ public class PlacementControl {
             placeWall = false;
         } else {
             placeWall = true;
+            placeCellHp = false;
             placeCore = false;
             select = null;
         }
@@ -53,9 +58,25 @@ public class PlacementControl {
             placeCore = false;
         } else {
             placeCore = true;
+            placeCellHp = false;
             placeWall = false;
             select = null;
         }
+    }
+
+    public void toggleCellHp() {
+        if (placeCellHp) {
+            placeCellHp = false;
+        } else {
+            placeCellHp = true;
+            placeCore = false;
+            placeWall = false;
+            select = null;
+        }
+    }
+
+    public void setCellHpAmt(float amt) {
+        placeCellHpAmt = amt;
     }
 
     public void addPostSteps(PostSpawnStep... steps) {
@@ -73,6 +94,8 @@ public class PlacementControl {
             return placeWall(inputX, inputY);
         } else if (placeCore) {
             return placeCore(inputX, inputY);
+        } else if (placeCellHp) {
+            return placeCellHp(inputX, inputY);
         } else {
             return false;
         }
@@ -107,6 +130,21 @@ public class PlacementControl {
         //切换核心
         store.coreMask[index] = !store.coreMask[index];
 
+        return true;
+    }
+
+    private boolean placeCellHp(float inputX, float inputY) {
+        var api = world.getApi(MapAPI.class);
+        var store = world.getStore(MapStore.class);
+        int cx = MathUtils.floor(inputX);
+        int cy = MathUtils.floor(inputY);
+        for (int x = cx - placeCellHpSize; x <= cx + placeCellHpSize; x++) {
+            for (int y = cy - placeCellHpSize; y <= cy + placeCellHpSize; y++) {
+                if (x >= 0 && x < store.width && y >= 0 && y < store.height) {
+                    api.setCellHp(placeCellHpAmt, store.index(x, y));
+                }
+            }
+        }
         return true;
     }
 }

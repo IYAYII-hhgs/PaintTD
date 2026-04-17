@@ -46,6 +46,7 @@ public class WorldConfiguration {
         world.addApi(new DamageAPI());
         world.addApi(new TileBucketQueryAPI());
         world.addApi(new CollisionDispatchAPI());
+        world.addApi(new MapAPI());
     }
 
     public void createSystems(WorldRuntime world) {
@@ -62,6 +63,7 @@ public class WorldConfiguration {
         world.addSystem(new DetectEeAabbSystem(world, WorldPhase.SIMULATE, 120));
         world.addSystem(new DetectEcSolidCellSystem(world, WorldPhase.SIMULATE, 130));
         world.addSystem(new CollisionSolidBounceSystem(world, WorldPhase.SIMULATE, 140));
+        world.addSystem(new CollisionCellDamageSystem(world, WorldPhase.SIMULATE, 145));
         world.addSystem(new WorldBoundsBounceSystem(world, WorldPhase.SIMULATE, 150));
 
         //world.addSystem(new TestGlobalDamageSystem(world, WorldPhase.APPLY, 0));

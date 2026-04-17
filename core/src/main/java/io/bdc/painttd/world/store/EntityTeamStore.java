@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.*;
 public class EntityTeamStore extends ArrayEntityStoreBase {
     public final IntArray teams = new IntArray();
 
-    public float get(int eid) {
+    public int get(int eid) {
         int slot = slotOf(eid);
         return slot >= 0 ? teams.get(slot) : 0;
     }

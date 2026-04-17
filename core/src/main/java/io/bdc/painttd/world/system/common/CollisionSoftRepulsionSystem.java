@@ -11,7 +11,7 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
     public HitboxStore hitboxStore;
     public VelocityStore velocityStore;
 
-    public float pushPerOverlap = 0.1f;
+    public float pushPerOverlap = 0.05f;
 
     public CollisionSoftRepulsionSystem(WorldRuntime world, WorldPhase phase, int order) {
         super(world, phase, order);

@@ -26,7 +26,7 @@ public class TileBucketSyncSystem extends WorldSystem {
 
     @Override
     public void run(float delta) {
-        //bucketStore.clear();
+        bucketStore.clear();
 
         for (int slot = 0; slot < transformStore.size(); slot++) {
             int eid = transformStore.eidOf(slot);

@@ -1,12 +1,14 @@
 package io.bdc.painttd.world.system.common;
 
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 
 public class WorldBoundsBounceSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
     public TransformStore transformStore;
+    public TransformAPI transformAPI;
     public HitboxStore hitboxStore;
     public VelocityStore velocityStore;
     public MapStore mapStore;
@@ -21,6 +23,7 @@ public class WorldBoundsBounceSystem extends WorldSystem {
     public void onBind(WorldAccess binder) {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
         transformStore = binder.getStore(TransformStore.class);
+        transformAPI = binder.getApi(TransformAPI.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         velocityStore = binder.getStore(VelocityStore.class);
         mapStore = binder.getStore(MapStore.class);
@@ -113,6 +116,7 @@ public class WorldBoundsBounceSystem extends WorldSystem {
             if (transformDirty) {
                 transformXItems[transformSlot] = x;
                 transformYItems[transformSlot] = y;
+                transformAPI.markDirty(eid);
             }
             if (velocityDirty && velocitySlot >= 0) {
                 velocityXItems[velocitySlot] = vx;

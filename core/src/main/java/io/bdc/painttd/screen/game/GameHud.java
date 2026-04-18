@@ -201,6 +201,11 @@ public class GameHud {
         entityString.append("\nEE精筛命中: ").append(collisionDebug.eeOverlapCount);
         entityString.append("\nEE无向唯一对: ").append(collisionDebug.eeUniquePairCount);
         entityString.append("\nEC墙格命中: ").append(collisionDebug.ecWallCount);
+        var tileBucketDebug = world.getStore(TileBucketDebugStore.class);
+        entityString.append("\nBucket脏队列: ").append(tileBucketDebug.dirtyQueuedCount);
+        entityString.append("\nBucket实际flush: ").append(tileBucketDebug.dirtyFlushedCount);
+        entityString.append("\nBucket卸载: ").append(tileBucketDebug.dirtyRemovedCount);
+        entityString.append("\nBucket重挂: ").append(tileBucketDebug.dirtyReinsertCount);
 
         worldStateLabel.setText(String.format(
             Locale.ROOT,

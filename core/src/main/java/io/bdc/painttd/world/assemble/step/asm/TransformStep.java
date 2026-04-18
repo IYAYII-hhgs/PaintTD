@@ -1,8 +1,8 @@
 package io.bdc.painttd.world.assemble.step.asm;
 
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.assemble.step.*;
-import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
 /**
@@ -14,10 +14,10 @@ public final class TransformStep implements AssembleStep {
 
     @Override
     public void run(int eid, EntitySpawnRequest req, WorldAccess binder) {
-        var transformStore = binder.getStore(TransformStore.class);
-        if (transformStore == null) {
-            throw new IllegalStateException("Target store is missed.");
+        var transformAPI = binder.getApi(TransformAPI.class);
+        if (transformAPI == null) {
+            throw new IllegalStateException("Target api is missed.");
         }
-        transformStore.createAndSet(eid, req.x, req.y);
+        transformAPI.createAndSetTransform(eid, req.x, req.y);
     }
 }

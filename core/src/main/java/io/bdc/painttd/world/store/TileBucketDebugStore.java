@@ -7,4 +7,9 @@ public class TileBucketDebugStore implements WorldStore {
     public boolean showHoverSquareQuery;
 
     public float hoverSquareSize = 3f;
+
+    public int dirtyQueuedCount;
+    public int dirtyFlushedCount;
+    public int dirtyRemovedCount;
+    public int dirtyReinsertCount;
 }

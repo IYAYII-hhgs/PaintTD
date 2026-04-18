@@ -11,7 +11,7 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
     public HitboxStore hitboxStore;
     public VelocityStore velocityStore;
 
-    public float pushPerOverlap = 0.05f;
+    public float pushPerOverlap = 0.02f;
 
     public CollisionSoftRepulsionSystem(WorldRuntime world, WorldPhase phase, int order) {
         super(world, phase, order);
@@ -81,7 +81,7 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
         addVelocity(velocitySlotB, velocityXItems, velocityYItems, sign * push, 0f);
 
         sign = resolveAxisSign(by - ay, eidA, eidB);
-        push = overlapY * pushPerOverlap;
+        push = (overlapY) * pushPerOverlap;
         addVelocity(velocitySlotA, velocityXItems, velocityYItems, 0f, -sign * push);
         addVelocity(velocitySlotB, velocityXItems, velocityYItems, 0f, sign * push);
     }

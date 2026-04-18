@@ -2,8 +2,8 @@ package io.bdc.painttd.world.assemble.step.post;
 
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.world.*;
+import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.assemble.step.*;
-import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
 import static io.bdc.painttd.PaintTD.app;
@@ -18,12 +18,12 @@ public final class PostTransformStep implements PostSpawnStep, Pool.Poolable {
 
     @Override
     public void run(int eid, EntitySpawnRequest req, WorldAccess binder) {
-        var transformStore = binder.getStore(TransformStore.class);
-        if (transformStore == null) {
-            throw new IllegalStateException("Target store is missed.");
+        var transformAPI = binder.getApi(TransformAPI.class);
+        if (transformAPI == null) {
+            throw new IllegalStateException("Target api is missed.");
         }
 
-        boolean set = transformStore.set(eid, x, y);
+        boolean set = transformAPI.setTransform(eid, x, y);
         if (!set) {
             app.log.error("TransformStore not created for entity: " + eid);
         }

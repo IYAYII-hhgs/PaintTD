@@ -24,7 +24,7 @@ public class VelocityDecaySystem extends WorldSystem{
             int eid = velStore.eidOf(slot);
             if (eid != -1) {
                 var vel = velStore.get(eid, tmp1);
-                vel.scl(0.95f);
+                vel.scl(0.90f);
                 if (vel.len2() < 0.00001f) vel.setZero();
                 velStore.set(eid, vel.x, vel.y);
             }

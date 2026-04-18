@@ -19,6 +19,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
     public CollisionSolidBounceStore solidBounceStore;
     public TransformStore transformStore;
+    public TransformAPI transformAPI;
     public EntityTeamStore teamStore;
     public HitboxStore hitboxStore;
     public VelocityStore velocityStore;
@@ -35,6 +36,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
         solidBounceStore = binder.getStore(CollisionSolidBounceStore.class);
         transformStore = binder.getStore(TransformStore.class);
+        transformAPI = binder.getApi(TransformAPI.class);
         teamStore = binder.getStore(EntityTeamStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         velocityStore = binder.getStore(VelocityStore.class);
@@ -62,8 +64,13 @@ public class CollisionSolidBounceSystem extends WorldSystem {
             int eid = solidBounceStore.eidOf(solidSlot);
             int transformSlot = transformStore.slotOf(eid);
             if (transformSlot >= 0) {
-                transformXItems[transformSlot] += pushLeftItems[solidSlot] - pushRightItems[solidSlot];
-                transformYItems[transformSlot] += pushDownItems[solidSlot] - pushUpItems[solidSlot];
+                float moveX = pushLeftItems[solidSlot] - pushRightItems[solidSlot];
+                float moveY = pushDownItems[solidSlot] - pushUpItems[solidSlot];
+                if (moveX != 0f || moveY != 0f) {
+                    transformXItems[transformSlot] += moveX;
+                    transformYItems[transformSlot] += moveY;
+                    transformAPI.markDirty(eid);
+                }
             }
 
             int velocitySlot = velocityStore.slotOf(eid);

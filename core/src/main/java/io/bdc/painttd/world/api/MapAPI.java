@@ -1,6 +1,5 @@
 package io.bdc.painttd.world.api;
 
-import com.badlogic.gdx.math.*;
 import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.store.*;
 
@@ -26,15 +25,19 @@ public class MapAPI implements WorldAPI {
         return 0;
     }
 
+    public float getCellHp(int cid) {
+        return mapStore.hpMask[cid];
+    }
+
     public void setCellHp(float hp, int cid) {
         mapStore.hpMask[cid] = hp;
     }
 
-    public void addCellHp(float hp, int cid) {
-        mapStore.hpMask[cid] += hp;
-    }
-
     public void setCellTeam(int team, int cid) {
         mapStore.teamMask[cid] = team;
+    }
+
+    public void addCellHp(float hp, int cid) {
+        mapStore.hpMask[cid] += hp;
     }
 }

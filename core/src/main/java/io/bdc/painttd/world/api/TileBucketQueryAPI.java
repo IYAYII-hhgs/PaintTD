@@ -46,7 +46,7 @@ public class TileBucketQueryAPI implements WorldAPI {
 
     public IntArray collectCellRect(int minCellX, int minCellY, int maxCellX, int maxCellY) {
         beginQuery();
-        if (maxCellX < 0 || maxCellY < 0 || minCellX >= bucket.width || minCellY >= bucket.height) {
+        if (maxCellX < 0 || maxCellY < 0 || minCellX >= bucket.width || minCellY >= bucket.height || minCellX > maxCellX || minCellY > maxCellY) {
             return results;
         }
 
@@ -84,13 +84,7 @@ public class TileBucketQueryAPI implements WorldAPI {
     }
 
     public IntArray collectSquare(float centerX, float centerY, float size) {
-        if (size <= 0f) {
-            beginQuery();
-            return results;
-        }
-
-        float half = size * 0.5f;
-        return collectAabb(centerX - half, centerY - half, centerX + half, centerY + half);
+        return collectCRect(centerX, centerY, size, size);
     }
 
     private void beginQuery() {

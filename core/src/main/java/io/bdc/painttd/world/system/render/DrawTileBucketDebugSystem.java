@@ -14,7 +14,7 @@ public class DrawTileBucketDebugSystem extends WorldSystem {
     public TileBucketStore bucketStore;
     public TileBucketDebugStore debugStore;
     public TileBucketQueryAPI queryApi;
-    public TransformStore transformStore;
+    public PositionStore positionStore;
     public HitboxStore hitboxStore;
 
     private final Vector2 mouseWorld = new Vector2();
@@ -30,7 +30,7 @@ public class DrawTileBucketDebugSystem extends WorldSystem {
         bucketStore = binder.getStore(TileBucketStore.class);
         debugStore = binder.getStore(TileBucketDebugStore.class);
         queryApi = binder.getApi(TileBucketQueryAPI.class);
-        transformStore = binder.getStore(TransformStore.class);
+        positionStore = binder.getStore(PositionStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
     }
 
@@ -113,13 +113,16 @@ public class DrawTileBucketDebugSystem extends WorldSystem {
         IntArray results = queryApi.collectCell(cellX, cellY);
         for (int i = 0; i < results.size; i++) {
             int eid = results.get(i);
-            if (!transformStore.has(eid)) {
+            if (!positionStore.has(eid)) {
                 continue;
             }
 
-            float size = hitboxStore.has(eid) ? hitboxStore.get(eid) : 1f;
-            float x = transformStore.getX(eid) * scl;
-            float y = transformStore.getY(eid) * scl;
+            int sizeSlot = hitboxStore.slotOf(eid);
+            float size = sizeSlot == -1 ? 1f : hitboxStore.hb.items[sizeSlot];
+
+            int posSlot = positionStore.slotOf(eid);
+            float x = positionStore.x.items[posSlot] * scl;
+            float y = positionStore.y.items[posSlot] * scl;
             rect.setSize(size * scl).setCenter(x, y);
 
             RenderHub.batch.setColor(0.45f, 1f, 0.45f, 0.18f);
@@ -140,7 +143,7 @@ public class DrawTileBucketDebugSystem extends WorldSystem {
         float bestDst2 = Float.MAX_VALUE;
         for (int i = 0; i < candidates.size; i++) {
             int eid = candidates.get(i);
-            if (transformStore.get(eid, entityPos) == null) {
+            if (positionStore.get(eid, entityPos) == null) {
                 continue;
             }
 

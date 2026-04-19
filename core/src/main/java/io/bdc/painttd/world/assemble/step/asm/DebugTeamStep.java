@@ -6,8 +6,6 @@ import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
 public final class DebugTeamStep implements AssembleStep {
-    public static final String TYPE = "DebugTeamStep";
-
     public int team = 0;
 
     public DebugTeamStep setup(int team) {

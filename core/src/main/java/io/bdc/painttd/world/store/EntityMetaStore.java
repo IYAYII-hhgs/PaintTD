@@ -24,10 +24,6 @@ public class EntityMetaStore extends ArrayEntityStoreBase {
         return created;
     }
 
-    public void remove(int eid) {
-        removeRow(eid);
-    }
-
     @Override
     protected void onRowCreated(int eid, int slot) {
         entityDefArray.add(null);

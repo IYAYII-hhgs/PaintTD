@@ -3,7 +3,7 @@ package io.bdc.painttd.world.store;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
 
-public class TransformStore extends ArrayEntityStoreBase {
+public class PositionStore extends ArrayEntityStoreBase {
     public final FloatArray x = new FloatArray();
     public final FloatArray y = new FloatArray();
 

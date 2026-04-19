@@ -7,7 +7,7 @@ import io.bdc.painttd.world.system.*;
 
 public class WorldBoundsBounceSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
-    public TransformStore transformStore;
+    public PositionStore positionStore;
     public TransformAPI transformAPI;
     public HitboxStore hitboxStore;
     public VelocityStore velocityStore;
@@ -22,7 +22,7 @@ public class WorldBoundsBounceSystem extends WorldSystem {
     @Override
     public void onBind(WorldAccess binder) {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
-        transformStore = binder.getStore(TransformStore.class);
+        positionStore = binder.getStore(PositionStore.class);
         transformAPI = binder.getApi(TransformAPI.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         velocityStore = binder.getStore(VelocityStore.class);
@@ -34,8 +34,8 @@ public class WorldBoundsBounceSystem extends WorldSystem {
         float worldWidth = mapStore.width;
         float worldHeight = mapStore.height;
         int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
-        float[] transformXItems = transformStore.x.items;
-        float[] transformYItems = transformStore.y.items;
+        float[] transformXItems = positionStore.x.items;
+        float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
         float[] velocityXItems = velocityStore.x.items;
         float[] velocityYItems = velocityStore.y.items;
@@ -46,7 +46,7 @@ public class WorldBoundsBounceSystem extends WorldSystem {
             }
 
             int eid = collisionBodyStore.eidOf(bodySlot);
-            int transformSlot = transformStore.slotOf(eid);
+            int transformSlot = positionStore.slotOf(eid);
             int hitboxSlot = hitboxStore.slotOf(eid);
             if (transformSlot < 0 || hitboxSlot < 0) {
                 continue;

@@ -29,11 +29,11 @@ public class WorldConfiguration {
 
         world.addStore(new MapStore(mapWidth, mapHeight));
         world.addStore(new TileBucketStore(mapWidth, mapHeight, 40000));
-        world.addStore(new TileBucketDirtyStore());
+        world.addStore(new TileBucketDirtyQueue());
         world.addStore(new TileBucketDebugStore());
         world.addStore(new CollisionDebugStore());
         world.addStore(new CollisionSolidBounceStore());
-        world.addStore(new TransformStore());
+        world.addStore(new PositionStore());
         world.addStore(new VelocityStore());
         world.addStore(new HitboxStore());
         world.addStore(new CollisionBodyStore());
@@ -46,7 +46,6 @@ public class WorldConfiguration {
     public void createAPIs(WorldRuntime world) {
         world.addApi(new DamageAPI());
         world.addApi(new TransformAPI());
-        world.addApi(new HitboxAPI());
         world.addApi(new TileBucketQueryAPI());
         world.addApi(new CollisionDispatchAPI());
         world.addApi(new MapAPI());

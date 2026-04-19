@@ -1,13 +1,12 @@
 package io.bdc.painttd.world.system;
 
-import com.badlogic.gdx.math.*;
 import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.api.*;
 import io.bdc.painttd.world.store.*;
 
 public class VelocityApplySystem extends WorldSystem {
     VelocityStore velStore;
-    TransformStore transStore;
+    PositionStore transStore;
     TransformAPI transformAPI;
 
     public VelocityApplySystem(WorldRuntime world, WorldPhase phase, int order) {
@@ -17,7 +16,7 @@ public class VelocityApplySystem extends WorldSystem {
     @Override
     public void onBind(WorldAccess binder) {
         velStore = binder.getStore(VelocityStore.class);
-        transStore = binder.getStore(TransformStore.class);
+        transStore = binder.getStore(PositionStore.class);
         transformAPI = binder.getApi(TransformAPI.class);
     }
 

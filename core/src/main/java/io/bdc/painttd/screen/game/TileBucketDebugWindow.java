@@ -251,12 +251,12 @@ public class TileBucketDebugWindow extends Window {
     }
 
     private int findNearestEntity(IntArray candidates, float worldX, float worldY) {
-        TransformStore transformStore = world.getStore(TransformStore.class);
+        PositionStore positionStore = world.getStore(PositionStore.class);
         int bestEid = -1;
         float bestDst2 = Float.MAX_VALUE;
         for (int i = 0; i < candidates.size; i++) {
             int eid = candidates.get(i);
-            if (transformStore.get(eid, entityPos) == null) {
+            if (positionStore.get(eid, entityPos) == null) {
                 continue;
             }
 

@@ -14,7 +14,7 @@ import io.bdc.painttd.world.system.*;
  */
 public class DetectEeAabbSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
-    public TransformStore transformStore;
+    public PositionStore positionStore;
     public HitboxStore hitboxStore;
     public TileBucketQueryAPI tileBucketQueryAPI;
     public CollisionDispatchAPI collisionDispatchAPI;
@@ -27,7 +27,7 @@ public class DetectEeAabbSystem extends WorldSystem {
     @Override
     public void onBind(WorldAccess binder) {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
-        transformStore = binder.getStore(TransformStore.class);
+        positionStore = binder.getStore(PositionStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         tileBucketQueryAPI = binder.getApi(TileBucketQueryAPI.class);
         collisionDispatchAPI = binder.getApi(CollisionDispatchAPI.class);
@@ -37,8 +37,8 @@ public class DetectEeAabbSystem extends WorldSystem {
     @Override
     public void run(float delta) {
         int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
-        float[] transformXItems = transformStore.x.items;
-        float[] transformYItems = transformStore.y.items;
+        float[] transformXItems = positionStore.x.items;
+        float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
 
         int eeQueryCount = collisionDebugStore.eeQueryCount;
@@ -51,7 +51,7 @@ public class DetectEeAabbSystem extends WorldSystem {
             }
 
             int sourceEid = collisionBodyStore.eidOf(sourceBodySlot);
-            int sourceTransformSlot = transformStore.slotOf(sourceEid);
+            int sourceTransformSlot = positionStore.slotOf(sourceEid);
             int sourceHitboxSlot = hitboxStore.slotOf(sourceEid);
             if (sourceTransformSlot < 0 || sourceHitboxSlot < 0) {
                 continue;
@@ -85,7 +85,7 @@ public class DetectEeAabbSystem extends WorldSystem {
                     continue;
                 }
 
-                int targetTransformSlot = transformStore.slotOf(targetEid);
+                int targetTransformSlot = positionStore.slotOf(targetEid);
                 float targetSize = hitboxStore.get(targetEid);
                 if (targetTransformSlot < 0 || targetSize <= 0) {
                     continue;

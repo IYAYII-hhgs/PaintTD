@@ -25,7 +25,7 @@ public class Entities {
     public static void load() {
         registerDef(test = new EntityDef("test") {
             {
-                steps.add(new TransformStep());
+                steps.add(new PositionStep());
                 steps.add(new HitboxStep().setup(0.8f));
                 steps.add(new VelocityStep());
                 steps.add(new CollisionBodyStep().setup(CollisionBodyStore.BODY_DYNAMIC));
@@ -36,7 +36,7 @@ public class Entities {
 
         registerDef(testBuilding = new EntityDef("testBuilding") {
             {
-                steps.add(new BuildingTransformStep());
+                steps.add(new BuildingPositionStep());
                 steps.add(new HitboxStep().setup(1));
                 steps.add(new VelocityStep());
                 steps.add(new CollisionBodyStep().setup(CollisionBodyStore.BODY_STATIC));

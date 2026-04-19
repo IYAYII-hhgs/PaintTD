@@ -30,10 +30,6 @@ public class VelocityStore extends ArrayEntityStoreBase {
         return true;
     }
 
-    public void set(int eid, Vector2 pos) {
-        set(eid, pos.x, pos.y);
-    }
-
     public boolean setX(int eid, float xValue) {
         int slot = slotOf(eid);
         if (slot < 0) return false;

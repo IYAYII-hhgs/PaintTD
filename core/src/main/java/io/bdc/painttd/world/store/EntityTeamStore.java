@@ -23,10 +23,6 @@ public class EntityTeamStore extends ArrayEntityStoreBase {
         return created;
     }
 
-    public void remove(int eid) {
-        removeRow(eid);
-    }
-
     @Override
     protected void onRowCreated(int eid, int slot) {
         teams.add(0);

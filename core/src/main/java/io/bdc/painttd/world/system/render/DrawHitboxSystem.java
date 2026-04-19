@@ -8,7 +8,7 @@ import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 
 public class DrawHitboxSystem extends WorldSystem {
-    TransformStore transformStore;
+    PositionStore positionStore;
     HitboxStore hitboxStore;
     EntityHealthStore hpStore;
     CollisionBodyStore collisionStore;
@@ -22,7 +22,7 @@ public class DrawHitboxSystem extends WorldSystem {
 
     @Override
     public void onBind(WorldAccess binder) {
-        transformStore =  binder.getStore(TransformStore.class);
+        positionStore =  binder.getStore(PositionStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         hpStore = binder.getStore(EntityHealthStore.class);
         collisionStore = binder.getStore(CollisionBodyStore.class);
@@ -30,9 +30,9 @@ public class DrawHitboxSystem extends WorldSystem {
 
     @Override
     public void run(float delta) {
-        for (int i = 0; i < transformStore.size(); i++) {
-            int eid = transformStore.eidOf(i);
-            transformStore.get(eid, pos);
+        for (int i = 0; i < positionStore.size(); i++) {
+            int eid = positionStore.eidOf(i);
+            positionStore.get(eid, pos);
             pos.scl(RenderHub.scl);
 
             float hbSize = 1;

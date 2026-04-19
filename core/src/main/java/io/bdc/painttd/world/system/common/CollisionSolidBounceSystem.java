@@ -18,7 +18,7 @@ import io.bdc.painttd.world.system.*;
 public class CollisionSolidBounceSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
     public CollisionSolidBounceStore solidBounceStore;
-    public TransformStore transformStore;
+    public PositionStore positionStore;
     public TransformAPI transformAPI;
     public EntityTeamStore teamStore;
     public HitboxStore hitboxStore;
@@ -35,7 +35,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
     public void onBind(WorldAccess binder) {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
         solidBounceStore = binder.getStore(CollisionSolidBounceStore.class);
-        transformStore = binder.getStore(TransformStore.class);
+        positionStore = binder.getStore(PositionStore.class);
         transformAPI = binder.getApi(TransformAPI.class);
         teamStore = binder.getStore(EntityTeamStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
@@ -55,14 +55,14 @@ public class CollisionSolidBounceSystem extends WorldSystem {
         float[] pushRightItems = solidBounceStore.pushRight.items;
         float[] pushDownItems = solidBounceStore.pushDown.items;
         float[] pushUpItems = solidBounceStore.pushUp.items;
-        float[] transformXItems = transformStore.x.items;
-        float[] transformYItems = transformStore.y.items;
+        float[] transformXItems = positionStore.x.items;
+        float[] transformYItems = positionStore.y.items;
         float[] velocityXItems = velocityStore.x.items;
         float[] velocityYItems = velocityStore.y.items;
 
         for (int solidSlot = 0; solidSlot < solidBounceStore.size(); solidSlot++) {
             int eid = solidBounceStore.eidOf(solidSlot);
-            int transformSlot = transformStore.slotOf(eid);
+            int transformSlot = positionStore.slotOf(eid);
             if (transformSlot >= 0) {
                 float moveX = pushLeftItems[solidSlot] - pushRightItems[solidSlot];
                 float moveY = pushDownItems[solidSlot] - pushUpItems[solidSlot];
@@ -122,7 +122,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
     }
 
     private void handleEc(int eid, int cellIndex) {
-        int transformSlot = transformStore.slotOf(eid);
+        int transformSlot = positionStore.slotOf(eid);
         int hitboxSlot = hitboxStore.slotOf(eid);
         if (transformSlot < 0 || hitboxSlot < 0) {
             return;
@@ -130,8 +130,8 @@ public class CollisionSolidBounceSystem extends WorldSystem {
 
         int cellX = cellIndex % mapStore.width;
         int cellY = cellIndex / mapStore.width;
-        float[] transformXItems = transformStore.x.items;
-        float[] transformYItems = transformStore.y.items;
+        float[] transformXItems = positionStore.x.items;
+        float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
         float entityX = transformXItems[transformSlot];
         float entityY = transformYItems[transformSlot];
@@ -174,8 +174,8 @@ public class CollisionSolidBounceSystem extends WorldSystem {
 
         int dynamicEid = aDynamic ? eidA : eidB;
         int staticEid = aStatic ? eidA : eidB;
-        int dynamicTransformSlot = transformStore.slotOf(dynamicEid);
-        int staticTransformSlot = transformStore.slotOf(staticEid);
+        int dynamicTransformSlot = positionStore.slotOf(dynamicEid);
+        int staticTransformSlot = positionStore.slotOf(staticEid);
         if (dynamicTransformSlot < 0 || staticTransformSlot < 0) {
             return;
         }
@@ -186,8 +186,8 @@ public class CollisionSolidBounceSystem extends WorldSystem {
             return;
         }
 
-        float[] transformXItems = transformStore.x.items;
-        float[] transformYItems = transformStore.y.items;
+        float[] transformXItems = positionStore.x.items;
+        float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
         float dynamicX = transformXItems[dynamicTransformSlot];
         float dynamicY = transformYItems[dynamicTransformSlot];

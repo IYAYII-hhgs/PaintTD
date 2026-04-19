@@ -4,11 +4,23 @@ import com.badlogic.gdx.utils.*;
 
 import java.util.*;
 
+/**
+ * 实现类作为实体数据的仓库, 形式上是稠密的数据数组. 使用本类已维护好的稀疏索引来读写稠密数组.
+ * 如果有多个稠密数组, 其索引要保持对齐, 每个实体存放的数据类似表格中的一行, 数据库中的一条记录.
+ * <p>
+ * 三个抽象方法{@code onRowCreated}{@code onRowRemoved}管理了单个实体的数据, {@code onRowsCleared}清空所有数据.
+ * 本类实现了{@link EntityOwner}接口, 因此监听了{@link io.bdc.painttd.world.assemble.EntityAssembler}的实体移除动作, 接口实现被委托给{@code onRowRemoved}(行移除).
+ * <p>
+ * 维护的重要内容:
+ * <p>有效实体数组{@code eids}.
+ * <p>稀疏索引数组{@code slotByEid}: 记录了有效实体在稠密数组中的索引. 它会被实体id的历史最值扩容
+ */
+
 public abstract class ArrayEntityStoreBase implements WorldStore, EntityOwner {
     public static final int NO_EID = -1;
     public static final int NO_SLOT = -1;
     private static final int MIN_GROWTH = 100;
-    public static int MAX_STORE_SIZE = 1<<16;
+    public static int MAX_STORE_SIZE = 1<<17;
 
     private final IntArray eids = new IntArray();
     private int[] slotByEid;
@@ -88,6 +100,7 @@ public abstract class ArrayEntityStoreBase implements WorldStore, EntityOwner {
         onRowsCleared();
     }
 
+    /** 委托给移除行方法 */
     @Override
     public void onEntityDestroy(int entityId) {
         removeRow(entityId);
@@ -119,7 +132,7 @@ public abstract class ArrayEntityStoreBase implements WorldStore, EntityOwner {
         int oldLength = slotByEid.length;
         int newCapacity = nextCapacity(oldLength, minCapacity);
         if (newCapacity > MAX_STORE_SIZE) {
-            throw new IllegalStateException("Entity store size limit exceeded: " + MAX_STORE_SIZE);
+            throw new IllegalStateException("Entity store size limit exceeded: " + MAX_STORE_SIZE + ". If you're a developer, check out leaks!");
         }
         slotByEid = Arrays.copyOf(slotByEid, newCapacity);
         Arrays.fill(slotByEid, oldLength, newCapacity, NO_SLOT);

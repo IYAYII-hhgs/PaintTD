@@ -24,16 +24,6 @@ public class EntityHealthStore extends ArrayEntityStoreBase {
         return true;
     }
 
-    public boolean create(int eid, float hp, float maxHp) {
-        boolean created = createRow(eid);
-        if (created) {
-            int slot = slotOf(eid);
-            healths.set(slot, hp);
-            maxHealths.set(slot, maxHp);
-        }
-        return created;
-    }
-
     public boolean setHp(int eid, float hp) {
         int slot = slotOf(eid);
         if (slot < 0) return false;
@@ -48,8 +38,14 @@ public class EntityHealthStore extends ArrayEntityStoreBase {
         return true;
     }
 
-    public void remove(int eid) {
-        removeRow(eid);
+    public boolean createAndSet(int eid, float hp, float maxHp) {
+        boolean created = createRow(eid);
+        if (created) {
+            int slot = slotOf(eid);
+            healths.set(slot, hp);
+            maxHealths.set(slot, maxHp);
+        }
+        return created;
     }
 
     @Override

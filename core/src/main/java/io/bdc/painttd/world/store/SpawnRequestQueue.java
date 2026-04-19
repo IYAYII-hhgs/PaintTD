@@ -17,10 +17,8 @@ public class SpawnRequestQueue implements WorldStore {
     }
 
     public void clear() {
-        for (var req : requests) {
-            req.reset();
-        }
         lastSpawn = size();
+        pool.freeAll(requests);
         requests.clear();
     }
 

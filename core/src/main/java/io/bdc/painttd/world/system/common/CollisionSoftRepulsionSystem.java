@@ -7,11 +7,11 @@ import io.bdc.painttd.world.system.*;
 
 public class CollisionSoftRepulsionSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
-    public TransformStore transformStore;
+    public PositionStore positionStore;
     public HitboxStore hitboxStore;
     public VelocityStore velocityStore;
 
-    public float pushPerOverlap = 0.02f;
+    public float pushPerOverlap = 0.04f, notMainAxisMultiplier = 0.1f;
 
     public CollisionSoftRepulsionSystem(WorldRuntime world, WorldPhase phase, int order) {
         super(world, phase, order);
@@ -20,7 +20,7 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
     @Override
     public void onBind(WorldAccess binder) {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
-        transformStore = binder.getStore(TransformStore.class);
+        positionStore = binder.getStore(PositionStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         velocityStore = binder.getStore(VelocityStore.class);
 
@@ -44,8 +44,8 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
             return;
         }
 
-        int transformSlotA = transformStore.slotOf(eidA);
-        int transformSlotB = transformStore.slotOf(eidB);
+        int transformSlotA = positionStore.slotOf(eidA);
+        int transformSlotB = positionStore.slotOf(eidB);
         if (transformSlotA < 0 || transformSlotB < 0) {
             return;
         }
@@ -56,10 +56,10 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
             return;
         }
 
-        float ax = transformStore.x.items[transformSlotA];
-        float ay = transformStore.y.items[transformSlotA];
-        float bx = transformStore.x.items[transformSlotB];
-        float by = transformStore.y.items[transformSlotB];
+        float ax = positionStore.x.items[transformSlotA];
+        float ay = positionStore.y.items[transformSlotA];
+        float bx = positionStore.x.items[transformSlotB];
+        float by = positionStore.y.items[transformSlotB];
 
         float ah = hitboxStore.hb.items[hitboxSlotA] * 0.5f;
         float bh = hitboxStore.hb.items[hitboxSlotB] * 0.5f;
@@ -74,16 +74,21 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
 
         int velocitySlotA = velocityStore.slotOf(eidA);
         int velocitySlotB = velocityStore.slotOf(eidB);
+        if (velocitySlotA < 0 || velocitySlotB < 0) {
+            return;
+        }
 
         float sign = resolveAxisSign(bx - ax, eidA, eidB);
         float push = overlapX * pushPerOverlap;
-        addVelocity(velocitySlotA, velocityXItems, velocityYItems, -sign * push, 0f);
-        addVelocity(velocitySlotB, velocityXItems, velocityYItems, sign * push, 0f);
+        if (overlapX > overlapY) push *= notMainAxisMultiplier; // 排斥主轴检查
+        velocityXItems[velocitySlotA] += -sign * push;
+        velocityXItems[velocitySlotB] += sign * push;
 
         sign = resolveAxisSign(by - ay, eidA, eidB);
-        push = (overlapY) * pushPerOverlap;
-        addVelocity(velocitySlotA, velocityXItems, velocityYItems, 0f, -sign * push);
-        addVelocity(velocitySlotB, velocityXItems, velocityYItems, 0f, sign * push);
+        push = overlapY * pushPerOverlap;
+        if (overlapY > overlapX) push *= notMainAxisMultiplier; // 排斥主轴检查
+        velocityYItems[velocitySlotA] += -sign * push;
+        velocityYItems[velocitySlotB] += sign * push;
     }
 
     private float resolveAxisSign(float delta, int eidA, int eidB) {
@@ -94,13 +99,5 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
             return -1f;
         }
         return eidA < eidB ? 1f : -1f;
-    }
-
-    private void addVelocity(int velocitySlot, float[] velocityXItems, float[] velocityYItems, float addX, float addY) {
-        if (velocitySlot < 0) {
-            return;
-        }
-        velocityXItems[velocitySlot] += addX;
-        velocityYItems[velocitySlot] += addY;
     }
 }

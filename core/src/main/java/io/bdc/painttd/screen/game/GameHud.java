@@ -67,11 +67,19 @@ public class GameHud {
         TextButton buttonTestClearSteps = ActorUtils.wrap(new TextButton("清除放置附加步骤", screen.app.skins.skin))
                                                 .click(b -> screen.placement.clearPostSteps())
                                                 .free();
-
-        TextButton buttonTestUnit5000 = ActorUtils.wrap(new TextButton("随机放置5000个实体", screen.app.skins.skin))
+        TextButton buttonTestUnit1000 = ActorUtils.wrap(new TextButton("随机放置1000个", screen.app.skins.skin))
                                             .click(b -> {
                                                 if (screen.placement.select == null) return;
-                                                for (int i = 0; i < 5000; i++) {
+                                                for (int i = 0; i < 1000; i++) {
+                                                    screen.placement.place(MathUtils.random(0f, world.getStore(MapStore.class).width), MathUtils.random(0f, world.getStore(MapStore.class).height));
+                                                }
+                                            })
+                                            .free();
+
+        TextButton buttonTestUnit10000 = ActorUtils.wrap(new TextButton("随机放置10000个", screen.app.skins.skin))
+                                            .click(b -> {
+                                                if (screen.placement.select == null) return;
+                                                for (int i = 0; i < 10000; i++) {
                                                     screen.placement.place(MathUtils.random(0f, world.getStore(MapStore.class).width), MathUtils.random(0f, world.getStore(MapStore.class).height));
                                                 }
                                             })
@@ -154,7 +162,8 @@ public class GameHud {
         buttonsTable.add(buttonTestUnit).row();
         buttonsTable.add(buttonTestInitVelocityStep).row();
         buttonsTable.add(buttonTestClearSteps).row();
-        buttonsTable.add(buttonTestUnit5000).row();
+        buttonsTable.add(buttonTestUnit1000).row();
+        buttonsTable.add(buttonTestUnit10000).row();
         buttonsTable.add(buttonTestBuilding).row();
         buttonsTable.add(buttonDelete).row();
         buttonsTable.add(buttonDeleteAll).row();

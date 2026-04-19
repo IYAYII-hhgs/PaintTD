@@ -7,8 +7,6 @@ import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
 public final class EntityMetaStep implements AssembleStep {
-    public static final String TYPE = "EntityMetaStep";
-
     @Override
     public void run(int eid, EntitySpawnRequest req, WorldAccess binder) {
         EntityDef entityDef = req.entityDef;

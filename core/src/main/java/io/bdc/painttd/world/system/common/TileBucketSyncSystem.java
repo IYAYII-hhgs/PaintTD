@@ -15,8 +15,8 @@ import io.bdc.painttd.world.system.*;
 public class TileBucketSyncSystem extends WorldSystem {
     public TileBucketStore bucketStore;
     public TileBucketDebugStore debugStore;
-    public TileBucketDirtyStore dirtyStore;
-    public TransformStore transformStore;
+    public TileBucketDirtyQueue dirtyStore;
+    public PositionStore positionStore;
     public HitboxStore hitboxStore;
 
     public TileBucketSyncSystem(WorldRuntime world, WorldPhase phase, int order) {
@@ -27,16 +27,16 @@ public class TileBucketSyncSystem extends WorldSystem {
     public void onBind(WorldAccess binder) {
         bucketStore = binder.getStore(TileBucketStore.class);
         debugStore = binder.getStore(TileBucketDebugStore.class);
-        dirtyStore = binder.getStore(TileBucketDirtyStore.class);
-        transformStore = binder.getStore(TransformStore.class);
+        dirtyStore = binder.getStore(TileBucketDirtyQueue.class);
+        positionStore = binder.getStore(PositionStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
     }
 
     @Override
     public void run(float delta) {
         int[] dirtyItems = dirtyStore.dirtyEids.items;
-        float[] transformXItems = transformStore.x.items;
-        float[] transformYItems = transformStore.y.items;
+        float[] transformXItems = positionStore.x.items;
+        float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
         int dirtyQueuedCount = dirtyStore.dirtyEids.size;
         int dirtyFlushedCount = 0;
@@ -48,10 +48,10 @@ public class TileBucketSyncSystem extends WorldSystem {
             if (!dirtyStore.isDirty(eid)) {
                 continue;
             }
-            dirtyStore.clearDirty(eid);
+            dirtyStore.clear(eid);
             dirtyFlushedCount += 1;
 
-            int transformSlot = transformStore.slotOf(eid);
+            int transformSlot = positionStore.slotOf(eid);
             int hitboxSlot = hitboxStore.slotOf(eid);
             if (transformSlot < 0 || hitboxSlot < 0) {
                 bucketStore.removeEntity(eid);
@@ -72,7 +72,7 @@ public class TileBucketSyncSystem extends WorldSystem {
             dirtyReinsertCount += 1;
         }
 
-        dirtyStore.clearDirtyList();
+        dirtyStore.clear();
         debugStore.dirtyQueuedCount = dirtyQueuedCount;
         debugStore.dirtyFlushedCount = dirtyFlushedCount;
         debugStore.dirtyRemovedCount = dirtyRemovedCount;

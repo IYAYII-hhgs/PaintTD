@@ -14,7 +14,7 @@ import io.bdc.painttd.world.system.*;
  */
 public class DetectEcSolidCellSystem extends WorldSystem {
     public CollisionBodyStore collisionBodyStore;
-    public TransformStore transformStore;
+    public PositionStore positionStore;
     public HitboxStore hitboxStore;
     public MapStore mapStore;
     public CollisionDispatchAPI collisionDispatchAPI;
@@ -27,7 +27,7 @@ public class DetectEcSolidCellSystem extends WorldSystem {
     @Override
     public void onBind(WorldAccess binder) {
         collisionBodyStore = binder.getStore(CollisionBodyStore.class);
-        transformStore = binder.getStore(TransformStore.class);
+        positionStore = binder.getStore(PositionStore.class);
         hitboxStore = binder.getStore(HitboxStore.class);
         mapStore = binder.getStore(MapStore.class);
         collisionDispatchAPI = binder.getApi(CollisionDispatchAPI.class);
@@ -37,8 +37,8 @@ public class DetectEcSolidCellSystem extends WorldSystem {
     @Override
     public void run(float delta) {
         int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
-        float[] transformXItems = transformStore.x.items;
-        float[] transformYItems = transformStore.y.items;
+        float[] transformXItems = positionStore.x.items;
+        float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
         int[] mapCells = mapStore.cells;
         int mapWidth = mapStore.width;
@@ -52,7 +52,7 @@ public class DetectEcSolidCellSystem extends WorldSystem {
             }
 
             int eid = collisionBodyStore.eidOf(bodySlot);
-            int transformSlot = transformStore.slotOf(eid);
+            int transformSlot = positionStore.slotOf(eid);
             int hitboxSlot = hitboxStore.slotOf(eid);
             if (transformSlot < 0 || hitboxSlot < 0) {
                 continue;

@@ -6,8 +6,6 @@ import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
 public class VelocityStep implements AssembleStep {
-    public static final String TYPE = "VelocityStep";
-
     @Override
     public void run(int eid, EntitySpawnRequest req, WorldAccess binder) {
         var store = binder.getStore(VelocityStore.class);

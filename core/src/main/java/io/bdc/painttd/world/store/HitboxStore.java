@@ -23,10 +23,6 @@ public class HitboxStore extends ArrayEntityStoreBase {
         return created;
     }
 
-    public void remove(int eid) {
-        removeRow(eid);
-    }
-
     @Override
     protected void onRowCreated(int eid, int slot) {
         hb.add(0f);

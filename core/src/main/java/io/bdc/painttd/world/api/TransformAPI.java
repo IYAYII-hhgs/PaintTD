@@ -4,71 +4,93 @@ import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.store.*;
 
 /**
- * 本 API 提供位置的统一写入口。
+ * 本 API 提供坐标变换数据的统一写入口。
  */
 public class TransformAPI implements WorldAPI {
-    public TransformStore transformStore;
-    public TileBucketDirtyStore dirtyStore;
+    public PositionStore positionStore;
+    public HitboxStore hitboxStore;
+
+    public TileBucketDirtyQueue dirtyStore;
 
     @Override
     public void onBind(WorldAccess binder) {
-        transformStore = binder.getStore(TransformStore.class);
-        dirtyStore = binder.getStore(TileBucketDirtyStore.class);
+        positionStore = binder.getStore(PositionStore.class);
+        hitboxStore = binder.getStore(HitboxStore.class);
+        dirtyStore = binder.getStore(TileBucketDirtyQueue.class);
     }
 
-    public boolean setTransform(int eid, float x, float y) {
-        int slot = transformStore.slotOf(eid);
+    /** 热点写入可以直写数组, 并手动使用该方法提醒格子桶. */
+    public void markDirty(int eid) {
+        dirtyStore.markDirty(eid);
+    }
+
+    public boolean setPosition(int eid, float x, float y) {
+        int slot = positionStore.slotOf(eid);
         if (slot < 0) {
             return false;
         }
-        if (transformStore.x.items[slot] == x && transformStore.y.items[slot] == y) {
+        if (positionStore.x.items[slot] == x && positionStore.y.items[slot] == y) {
             return true;
         }
-        transformStore.x.items[slot] = x;
-        transformStore.y.items[slot] = y;
+        positionStore.x.items[slot] = x;
+        positionStore.y.items[slot] = y;
         dirtyStore.markDirty(eid);
         return true;
     }
 
-    public boolean createAndSetTransform(int eid, float x, float y) {
-        boolean created = transformStore.createRow(eid);
-        int slot = transformStore.slotOf(eid);
-        transformStore.x.items[slot] = x;
-        transformStore.y.items[slot] = y;
+    public boolean setPosX(int eid, float x) {
+        int slot = positionStore.slotOf(eid);
+        if (slot < 0) {
+            return false;
+        }
+        if (positionStore.x.items[slot] == x) {
+            return true;
+        }
+        positionStore.x.items[slot] = x;
+        dirtyStore.markDirty(eid);
+        return true;
+    }
+
+    public boolean setPosY(int eid, float y) {
+        int slot = positionStore.slotOf(eid);
+        if (slot < 0) {
+            return false;
+        }
+        if (positionStore.y.items[slot] == y) {
+            return true;
+        }
+        positionStore.y.items[slot] = y;
+        dirtyStore.markDirty(eid);
+        return true;
+    }
+
+    public boolean setHitbox(int eid, float size) {
+        int slot = hitboxStore.slotOf(eid);
+        if (slot < 0) {
+            return false;
+        }
+        if (hitboxStore.hb.items[slot] == size) {
+            return true;
+        }
+        hitboxStore.hb.items[slot] = size;
+        dirtyStore.markDirty(eid);
+        return true;
+    }
+
+    public boolean createAndSetPosition(int eid, float x, float y) {
+        boolean created = positionStore.createRow(eid);
+        int slot = positionStore.slotOf(eid);
+        positionStore.x.items[slot] = x;
+        positionStore.y.items[slot] = y;
         dirtyStore.markDirty(eid);
         return created;
     }
 
-    public boolean setX(int eid, float x) {
-        int slot = transformStore.slotOf(eid);
-        if (slot < 0) {
-            return false;
-        }
-        if (transformStore.x.items[slot] == x) {
-            return true;
-        }
-        transformStore.x.items[slot] = x;
+    public boolean createAndSetHitbox(int eid, float size) {
+        hitboxStore.createRow(eid);
+        int slot = hitboxStore.slotOf(eid);
+        hitboxStore.hb.items[slot] = size;
         dirtyStore.markDirty(eid);
         return true;
-    }
-
-    public boolean setY(int eid, float y) {
-        int slot = transformStore.slotOf(eid);
-        if (slot < 0) {
-            return false;
-        }
-        if (transformStore.y.items[slot] == y) {
-            return true;
-        }
-        transformStore.y.items[slot] = y;
-        dirtyStore.markDirty(eid);
-        return true;
-    }
-
-    /**
-     * 热点写入可以直写数组, 并使用该方法标记脏.
-     */
-    public void markDirty(int eid) {
-        dirtyStore.markDirty(eid);
     }
 }

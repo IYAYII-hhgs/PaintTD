@@ -57,7 +57,7 @@ public class GameHud {
                                 .free();
 
         TextButton buttonTestBuilding = ActorUtils.wrap(new TextButton("放置测试建筑", screen.app.skins.skin))
-                                        .click(b -> screen.placement.toggle(Entities.testBuilding))
+                                        .click(b -> screen.placement.toggle(Entities.pencil))
                                         .free();
 
         TextButton buttonTestInitVelocityStep = ActorUtils.wrap(new TextButton("放置附加初始速度", screen.app.skins.skin))
@@ -202,8 +202,8 @@ public class GameHud {
         ));
 
         StringBuilder entityString = new StringBuilder("调试状态");
-        entityString.append("\n生成队列: ").append(world.getStore(SpawnRequestQueue.class).lastSpawn);
-        entityString.append("\n销毁队列: ").append(world.getStore(DestroyQueue.class).lastDestroy);
+        //entityString.append("\n生成队列: ").append(world.getStore(SpawnRequestQueue.class).lastSpawn);
+        //entityString.append("\n销毁队列: ").append(world.getStore(DestroyQueue.class).lastDestroy);
         var collisionDebug = world.getStore(CollisionDebugStore.class);
         entityString.append("\nEE查询: ").append(collisionDebug.eeQueryCount);
         entityString.append("\nEE候选: ").append(collisionDebug.eeCandidateCount);

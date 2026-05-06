@@ -1,10 +1,14 @@
 package io.bdc.painttd.world;
 
 import io.bdc.painttd.world.api.*;
+import io.bdc.painttd.world.family.targeting.*;
+import io.bdc.painttd.world.family.turret.*;
+import io.bdc.painttd.world.family.weapon.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.system.*;
 import io.bdc.painttd.world.system.common.*;
 import io.bdc.painttd.world.system.render.*;
+import io.bdc.painttd.world.system.targeting.*;
 
 public class WorldConfiguration {
     public int mapWidth, mapHeight;
@@ -41,6 +45,11 @@ public class WorldConfiguration {
 
         world.addStore(new EntityHealthStore());
         world.addStore(new EntityTeamStore());
+
+        world.addStore(new TurretStore());
+        world.addStore(new WeaponStore());
+        world.addStore(new EntityTargetingStore());
+        world.addStore(new CellTargetingStore());
     }
 
     public void createAPIs(WorldRuntime world) {
@@ -49,6 +58,7 @@ public class WorldConfiguration {
         world.addApi(new TileBucketQueryAPI());
         world.addApi(new CollisionDispatchAPI());
         world.addApi(new MapAPI());
+        world.addApi(new ActTypeAPI());
     }
 
     public void createSystems(WorldRuntime world) {
@@ -59,6 +69,10 @@ public class WorldConfiguration {
 
         world.addSystem(new VelocityApplySystem(world, WorldPhase.SIMULATE, 10));
         world.addSystem(new VelocityDecaySystem(world, WorldPhase.SIMULATE, 20));
+        world.addSystem(new EntityTargetingSystem(world, WorldPhase.SIMULATE, 50));
+        world.addSystem(new CellTargetingSystem(world, WorldPhase.SIMULATE, 55));
+        world.addSystem(new CooldownSystem(world, WorldPhase.SIMULATE, 60));
+        world.addSystem(new WeaponActSystem(world, WorldPhase.SIMULATE, 70));
         world.addSystem(new TileBucketSyncSystem(world, WorldPhase.SIMULATE, 100));
         world.addSystem(new CollisionFrameBeginSystem(world, WorldPhase.SIMULATE, 110));
         world.addSystem(new CollisionSoftRepulsionSystem(world, WorldPhase.SIMULATE, 115));

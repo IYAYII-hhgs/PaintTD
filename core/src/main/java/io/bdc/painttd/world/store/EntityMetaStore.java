@@ -9,13 +9,19 @@ import io.bdc.painttd.content.def.*;
  */
 
 public class EntityMetaStore extends ArrayEntityStoreBase {
-    public final Array<EntityDef> entityDefArray = new Array<>();
+    public final Array<EntityDef> entityDefArray = new Array<>(false, 16);
 
     public boolean set(int eid, EntityDef entityDef) {
         int slot = slotOf(eid);
         if (slot < 0) return false;
         entityDefArray.set(slot, entityDef);
         return true;
+    }
+
+    public EntityDef get(int eid) {
+        int slot = slotOf(eid);
+        if (slot < 0) return null;
+        return entityDefArray.get(slot);
     }
 
     public boolean createAndSet(int eid, EntityDef entityDef) {

@@ -37,6 +37,8 @@ public class DetectEeAabbSystem extends WorldSystem {
     @Override
     public void run(float delta) {
         int[] bodyTypeItems = collisionBodyStore.bodyTypeArray.items;
+        int[] categoryMaskItems = collisionBodyStore.categoryMaskArray.items;
+        int[] categoryItems = collisionBodyStore.categoryArray.items;
         float[] transformXItems = positionStore.x.items;
         float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
@@ -83,6 +85,15 @@ public class DetectEeAabbSystem extends WorldSystem {
 
                 int targetBodySlot = collisionBodyStore.slotOf(targetEid);
                 if (targetBodySlot < 0) {
+                    continue;
+                }
+
+                // 遮罩不接受map类型 排除
+                int sourceCategory = categoryItems[sourceBodySlot];
+                int targetCategory = categoryItems[targetBodySlot];
+                int sourceMask = categoryMaskItems[sourceBodySlot];
+                int targetMask = categoryMaskItems[targetBodySlot];
+                if (((sourceCategory & targetMask) == 0) || ((targetCategory & sourceMask) == 0)) {
                     continue;
                 }
 

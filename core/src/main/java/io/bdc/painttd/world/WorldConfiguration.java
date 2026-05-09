@@ -1,6 +1,7 @@
 package io.bdc.painttd.world;
 
 import io.bdc.painttd.world.api.*;
+import io.bdc.painttd.world.family.bullet.*;
 import io.bdc.painttd.world.family.targeting.*;
 import io.bdc.painttd.world.family.turret.*;
 import io.bdc.painttd.world.family.weapon.*;
@@ -48,6 +49,7 @@ public class WorldConfiguration {
 
         world.addStore(new TurretStore());
         world.addStore(new WeaponStore());
+        world.addStore(new BulletStore());
         world.addStore(new EntityTargetingStore());
         world.addStore(new CellTargetingStore());
     }
@@ -69,6 +71,7 @@ public class WorldConfiguration {
 
         world.addSystem(new VelocityApplySystem(world, WorldPhase.SIMULATE, 10));
         world.addSystem(new VelocityDecaySystem(world, WorldPhase.SIMULATE, 20));
+        world.addSystem(new BulletTargetPushSystem(world, WorldPhase.SIMULATE, 25));
         world.addSystem(new EntityTargetingSystem(world, WorldPhase.SIMULATE, 50));
         world.addSystem(new CellTargetingSystem(world, WorldPhase.SIMULATE, 55));
         world.addSystem(new CooldownSystem(world, WorldPhase.SIMULATE, 60));
@@ -79,11 +82,12 @@ public class WorldConfiguration {
         world.addSystem(new DetectEeAabbSystem(world, WorldPhase.SIMULATE, 120));
         world.addSystem(new DetectEcSolidCellSystem(world, WorldPhase.SIMULATE, 130));
         world.addSystem(new CollisionSolidBounceSystem(world, WorldPhase.SIMULATE, 140));
-        world.addSystem(new CollisionCellDamageSystem(world, WorldPhase.SIMULATE, 145));
         world.addSystem(new WorldBoundsBounceSystem(world, WorldPhase.SIMULATE, 150));
 
-        //world.addSystem(new TestGlobalDamageSystem(world, WorldPhase.APPLY, 0));
+        world.addSystem(new CollisionBulletHitSystem(world, WorldPhase.APPLY, 100));
+        world.addSystem(new CollisionCellDamageSystem(world, WorldPhase.APPLY, 110));
 
+        world.addSystem(new BulletValidationSystem(world, WorldPhase.CLEANUP, 80));
         world.addSystem(new DeathToDestroySystem(world, WorldPhase.CLEANUP, 90));
         world.addSystem(new EntityDestroySystem(world, WorldPhase.CLEANUP, 100, entityAssembler));
 

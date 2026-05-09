@@ -24,7 +24,7 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
         hitboxStore = binder.getStore(HitboxStore.class);
         velocityStore = binder.getStore(VelocityStore.class);
 
-        binder.getApi(CollisionDispatchAPI.class).onUndirectedEe(this::handleUndirectedEe);
+        binder.getApi(CollisionDispatchAPI.class).onEe(this::handleUndirectedEe);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CollisionSoftRepulsionSystem extends WorldSystem {
             return;
         }
 
-        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        int[] bodyTypeItems = collisionBodyStore.bodyTypeArray.items;
         if (bodyTypeItems[bodySlotA] != CollisionBodyStore.BODY_DYNAMIC
                 || bodyTypeItems[bodySlotB] != CollisionBodyStore.BODY_DYNAMIC) {
             return;

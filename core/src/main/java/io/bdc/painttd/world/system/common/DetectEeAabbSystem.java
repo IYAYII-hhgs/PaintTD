@@ -36,7 +36,7 @@ public class DetectEeAabbSystem extends WorldSystem {
 
     @Override
     public void run(float delta) {
-        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        int[] bodyTypeItems = collisionBodyStore.bodyTypeArray.items;
         float[] transformXItems = positionStore.x.items;
         float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
@@ -46,6 +46,7 @@ public class DetectEeAabbSystem extends WorldSystem {
         int eeOverlapCount = collisionDebugStore.eeOverlapCount;
 
         for (int sourceBodySlot = 0; sourceBodySlot < collisionBodyStore.size(); sourceBodySlot++) {
+            // 静态实体 排除
             if (bodyTypeItems[sourceBodySlot] != CollisionBodyStore.BODY_DYNAMIC) {
                 continue;
             }

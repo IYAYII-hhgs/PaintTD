@@ -45,7 +45,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
         var collisionDispatch = binder.getApi(CollisionDispatchAPI.class);
         collisionDispatch.onEcWall(this::handleEc);
         collisionDispatch.onEcStain(this::handleEcStain);
-        collisionDispatch.onUndirectedEe(this::handleUndirectedEe);
+        collisionDispatch.onEe(this::handleUndirectedEe);
     }
 
     @Override
@@ -122,6 +122,12 @@ public class CollisionSolidBounceSystem extends WorldSystem {
     }
 
     private void handleEc(int eid, int cellIndex) {
+        int bodySlot = collisionBodyStore.slotOf(eid);
+        int[] categoryItems = collisionBodyStore.categoryArray.items;
+        if ((categoryItems[bodySlot] & CollisionBodyStore.CAT_MAPMASK) == 0) {
+            return;// 地图格不接受动态方碰撞类型，跳过
+        }
+
         int transformSlot = positionStore.slotOf(eid);
         int hitboxSlot = hitboxStore.slotOf(eid);
         if (transformSlot < 0 || hitboxSlot < 0) {
@@ -163,7 +169,7 @@ public class CollisionSolidBounceSystem extends WorldSystem {
             return;
         }
 
-        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        int[] bodyTypeItems = collisionBodyStore.bodyTypeArray.items;
         boolean aDynamic = bodyTypeItems[bodySlotA] == CollisionBodyStore.BODY_DYNAMIC;
         boolean bDynamic = bodyTypeItems[bodySlotB] == CollisionBodyStore.BODY_DYNAMIC;
         boolean aStatic = bodyTypeItems[bodySlotA] == CollisionBodyStore.BODY_STATIC;
@@ -174,6 +180,15 @@ public class CollisionSolidBounceSystem extends WorldSystem {
 
         int dynamicEid = aDynamic ? eidA : eidB;
         int staticEid = aStatic ? eidA : eidB;
+        int dynamicSlot = aDynamic ? bodySlotA : bodySlotB;
+        int staticSlot = aStatic ? bodySlotA : bodySlotB;
+
+        int[] categoryItems = collisionBodyStore.categoryArray.items;
+        int[] categoryMaskItems = collisionBodyStore.categoryMaskArray.items;
+        if ((categoryItems[dynamicSlot] & categoryMaskItems[staticSlot]) == 0) {
+            return;// 动态方碰撞类型不匹配静态方遮罩，跳过
+        }
+
         int dynamicTransformSlot = positionStore.slotOf(dynamicEid);
         int staticTransformSlot = positionStore.slotOf(staticEid);
         if (dynamicTransformSlot < 0 || staticTransformSlot < 0) {

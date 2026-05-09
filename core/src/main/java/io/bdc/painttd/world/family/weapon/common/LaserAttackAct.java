@@ -30,7 +30,7 @@ public class LaserAttackAct implements WeaponAct {
         WeaponDef weaponDef = weaponStore.defArray.get(weaponSlot);
         TurretDef turretDef = turretStore.defArray.get(turretSlot);
 
-        float dmg = weaponDef.damage;
+        float dmg = weaponDef.directDamage;
         int targetEid = -1;
         int targetCell = -1;
 
@@ -44,21 +44,11 @@ public class LaserAttackAct implements WeaponAct {
         }
 
         boolean acted = false;
-        switch (turretDef.targetPriority) {
-            case ENTITY_FIRST:
-                if (targetEid != -1) {
-                    damageAPI.realDamage(targetEid, dmg);
-                    acted = true;
-                } else if (targetCell != -1) {
-                    //TODO cell damage
-                    acted = false;
-                }
-                break;
-            case CELL_ONLY:
-                if (targetCell != -1) {
-                    acted = false;
-                }
-                break;
+        if (targetEid != -1) {
+            damageAPI.realDamage(targetEid, dmg);
+            acted = true;
+        } else if (targetCell != -1) {
+            //TODO cell damage
         }
 
         if (acted) {

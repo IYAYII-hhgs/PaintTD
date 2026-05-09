@@ -5,11 +5,25 @@ import io.bdc.painttd.world.assemble.step.*;
 import io.bdc.painttd.world.store.*;
 import io.bdc.painttd.world.store.request.*;
 
-public final class CollisionBodyStep implements AssembleStep {
-    public int bodyType = CollisionBodyStore.BODY_DYNAMIC;
+import static io.bdc.painttd.world.store.CollisionBodyStore.*;
 
-    public CollisionBodyStep setup(int bodyType) {
+public final class CollisionBodyStep implements AssembleStep {
+    public int bodyType = BODY_DYNAMIC;
+    public int category = 0;
+    public int mask = 0;
+
+    public CollisionBodyStep bodyType(int bodyType) {
         this.bodyType = bodyType;
+        return this;
+    }
+
+    public CollisionBodyStep category(int category) {
+        this.category = category;
+        return this;
+    }
+
+    public CollisionBodyStep mask(int mask) {
+        this.mask = mask;
         return this;
     }
 
@@ -19,6 +33,6 @@ public final class CollisionBodyStep implements AssembleStep {
         if (store == null) {
             throw new IllegalStateException("Target store is missed.");
         }
-        store.createAndSet(eid, bodyType);
+        store.createAndSet(eid, bodyType, category, mask);
     }
 }

@@ -9,8 +9,9 @@ public class WeaponStore extends ArrayEntityStoreBase {
 
     public boolean createAndSet(int eid, WeaponDef def, WeaponAct act) {
         boolean created = createRow(eid);
-        defArray.set(slotOf(eid), def);
-        actArray.set(slotOf(eid), act);
+        int slot = slotOf(eid);
+        defArray.set(slot, def);
+        actArray.set(slot, act);
         return created;
     }
 

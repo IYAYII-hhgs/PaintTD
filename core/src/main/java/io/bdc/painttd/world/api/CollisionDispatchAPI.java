@@ -11,8 +11,8 @@ import io.bdc.painttd.world.store.*;
  * 应用层 system 则在这里注册各自的 handler。
  * <p>
  * 它的职责是把瞬时接触整理成稳定的 family 入口并转发出去。
- * 当前保留 DirectedEE、UndirectedEE 以及按需要细分的 EC 入口；
- * 其中 UndirectedEE 在这里统一做 pair 归一化和去重。
+ * 当前保留 EE（无向） 以及细分的 EC（单向） 入口；
+ * 其中 EE 做了 pair 归一化和去重。
  */
 public class CollisionDispatchAPI implements WorldAPI {
     public interface EeHandler {
@@ -23,7 +23,6 @@ public class CollisionDispatchAPI implements WorldAPI {
         void handle(int eid, int cellIndex);
     }
 
-    public final Array<EeHandler> directedEeHandlers = new Array<>();
     public final Array<EeHandler> undirectedEeHandlers = new Array<>();
     public final Array<EcHandler> ecWallHandlers = new Array<>();
     public final Array<EcHandler> ecStainHandlers = new Array<>();
@@ -40,11 +39,7 @@ public class CollisionDispatchAPI implements WorldAPI {
         seenUndirectedPairs.clear();
     }
 
-    public void onDirectedEe(EeHandler handler) {
-        directedEeHandlers.add(handler);
-    }
-
-    public void onUndirectedEe(EeHandler handler) {
+    public void onEe(EeHandler handler) {
         undirectedEeHandlers.add(handler);
     }
 
@@ -54,12 +49,6 @@ public class CollisionDispatchAPI implements WorldAPI {
 
     public void onEcStain(EcHandler handler) {
         ecStainHandlers.add(handler);
-    }
-
-    public void emitDirectedEe(int eidA, int eidB) {
-        for (int i = 0; i < directedEeHandlers.size; i++) {
-            directedEeHandlers.get(i).handle(eidA, eidB);
-        }
     }
 
     public void emitUndirectedEe(int eidA, int eidB) {

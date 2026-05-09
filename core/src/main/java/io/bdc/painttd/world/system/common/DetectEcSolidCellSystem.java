@@ -36,7 +36,8 @@ public class DetectEcSolidCellSystem extends WorldSystem {
 
     @Override
     public void run(float delta) {
-        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        int[] bodyTypeItems = collisionBodyStore.bodyTypeArray.items;
+        int[] categoryMaskItems = collisionBodyStore.categoryMaskArray.items;
         float[] transformXItems = positionStore.x.items;
         float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;
@@ -47,7 +48,13 @@ public class DetectEcSolidCellSystem extends WorldSystem {
         int ecWallCount = collisionDebugStore.ecWallCount;
 
         for (int bodySlot = 0; bodySlot < collisionBodyStore.size(); bodySlot++) {
+            // 静态实体 排除
             if (bodyTypeItems[bodySlot] != CollisionBodyStore.BODY_DYNAMIC) {
+                continue;
+            }
+
+            // 遮罩不接受map类型 排除
+            if ((categoryMaskItems[bodySlot] & CollisionBodyStore.CAT_MAP) == 0) {
                 continue;
             }
 

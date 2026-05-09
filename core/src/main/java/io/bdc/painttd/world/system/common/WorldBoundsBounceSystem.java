@@ -33,7 +33,7 @@ public class WorldBoundsBounceSystem extends WorldSystem {
     public void run(float delta) {
         float worldWidth = mapStore.width;
         float worldHeight = mapStore.height;
-        int[] bodyTypeItems = collisionBodyStore.bodyTypes.items;
+        int[] bodyTypeItems = collisionBodyStore.bodyTypeArray.items;
         float[] transformXItems = positionStore.x.items;
         float[] transformYItems = positionStore.y.items;
         float[] hitboxItems = hitboxStore.hb.items;

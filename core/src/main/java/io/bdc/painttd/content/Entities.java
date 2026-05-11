@@ -6,7 +6,6 @@ import io.bdc.painttd.world.assemble.step.asm.*;
 import io.bdc.painttd.world.family.targeting.*;
 import io.bdc.painttd.world.family.turret.*;
 import io.bdc.painttd.world.family.weapon.*;
-import io.bdc.painttd.world.family.weapon.common.*;
 import io.bdc.painttd.world.store.*;
 
 import static io.bdc.painttd.world.store.CollisionBodyStore.*;
@@ -55,8 +54,7 @@ public class Entities {
         registerDef(pencil = new EntityDef("Pencil") {
             {
                 turretDef = new TurretDef(0.5f, 4f);
-                //weaponDef = new WeaponDef().setup(0.5f, new LaserAttackAct());
-                weaponDef = new WeaponDef().setup(0.2f, new BulletAttackAct().setBulletDef(baseBullet));
+                weaponDef = new BulletWeaponDef(baseBullet).directDamage(0.2f);
 
                 steps.add(new TurretDefStep().setup(new TurretDef(60f, 8f)));
                 steps.add(new WeaponStep().setup(weaponDef));

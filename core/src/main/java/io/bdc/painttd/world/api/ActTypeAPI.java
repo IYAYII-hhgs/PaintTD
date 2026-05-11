@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.act.*;
 
+@Deprecated
 public class ActTypeAPI implements WorldAPI {
     public WorldAccess binder;
     //首版先存直接引用, 不做typeId映射

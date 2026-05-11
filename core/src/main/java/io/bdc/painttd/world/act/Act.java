@@ -7,6 +7,7 @@ import io.bdc.painttd.world.*;
  * 不可持有实体级状态
  * 建议按家族实现
  */
+@Deprecated
 public interface Act {
     /** 生成一个运行时实例 */
     Act runtimeInstance();

@@ -48,7 +48,7 @@ public class WorldConfiguration {
         world.addStore(new EntityTeamStore());
 
         world.addStore(new TurretStore());
-        world.addStore(new WeaponStore());
+        world.addStore(new BulletWeaponStore());
         world.addStore(new BulletStore());
         world.addStore(new EntityTargetingStore());
         world.addStore(new CellTargetingStore());
@@ -75,7 +75,7 @@ public class WorldConfiguration {
         world.addSystem(new EntityTargetingSystem(world, WorldPhase.SIMULATE, 50));
         world.addSystem(new CellTargetingSystem(world, WorldPhase.SIMULATE, 55));
         world.addSystem(new CooldownSystem(world, WorldPhase.SIMULATE, 60));
-        world.addSystem(new WeaponActSystem(world, WorldPhase.SIMULATE, 70));
+        world.addSystem(new BulletWeaponAttackSystem(world, WorldPhase.SIMULATE, 70));
         world.addSystem(new TileBucketSyncSystem(world, WorldPhase.SIMULATE, 100));
         world.addSystem(new CollisionFrameBeginSystem(world, WorldPhase.SIMULATE, 110));
         world.addSystem(new CollisionSoftRepulsionSystem(world, WorldPhase.SIMULATE, 115));

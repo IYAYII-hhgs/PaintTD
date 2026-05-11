@@ -1,18 +1,16 @@
 package io.bdc.painttd.world.family.weapon;
 
+import io.bdc.painttd.world.*;
 import io.bdc.painttd.world.family.*;
+import io.bdc.painttd.world.store.request.*;
 
-public class WeaponDef implements ModuleDef {
-    public float directDamage = 0.1f;
-    public float slashDamage = 0f;
-    public float slashRadius = 1f;
-    public float cellSlashDamage = 1f;
-    public float cellSlashRadius = 0f;
-    public WeaponAct attackAct;
-
-    public WeaponDef setup(float damage, WeaponAct attackAct) {
-        this.directDamage = damage;
-        this.attackAct = attackAct;
-        return this;
-    }
+/**
+ * Weapon家族开发契约
+ * 武器定义只描述静态配置。
+ * 武器装配期负责向对应 store 注册运行时数据。
+ * 运行时状态放 store，行为流程放 system。
+ * 不要把帧逻辑塞进 Def。
+ */
+public abstract class WeaponDef implements ModuleDef {
+    public abstract boolean onAssemble(int eid, EntitySpawnRequest req, WorldAccess binder);
 }

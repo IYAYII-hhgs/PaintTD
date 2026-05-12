@@ -83,7 +83,9 @@ public class BulletWeaponAttackSystem extends WorldSystem {
         float x = positionStore.x.get(posSlot);
         float y = positionStore.y.get(posSlot);
         req.setup(weaponDef.bulletDef, x, y);
-        req.addStep(new PostBulletStep().setup(eid, tgteid).damage(weaponDef.directDamage));
+        req.addStep(new PostBulletStep().setup(eid, tgteid));
+        req.addStep(new PostBulletDamageStep().setup(weaponDef));
+        req.addStep(new PostBulletLifeTimeStep().duration(weaponDef.hitDuration));
         req.addStep(new PostTeamStep().setup(teamStore.get(eid)));
         spawnRequestQueue.add(req);
         return true;

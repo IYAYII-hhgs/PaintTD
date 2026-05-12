@@ -87,6 +87,43 @@ public class TileBucketQueryAPI implements WorldAPI {
         return collectCRect(centerX, centerY, size, size);
     }
 
+    public IntArray collectCircle(float centerX, float centerY, float radius) {
+        beginQuery();
+        if (radius <= 0) {
+            return results;
+        }
+
+        int minCellX = MathUtils.floor(centerX - radius);
+        int minCellY = MathUtils.floor(centerY - radius);
+        int maxCellX = MathUtils.ceil(centerX + radius - MathUtils.FLOAT_ROUNDING_ERROR);
+        int maxCellY = MathUtils.ceil(centerY + radius - MathUtils.FLOAT_ROUNDING_ERROR);
+
+        if (maxCellX < 0 || maxCellY < 0 || minCellX >= bucket.width || minCellY >= bucket.height || minCellX > maxCellX || minCellY > maxCellY) {
+            return results;
+        }
+
+        minCellX = MathUtils.clamp(minCellX, 0, bucket.width - 1);
+        maxCellX = MathUtils.clamp(maxCellX, 0, bucket.width - 1);
+        minCellY = MathUtils.clamp(minCellY, 0, bucket.height - 1);
+        maxCellY = MathUtils.clamp(maxCellY, 0, bucket.height - 1);
+        if (minCellX > maxCellX || minCellY > maxCellY) {
+            return results;
+        }
+
+        float ensuredR2 = (radius + 1.415f) * (radius + 1.415f);// 需要一个更好的圆覆盖桶集算法
+
+        for (int y = minCellY; y <= maxCellY; y++) {
+            for (int x = minCellX; x <= maxCellX; x++) {
+                float dx = x - centerX;
+                float dy = y - centerY;
+                if (dx * dx + dy * dy <= ensuredR2) {
+                    collectCellInternal(bucket.index(x, y));
+                }
+            }
+        }
+        return results;
+    }
+
     private void beginQuery() {
         if (queryStamp == Integer.MAX_VALUE) {
             Arrays.fill(seenStampByEid, 0);// 复审注: 如果stamp存放的是每次查询自增的queryStamp, 重置过程也许不需要fill 0.
@@ -101,7 +138,9 @@ public class TileBucketQueryAPI implements WorldAPI {
     }
 
     private void collectCellInternal(int cell) {
-        for (int node = bucket.headByCell[cell]; node != -1; node = bucket.nextInCell[node]) {
+        for (int node = bucket.headByCell[cell];
+             node != -1;
+             node = bucket.nextInCell[node]) {
             int eid = bucket.eidByNode[node];
             accept(eid);
         }

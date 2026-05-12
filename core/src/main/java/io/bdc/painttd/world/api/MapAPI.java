@@ -11,6 +11,13 @@ public class MapAPI implements WorldAPI {
         mapStore = binder.getStore(MapStore.class);
     }
 
+    public MapStore getMapStore() {
+        return mapStore;
+    }
+
+    /**
+     * @return 实际造成的伤害
+     */
     public float damageCell(float damage, int cid) {
         float mapHp = mapStore.hpMask[cid];
         if (mapHp > 0) {
@@ -23,6 +30,19 @@ public class MapAPI implements WorldAPI {
             return damage;
         }
         return 0;
+    }
+
+    public void coverCell(float amount, int cid, int team) {
+        // 尝试伤害敌对色块，如果有
+        int cellTeam = mapStore.teamMask[cid];
+        if (cellTeam != team) {
+            amount -= damageCell(amount, cid);
+        }
+        // 余量生成友方色块
+        if (amount > 0) {
+            mapStore.hpMask[cid] += amount;
+            mapStore.teamMask[cid] = team;
+        }
     }
 
     public float getCellHp(int cid) {

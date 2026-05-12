@@ -9,8 +9,7 @@ import static io.bdc.painttd.world.store.ArrayEntityStoreBase.NO_EID;
 public class PostBulletStep implements PostSpawnStep {
     public int source = NO_EID;
     public int targetEid = NO_EID;
-    public float speed = 1f/60f;
-    public float damage = 0f;
+    public float speed = 2f/60f;
 
     public PostBulletStep setup(int source, int targetEid) {
         this.source = source;
@@ -23,16 +22,10 @@ public class PostBulletStep implements PostSpawnStep {
         return this;
     }
 
-    public PostBulletStep damage(float damage) {
-        this.damage = damage;
-        return this;
-    }
-
     @Override
     public void run(int eid, EntitySpawnRequest req, WorldAccess binder) {
-        BulletStore store = binder.getStore(BulletStore.class);
+        BulletFlightStore store = binder.getStore(BulletFlightStore.class);
         store.createAndSet(eid, source, targetEid);
         store.setSpeed(eid, speed);
-        store.setDamage(eid, damage);
     }
 }

@@ -6,10 +6,11 @@ import io.bdc.painttd.world.family.turret.*;
 import io.bdc.painttd.world.store.request.*;
 
 public class BulletWeaponDef extends WeaponDef {
+    public float hitDuration = 1;
     public float directDamage = 0.1f;
     public float slashDamage = 0f;
-    public float slashRadius = 1f;
-    public float cellSlashDamage = 1f;
+    public float slashRadius = 0f;
+    public float cellSplashDamage = 0f;
     public float cellSlashRadius = 0f;
 
     public EntityDef bulletDef;
@@ -28,6 +29,11 @@ public class BulletWeaponDef extends WeaponDef {
         return true;
     }
 
+    public BulletWeaponDef hitDuration(float amt) {
+        this.hitDuration = amt;
+        return this;
+    }
+
     public BulletWeaponDef directDamage(float amt) {
         this.directDamage = amt;
         return this;
@@ -40,7 +46,7 @@ public class BulletWeaponDef extends WeaponDef {
     }
 
     public BulletWeaponDef cellSlashDamage(float amt, float radius) {
-        this.cellSlashDamage = amt;
+        this.cellSplashDamage = amt;
         this.cellSlashRadius = radius;
         return this;
     }

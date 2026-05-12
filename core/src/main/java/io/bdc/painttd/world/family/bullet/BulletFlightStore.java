@@ -3,11 +3,12 @@ package io.bdc.painttd.world.family.bullet;
 import com.badlogic.gdx.utils.*;
 import io.bdc.painttd.world.store.*;
 
-public class BulletStore extends ArrayEntityStoreBase {
+public class BulletFlightStore extends ArrayEntityStoreBase {
     public IntArray sourceArray = new IntArray();
     public IntArray targetEntityArray = new IntArray();
-    public FloatArray lifeTimeArray = new FloatArray();
     public FloatArray maxSpeedArray = new FloatArray();
+
+    @Deprecated
     public FloatArray damageArray = new FloatArray();
 
     public boolean createAndSet(int eid, int sourceEid, int targetEid) {
@@ -22,11 +23,6 @@ public class BulletStore extends ArrayEntityStoreBase {
     public void setSpeed(int eid, float speed) {
         int slot = slotOf(eid);
         maxSpeedArray.set(slot, speed);
-    }
-
-    public void setDamage(int eid, float damage) {
-        int slot = slotOf(eid);
-        this.damageArray.set(slot, damage);
     }
 
     @Override
@@ -46,7 +42,6 @@ public class BulletStore extends ArrayEntityStoreBase {
         targetEntityArray.add(NO_EID);
         maxSpeedArray.add(1f/60f);
         damageArray.add(0f);
-        lifeTimeArray.add(0f);
     }
 
     @Override
@@ -56,13 +51,11 @@ public class BulletStore extends ArrayEntityStoreBase {
             targetEntityArray.swap(movedFromSlot, removedSlot);
             maxSpeedArray.swap(movedFromSlot, removedSlot);
             damageArray.swap(movedFromSlot, removedSlot);
-            lifeTimeArray.swap(movedFromSlot, removedSlot);
         }
         sourceArray.pop();
         targetEntityArray.pop();
         maxSpeedArray.pop();
         damageArray.pop();
-        lifeTimeArray.pop();
     }
 
     @Override
@@ -71,6 +64,5 @@ public class BulletStore extends ArrayEntityStoreBase {
         targetEntityArray.clear();
         maxSpeedArray.clear();
         damageArray.clear();
-        lifeTimeArray.clear();
     }
 }

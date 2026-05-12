@@ -49,18 +49,23 @@ public class WorldConfiguration {
 
         world.addStore(new TurretStore());
         world.addStore(new BulletWeaponStore());
-        world.addStore(new BulletStore());
         world.addStore(new EntityTargetingStore());
         world.addStore(new CellTargetingStore());
+
+        world.addStore(new BulletFlightStore());
+        world.addStore(new BulletLifetimeStore());
+        world.addStore(new BulletDamageStore());
     }
 
     public void createAPIs(WorldRuntime world) {
+        world.addApi(new WorldTimeAPI());
         world.addApi(new DamageAPI());
         world.addApi(new TransformAPI());
         world.addApi(new TileBucketQueryAPI());
         world.addApi(new CollisionDispatchAPI());
         world.addApi(new MapAPI());
         world.addApi(new ActTypeAPI());
+        world.addApi(new BulletLifetimeAPI());
     }
 
     public void createSystems(WorldRuntime world) {
@@ -69,14 +74,21 @@ public class WorldConfiguration {
         // 实体生命周期
         world.addSystem(new EntitySpawnSystem(world, WorldPhase.SPAWN, 0, entityAssembler));
 
+        // 速度机制
         world.addSystem(new VelocityApplySystem(world, WorldPhase.SIMULATE, 10));
         world.addSystem(new VelocityDecaySystem(world, WorldPhase.SIMULATE, 20));
         world.addSystem(new BulletTargetPushSystem(world, WorldPhase.SIMULATE, 25));
+
+        // 逻辑行为
         world.addSystem(new EntityTargetingSystem(world, WorldPhase.SIMULATE, 50));
         world.addSystem(new CellTargetingSystem(world, WorldPhase.SIMULATE, 55));
         world.addSystem(new CooldownSystem(world, WorldPhase.SIMULATE, 60));
         world.addSystem(new BulletWeaponAttackSystem(world, WorldPhase.SIMULATE, 70));
+
+        // 空间索引墙
         world.addSystem(new TileBucketSyncSystem(world, WorldPhase.SIMULATE, 100));
+
+        // 碰撞相关
         world.addSystem(new CollisionFrameBeginSystem(world, WorldPhase.SIMULATE, 110));
         world.addSystem(new CollisionSoftRepulsionSystem(world, WorldPhase.SIMULATE, 115));
         world.addSystem(new DetectEeAabbSystem(world, WorldPhase.SIMULATE, 120));
@@ -84,15 +96,17 @@ public class WorldConfiguration {
         world.addSystem(new CollisionSolidBounceSystem(world, WorldPhase.SIMULATE, 140));
         world.addSystem(new WorldBoundsBounceSystem(world, WorldPhase.SIMULATE, 150));
 
-        world.addSystem(new CollisionBulletHitSystem(world, WorldPhase.APPLY, 100));
+        world.addSystem(new CollisionBulletDamageSystem(world, WorldPhase.APPLY, 100));
         world.addSystem(new CollisionCellDamageSystem(world, WorldPhase.APPLY, 110));
 
-        world.addSystem(new BulletValidationSystem(world, WorldPhase.CLEANUP, 80));
+        // 实体生命周期
+        world.addSystem(new BulletLifeLeftUpdateSystem(world, WorldPhase.CLEANUP, 80));
         world.addSystem(new DeathToDestroySystem(world, WorldPhase.CLEANUP, 90));
         world.addSystem(new EntityDestroySystem(world, WorldPhase.CLEANUP, 100, entityAssembler));
 
-        world.addSystem(new PreRenderSystem(world, WorldPhase.RENDER_PREPARE, 0));
         // 图形渲染
+        world.addSystem(new PreRenderSystem(world, WorldPhase.RENDER_PREPARE, 0));
+
         world.addSystem(new DrawMapSystem(world, WorldPhase.RENDER_TERRAIN, 0));
         world.addSystem(new DrawHitboxSystem(world, WorldPhase.RENDER_ENTITY, 0));
         world.addSystem(new DrawTileBucketDebugSystem(world, WorldPhase.RENDER_DEBUG, 0));

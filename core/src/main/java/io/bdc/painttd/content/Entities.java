@@ -54,7 +54,7 @@ public class Entities {
         registerDef(pencil = new EntityDef("Pencil") {
             {
                 turretDef = new TurretDef(0.5f, 4f);
-                weaponDef = new BulletWeaponDef(baseBullet).directDamage(0.2f);
+                weaponDef = new BulletWeaponDef(baseBullet).directDamage(0.2f).slashDamage(0.05f, 1.2f).cellSlashDamage(0.2f, 1f);
 
                 steps.add(new TurretDefStep().setup(new TurretDef(60f, 8f)));
                 steps.add(new WeaponStep().setup(weaponDef));
